@@ -5,6 +5,7 @@ import store from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import firebase from 'firebase';
+import 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCL1mh7NIp8iNfow1PgSPBkD76Om_XrhB0',
@@ -17,6 +18,9 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
+const storage = firebase.storage();
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -30,3 +34,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+export { storage, firebase as default };
