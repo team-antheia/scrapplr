@@ -4,7 +4,7 @@ import App from './app';
 import store from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCL1mh7NIp8iNfow1PgSPBkD76Om_XrhB0',
