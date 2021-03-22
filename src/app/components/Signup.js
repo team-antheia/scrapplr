@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import firebase from '../../index';
+import firebase, { firestore } from '../../index';
 
 export function SignUp(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setErrorMessage] = useState('');
 
-  const signUp = (email, password) => {
+  const signUp = () => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
+        const user = userCredential.user;
         // Signed in user - can add functionality
-        var user = userCredential.user;
+        firestore.collection('Users').add({
+          email: user.email,
+        });
+
         props.history.push('/login');
       })
       .catch((error) => {
@@ -24,7 +28,7 @@ export function SignUp(props) {
   return (
     <div>
       <div>
-        <form onSubmit={signUp(email, password)}>
+        <form onSubmit={signUp()}>
           <h1>
             Sign up for
             <Link to="/">Scrapplr</Link>
@@ -49,9 +53,7 @@ export function SignUp(props) {
           <p>Password must be at least 6 characters.</p>
           {error ? console.log(error) : ''}
           <div>
-            <button type="submit" onClick={signUp}>
-              Sign up
-            </button>
+            <button type="submit">Sign up</button>
           </div>
           <hr></hr>
           <p>
