@@ -5,6 +5,7 @@ import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import "rsuite/dist/styles/rsuite-default.css";
+import "./index.css";
 
 import firebase from "firebase/app";
 import "firebase/storage";

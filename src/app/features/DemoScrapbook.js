@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FlipPage from "react-flip-page";
 import Page1 from "./demo/DemoPage1";
 import { Button, Modal } from "rsuite";
+import PhotoUpload from "./PhotoUpload";
 
 export default class DemoScrapbook extends Component {
   constructor() {
@@ -56,6 +57,7 @@ export default class DemoScrapbook extends Component {
         </FlipPage>
         <Modal overflow={true} backdrop={true} show={this.state.show}>
           <Page1 />
+          <PhotoUpload />
           <Button onClick={this.close}>Close</Button>
         </Modal>
       </div>
@@ -67,10 +69,10 @@ const styles = {
   twoPage: { display: "flex", justifyContent: "space-around", padding: "auto" },
   container: {
     padding: 8,
-    backgroundColor: "red",
+    backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  singlePage: { width: 390, backgroundColor: "green", minHeight: 500 },
+  singlePage: { width: 390, backgroundColor: "#FFF5EB", minHeight: 500 },
 };

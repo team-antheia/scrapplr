@@ -39,7 +39,7 @@ export default function DemoPage1({ isStatic }) {
         verticalCompact={true}
         isBounded={true}
       >
-        <div style={{ backgroundColor: "black", color: "white" }} key="1">
+        <div style={{ backgroundColor: "#92ABB3", color: "white" }} key="1">
           1{" "}
           {isStatic ? (
             <p>We cannot be dragged. Press edit page </p>
@@ -47,10 +47,10 @@ export default function DemoPage1({ isStatic }) {
             <p>We can be dragged and resized</p>
           )}
         </div>
-        <div style={{ backgroundColor: "black", color: "white" }} key="2">
+        <div style={{ backgroundColor: "#92ABB3", color: "white" }} key="2">
           2
         </div>
-        <div style={{ backgroundColor: "black", color: "white" }} key="3">
+        <div style={{ backgroundColor: "#92ABB3", color: "white" }} key="3">
           3
         </div>
       </GridLayout>
