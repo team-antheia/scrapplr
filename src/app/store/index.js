@@ -1,5 +1,7 @@
-import { combineReducers, createStore } from 'redux'
+import { combineReducers, createStore } from 'redux';
 
-export default createStore(combineReducers({
-    state: {}
-}))
+export default createStore(
+  combineReducers({
+    //state: {}
+  })
+);
