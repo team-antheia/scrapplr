@@ -1,14 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./app";
-import store from "./app/store";
-import { Provider } from "react-redux";
-import * as serviceWorker from "./serviceWorker";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './app';
+import store from './app/store';
+import { Provider } from 'react-redux';
+import * as serviceWorker from './serviceWorker';
+import firebase from 'firebase';
+import 'firebase/storage';
+import 'firebase/firestore';
+import 'firebase/auth';
 import "rsuite/dist/styles/rsuite-default.css";
 import "./index.css";
 
-import firebase from "firebase/app";
-import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCL1mh7NIp8iNfow1PgSPBkD76Om_XrhB0",
@@ -23,6 +25,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const storage = firebase.storage();
+const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -38,4 +42,4 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-export { storage, firebase as default };
+export { storage, auth, firestore, firebase as default };
