@@ -1,11 +1,10 @@
-import React from 'react';
-import PhotoUpload from '../features/photoUpload';
+import React from "react";
 
 export default function LandingPage() {
   return (
     <div>
-      Landing Page
-      <PhotoUpload />
+      <h1>scrapplr</h1>
+      <sub>scrapbooking for the social</sub>
     </div>
   );
 }
