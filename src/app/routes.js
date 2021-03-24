@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { LandingPage } from './components';
 import { Login } from './components/Login';
 import { SignUp } from './components/Signup';
-import Map from './components/GoogleAPIWrapper';
+import MapContainer from './components/MapContainer';
 import { DemoScrapbook } from './features';
 
 export default class routes extends Component {
@@ -16,7 +16,7 @@ export default class routes extends Component {
         </Route>
         <Route exact path="/demo">
           <DemoScrapbook />
-          <Map />
+          <MapContainer />
         </Route>
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
@@ -24,3 +24,4 @@ export default class routes extends Component {
     );
   }
 }
+
