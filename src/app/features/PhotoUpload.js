@@ -32,6 +32,9 @@ function PhotoUpload() {
     }
     //Use EXIF to get metadata from photo
     EXIF.getData(imageAsFile, function () {
+      if (!imageAsFile.exifdata || !imageAsFile.exifdata.GPSLatitude) {
+        return;
+      }
       // Calculate latitude decimal
       var latDegree = imageAsFile.exifdata.GPSLatitude[0].numerator;
       var latMinute = imageAsFile.exifdata.GPSLatitude[1].numerator;
@@ -104,14 +107,14 @@ function PhotoUpload() {
 
     //Reference to scrapbook -- will need to update with current scrapbook doc
     let scrapbookRef = await firestore
-      .collection('SingleSB')
-      .doc('Mh3xCoVCvPuCZYXIH2WO');
+      .collection('Scrapbooks')
+      .doc('XQkebrXC1teAOhImleg3');
 
     //Updates scrapbook map locations array with new geopoint
     await scrapbookRef.update({
-      'Map Locations': firebase.firestore.FieldValue.arrayUnion({
-        Coordinates: new firebase.firestore.GeoPoint(lat, lon),
-        Name: 'Location from Photo Upload',
+      mapLocations: firebase.firestore.FieldValue.arrayUnion({
+        coordinates: new firebase.firestore.GeoPoint(lat, lon),
+        name: 'Location from Photo Upload',
       }),
     });
   }
