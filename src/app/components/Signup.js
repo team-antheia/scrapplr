@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import firebase, { firestore } from '../../index';
+import { Button, Form, FormField, Heading, Text, TextInput } from "grommet";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import firebase, { firestore } from "../../index";
 
 export function SignUp(props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setErrorMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setErrorMessage] = useState("");
 
   const signUp = () => {
     firebase
@@ -14,11 +15,11 @@ export function SignUp(props) {
       .then((userCredential) => {
         const user = userCredential.user;
         // Signed in user - can add functionality
-        firestore.collection('Users').add({
+        firestore.collection("Users").add({
           email: user.email,
         });
 
-        props.history.push('/login');
+        props.history.push("/login");
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -28,38 +29,41 @@ export function SignUp(props) {
   return (
     <div>
       <div>
-        <form onSubmit={signUp()}>
-          <h1>
-            Sign up for
-            <Link to="/">Scrapplr</Link>
-          </h1>
-          <p>Fill in the form below to create an account.</p>
-          <div>
-            <input
-              placeholder="Email"
+        <Form onSubmit={signUp()}>
+          <Heading level="1">
+            sign up for{" "}
+            <Link style={{ textDecoration: "none" }} to="/">
+              scrapplr
+            </Link>{" "}
+          </Heading>
+          <Text>fill in the form below to create an account.</Text>
+
+          <FormField>
+            <TextInput
+              placeholder="email"
               value={email}
               type="email"
               onChange={(evt) => setEmail(evt.target.value)}
-            ></input>
-          </div>
-          <div>
-            <input
-              placeholder="Password"
+            ></TextInput>
+          </FormField>
+          <FormField>
+            <TextInput
+              placeholder="password"
               onChange={(evt) => setPassword(evt.target.value)}
               value={password}
               type="password"
-            ></input>
-          </div>
-          <p>Password must be at least 6 characters.</p>
-          {error ? console.log(error) : ''}
+            ></TextInput>
+          </FormField>
+          <Text size="xsmall">password must be at least 6 characters.</Text>
+          {error ? console.log(error) : ""}
           <div>
-            <button type="submit">Sign up</button>
+            <Button label="sign up" type="submit" />
           </div>
           <hr></hr>
-          <p>
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
-        </form>
+          <Text>
+            already have an account? <Link to="/login">login</Link>
+          </Text>
+        </Form>
       </div>
     </div>
   );

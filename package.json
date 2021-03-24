@@ -9,7 +9,10 @@
     "@testing-library/user-event": "^7.1.2",
     "firebase": "^8.3.1",
     "google-maps-react": "^2.0.6",
+    "grommet": "^2.17.0",
+    "polished": "^4.1.1",
     "react": "^17.0.1",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.1",
     "react-flip-page": "^1.6.4",
     "react-grid-layout": "^1.2.4",
@@ -17,7 +20,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.0.5",
-    "rsuite": "^4.9.3"
+    "rsuite": "^4.9.3",
+    "styled-components": "^5.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
