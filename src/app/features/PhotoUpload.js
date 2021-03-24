@@ -5,21 +5,22 @@ import { EXIF } from 'exif-js';
 function PhotoUpload() {
   //declares names in state, set to empty string
   const [imageAsFile, setImageAsFile] = useState('');
+
+  //----- If image is need on page, use imageAsUrl to access from firebase storage --------
   const [imageAsUrl, setImageAsUrl] = useState('');
+
   const [latitude, setLat] = useState('');
   const [longitude, setLon] = useState('');
 
-  //When photo is uploaded, grab data and set to state
   const handleImageAsFile = (e) => {
-    // const image = e.target.files[0];
+    //When photo is uploaded, grab data and set to state
     setImageAsFile(e.target.files[0]);
-    // console.log(e.target.files[0]);
-    EXIF.getData(e.target.files[0], function () {
-      console.log(e.target.files[0].exifdata);
-    });
   };
 
   const handleFirebaseUpload = (e) => {
+    e.preventDefault();
+
+    //Coordinates conversion function
     function ConvertDMSToDD(degrees, minutes, seconds, direction) {
       var dd = degrees + minutes / 60 + seconds / 3600;
 
@@ -29,7 +30,7 @@ function PhotoUpload() {
 
       return dd;
     }
-
+    //Use EXIF to get metadata from photo
     EXIF.getData(imageAsFile, function () {
       // Calculate latitude decimal
       var latDegree = imageAsFile.exifdata.GPSLatitude[0].numerator;
@@ -44,7 +45,6 @@ function PhotoUpload() {
         latDirection
       );
       setLat(latFinal);
-      console.log(latFinal);
 
       // Calculate longitude decimal
       var lonDegree = imageAsFile.exifdata.GPSLongitude[0].numerator;
@@ -59,10 +59,11 @@ function PhotoUpload() {
         lonDirection
       );
       setLon(lonFinal);
-      console.log(lonFinal);
+
+      //Stores coordinates in db
+      updateDatabase(latFinal, lonFinal);
     });
 
-    e.preventDefault();
     //upload file to firebase storage
     const uploadTask = storage
       .ref(`/images/${imageAsFile.name}`)
@@ -95,39 +96,24 @@ function PhotoUpload() {
     );
   };
 
-  //separate into two functions;
-  //find function for place I want to change
-  //update function that takes in that place and makes update
-  async function updateDatabase() {
-    let userId = auth.currentUser.uid;
+  async function updateDatabase(lat, lon) {
+    // ------ Access signed in user -----
+    // let userId = auth.currentUser.uid;
 
-    let snapshot = await firestore
-      .collection('Scrapbooks')
-      .where('Owner', '==', userId)
-      .get();
-    //   // .collection('Map Points')
-    if (snapshot.empty) {
-      console.log('No matching documents.');
-    }
+    console.log(lat, lon);
 
-    snapshot.forEach((scrapbook) => {
-      // console.log('scrapbook', '=>', scrapbook.data().Owner);
-      console.log(scrapbook.data());
-      // if (scrapbook.data().Owner === userId) {
-      //   console.log(scrapbook.data()['Map Points']);
-      // }
+    //Reference to scrapbook -- will need to update with current scrapbook doc
+    let scrapbookRef = await firestore
+      .collection('SingleSB')
+      .doc('Mh3xCoVCvPuCZYXIH2WO');
+
+    //Updates scrapbook map locations array with new geopoint
+    await scrapbookRef.update({
+      'Map Locations': firebase.firestore.FieldValue.arrayUnion({
+        Coordinates: new firebase.firestore.GeoPoint(lat, lon),
+        Name: 'Location from Photo Upload',
+      }),
     });
-
-    // try {
-    //   await firestore.runTransaction(async (t) => {
-    //     const doc = await t.get(scrapbookRef)
-
-    //     doc.data().
-    //   })
-    //   console.log('Success!')
-    // } catch (e) {
-    //   console.log('Failed', e)
-    // }
   }
 
   return (
@@ -142,9 +128,6 @@ function PhotoUpload() {
         <button>Upload</button>
       </form>
       {/* <img src={imageAsUrl} alt="" /> */}
-      <button type="button" onClick={updateDatabase}>
-        Update DB
-      </button>
     </div>
   );
 }
