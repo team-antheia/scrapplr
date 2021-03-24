@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { storage } from '../../index';
 import { EXIF } from 'exif-js';
+//npm install exif-js --save for installing exif js
 
 function PhotoUpload() {
   //declares names in state, set to empty string
@@ -15,6 +16,7 @@ function PhotoUpload() {
     EXIF.getData(e.target.files[0], function () {
       if (e.target.files[0].exifdata) {
         //HOW ARE WE SAVING THE DATA TO STORAGE?
+        //[{coordinate:string, name:string}]
         //THEN WE CAN ACCESS THIS INFO IN OUR MAP COMPONENT
         //how are we accesing this info?  which component?
         //convert to coordinates

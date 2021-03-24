@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import FlipPage from "react-flip-page";
-import Page1 from "./demo/DemoPage1";
-import { Modal } from "rsuite";
-import { Button } from "grommet";
-import PhotoUpload from "./PhotoUpload";
-import "rsuite/dist/styles/rsuite-default.css";
-import { Map } from "../components";
+import React, { Component } from 'react';
+import FlipPage from 'react-flip-page';
+import Page1 from './demo/DemoPage1';
+import { Modal } from 'rsuite';
+import { Button } from 'grommet';
+import PhotoUpload from './PhotoUpload';
+import 'rsuite/dist/styles/rsuite-default.css';
+import { Map } from '../components';
+//import StreetView from '../components/StreetView';
 
 export default class DemoScrapbook extends Component {
   constructor() {
@@ -27,17 +28,18 @@ export default class DemoScrapbook extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <FlipPage width={800} height={525} orientation="horizontal">
+        <FlipPage width={800} height={525} orientation='horizontal'>
           <div style={styles.twoPage}>
             <div style={styles.singlePage}>
               <article>
                 <Page1 isStatic={true} />
-                <Button size="small" onClick={this.open} label="edit page" />
+                <Button size='small' onClick={this.open} label='edit page' />
               </article>
             </div>
             <div style={styles.singlePage}>
               <article>
                 <h1>My wonderful second article</h1>
+
                 <p>My wonderful second content</p>
               </article>
             </div>
@@ -61,7 +63,7 @@ export default class DemoScrapbook extends Component {
         <Modal overflow={true} backdrop={true} show={this.state.show}>
           <Page1 />
           <PhotoUpload />
-          <Button onClick={this.close} label="close" />
+          <Button onClick={this.close} label='close' />
         </Modal>
       </div>
     );
@@ -69,13 +71,13 @@ export default class DemoScrapbook extends Component {
 }
 
 const styles = {
-  twoPage: { display: "flex", justifyContent: "space-around", padding: "auto" },
+  twoPage: { display: 'flex', justifyContent: 'space-around', padding: 'auto' },
   container: {
     padding: 8,
-    backgroundColor: "white",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  singlePage: { width: 390, backgroundColor: "#FFF5EB", minHeight: 500 },
+  singlePage: { width: 390, backgroundColor: '#FFF5EB', minHeight: 500 },
 };
