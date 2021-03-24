@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import FlipPage from "react-flip-page";
 import Page1 from "./demo/DemoPage1";
-import { Button, Modal } from "rsuite";
+import { Modal } from "rsuite";
+import { Button } from "grommet";
 import PhotoUpload from "./PhotoUpload";
+import "rsuite/dist/styles/rsuite-default.css";
+import { Map } from "../components";
 
 export default class DemoScrapbook extends Component {
   constructor() {
@@ -29,7 +32,7 @@ export default class DemoScrapbook extends Component {
             <div style={styles.singlePage}>
               <article>
                 <Page1 isStatic={true} />
-                <Button onClick={this.open}>edit page</Button>
+                <Button size="small" onClick={this.open} label="edit page" />
               </article>
             </div>
             <div style={styles.singlePage}>
@@ -58,7 +61,7 @@ export default class DemoScrapbook extends Component {
         <Modal overflow={true} backdrop={true} show={this.state.show}>
           <Page1 />
           <PhotoUpload />
-          <Button onClick={this.close}>Close</Button>
+          <Button onClick={this.close} label="close" />
         </Modal>
       </div>
     );

@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './app';
-import store from './app/store';
-import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
-import firebase from 'firebase';
-import 'firebase/storage';
-import 'firebase/firestore';
-import 'firebase/auth';
-import "rsuite/dist/styles/rsuite-default.css";
-import "./index.css";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./app";
+import store from "./app/store";
+import { Provider } from "react-redux";
+import * as serviceWorker from "./serviceWorker";
+import firebase from "firebase";
+import "firebase/storage";
+import "firebase/firestore";
+import "firebase/auth";
 
+import { Grommet } from "grommet";
+import theme from "./theme";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCL1mh7NIp8iNfow1PgSPBkD76Om_XrhB0",
@@ -29,11 +29,13 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+  <Grommet full theme={theme}>
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
+  </Grommet>,
   document.getElementById("root")
 );
 
