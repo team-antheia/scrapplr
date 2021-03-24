@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { storage } from '../../index';
+import { EXIF } from 'exif-js';
 
 function PhotoUpload() {
   //declares names in state, set to empty string
@@ -10,6 +11,10 @@ function PhotoUpload() {
   const handleImageAsFile = (e) => {
     // const image = e.target.files[0];
     setImageAsFile(e.target.files[0]);
+    // console.log(e.target.files[0]);
+    EXIF.getData(e.target.files[0], function () {
+      console.log(e.target.files[0].exifdata);
+    });
   };
 
   const handleFirebaseUpload = (e) => {
