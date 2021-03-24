@@ -1,5 +1,6 @@
 import React from "react";
 import GridLayout from "react-grid-layout";
+import { Card, CardBody, CardFooter, CardHeader, Text } from "grommet";
 
 export default function DemoPage1({ isStatic }) {
   const layout = [
@@ -8,15 +9,16 @@ export default function DemoPage1({ isStatic }) {
       i: "1",
       x: 1,
       y: 0,
-      w: 5,
-      h: 5,
-      minW: 2,
-      maxW: 4,
-      maxH: 5,
+      w: 4,
+      h: 4,
+      minW: 3,
+      minH: 3,
+      maxW: 6,
+      maxH: 6,
     },
     { i: "3", x: 4, y: 0, w: 5, h: 4, maxH: 5 },
   ];
-  const handles = ["E"];
+  const handles = ["sw"];
   function pointer(e) {
     e.target.style.cursor = "pointer";
   }
@@ -33,26 +35,40 @@ export default function DemoPage1({ isStatic }) {
         isDraggable={isStatic ? false : true}
         isDroppable={isStatic ? false : true}
         // isResizable={isStatic ? false : true}
-        resizeHandle={isStatic ? false : <p onMouseOver={pointer}>^</p>}
+        resizeHandle={
+          isStatic ? (
+            false
+          ) : (
+            <CardFooter onMouseOver={pointer} pad="8px" overflow="auto">
+              <Text color="primary" size="xxsmall">
+                resize
+              </Text>
+            </CardFooter>
+          )
+        }
         resizeHandles={handles}
         autoSize={false}
         verticalCompact={true}
         isBounded={true}
       >
-        <div style={{ backgroundColor: "#92ABB3", color: "white" }} key="1">
-          1{" "}
-          {isStatic ? (
-            <p>We cannot be dragged. Press edit page </p>
-          ) : (
-            <p>We can be dragged and resized</p>
-          )}
-        </div>
-        <div style={{ backgroundColor: "#92ABB3", color: "white" }} key="2">
+        <Card overflow="auto" height="small" background="primary-dark" key="1">
+          <CardHeader pad="small" overflow="auto">
+            1
+          </CardHeader>
+          <CardBody pad="small" overflow="auto">
+            {isStatic ? (
+              <p>We cannot be dragged. Press edit page </p>
+            ) : (
+              <p>We can be dragged and resized</p>
+            )}
+          </CardBody>
+        </Card>
+        <Card style={{ backgroundColor: "#92ABB3", color: "white" }} key="2">
           2
-        </div>
-        <div style={{ backgroundColor: "#92ABB3", color: "white" }} key="3">
+        </Card>
+        <Card style={{ backgroundColor: "#92ABB3", color: "white" }} key="3">
           3
-        </div>
+        </Card>
       </GridLayout>
     </div>
   );

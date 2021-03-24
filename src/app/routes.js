@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { Route } from 'react-router-dom';
-import { LandingPage } from './components';
-import { Login } from './components/Login';
-import { SignUp } from './components/Signup';
-import Map from './components/GoogleAPIWrapper';
-import { DemoScrapbook } from './features';
+import { Route } from "react-router-dom";
+import { LandingPage } from "./components";
+import { Login } from "./components/Login";
+import { SignUp } from "./components/Signup";
+import { DemoScrapbook, BookShelfView } from "./features";
+import { Box } from "grommet";
 
 export default class routes extends Component {
   render() {
     return (
-      <div>
+      <Box justify="center" align="center" height="100vh">
         <Route exact path="/">
           <LandingPage />
         </Route>
         <Route exact path="/demo">
           <DemoScrapbook />
-          <Map />
         </Route>
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
-      </div>
+        <Route path="/bookshelf" component={BookShelfView} />
+      </Box>
     );
   }
 }

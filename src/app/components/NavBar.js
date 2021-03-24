@@ -1,37 +1,44 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Button, ButtonGroup, Navbar, Nav } from "rsuite";
+import { Nav, Anchor, Text } from "grommet";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   return (
-    <div id="nav-container">
-      <Navbar id="nav">
-        <Navbar.Header>
-          <a>scrapplr</a>
-        </Navbar.Header>
-        <Navbar.Body>
-          <Nav>
-            <NavLink to="/">
-              <Button style={{ marginInline: 8 }} color="cyan">
-                Home
-              </Button>
-            </NavLink>
-            <Button style={{ marginInline: 8 }} color="cyan">
-              Login
-            </Button>
-            <Button style={{ marginInline: 8 }} color="cyan">
-              Sign-up
-            </Button>
-          </Nav>
-          <Nav pullRight>
-            <NavLink to="/demo">
-              <Button style={{ marginInline: 8 }} color="orange">
-                Demo
-              </Button>
-            </NavLink>
-          </Nav>
-        </Navbar.Body>
-      </Navbar>
-    </div>
+    // <Box
+    //   tag="header"
+    //   direction="row"
+    //   align="center"
+    //   justify="between"
+    //   background="light-2"
+    //   pad={{ vertical: "small", horizontal: "medium" }}
+    //   elevation="medium"
+    // />
+    <Nav
+      width="100vw"
+      tag="header"
+      background="control"
+      elevation="large"
+      direction="row"
+      pad="8px"
+      align="center"
+      justify="center"
+      height="48px"
+    >
+      <Link style={{ textDecoration: "none" }} to="/">
+        <Text color="white">home</Text>
+      </Link>
+
+      <Link style={{ textDecoration: "none" }} to="/login">
+        <Text color="white">login</Text>
+      </Link>
+
+      <Link style={{ textDecoration: "none" }} to="/signup">
+        <Text color="white">sign up</Text>
+      </Link>
+
+      <Link style={{ textDecoration: "none" }} to="/bookshelf">
+        <Text color="white">demo</Text>
+      </Link>
+    </Nav>
   );
 }
