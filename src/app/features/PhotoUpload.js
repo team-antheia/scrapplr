@@ -13,7 +13,15 @@ function PhotoUpload() {
     setImageAsFile(e.target.files[0]);
     // console.log(e.target.files[0]);
     EXIF.getData(e.target.files[0], function () {
-      console.log(e.target.files[0].exifdata);
+      if (e.target.files[0].exifdata) {
+        //HOW ARE WE SAVING THE DATA TO STORAGE?
+        //THEN WE CAN ACCESS THIS INFO IN OUR MAP COMPONENT
+        //how are we accesing this info?  which component?
+        //convert to coordinates
+        console.log('METADATA', e.target.files[0].exifdata);
+      } else {
+        //WHAT WOULD BE OUR ALTERNATIVE ?  DO WE ALLOW NULL?  IS THAT EVEN A POSSIBILITY?
+      }
     });
   };
 
@@ -52,17 +60,17 @@ function PhotoUpload() {
   };
 
   return (
-    <div className="photo-upload">
+    <div className='photo-upload'>
       <h1>Upload a photo</h1>
       <form onSubmit={handleFirebaseUpload}>
         <input
-          type="file"
+          type='file'
           onChange={handleImageAsFile}
-          accept="image/png, image/jpeg, image/jpg"
+          accept='image/png, image/jpeg, image/jpg'
         />
         <button>Upload</button>
       </form>
-      <img src={imageAsUrl} alt="" />
+      <img src={imageAsUrl} alt='' />
     </div>
   );
 }
