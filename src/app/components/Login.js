@@ -28,6 +28,7 @@ export function Login(props) {
       .then((userCredential) => {
         // Signed in user - can add functionality
         var user = userCredential.user;
+        
         props.history.push("/login");
       })
       .catch((error) => {

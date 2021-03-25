@@ -1,27 +1,59 @@
 import React, { Component } from "react";
-import {Marker, InfoWindow} from "google-maps-react";
+import { Marker, InfoWindow } from "google-maps-react";
+
 class LocationMarker extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       // open: false, visible: false}
-      showingInfoWindow: false,
-      activeMarker: {},
-      selectedPlace: {},
-    }
+      // showingInfoWindow: false,
+      // activeMarker: {},
+      // selectedPlace: {},
+      selectedCenter:'',
+      setSelectedCenter:false
 
-  render() {
-    const {Name, Coordinates} = this.props.location;
-    const {_lat, _long} = Coordinates;
-
-
-    return <Marker  key={Name} title={Name} name={Name} position={{ lat: _lat, lng: _long }}/>
-    //     {/* {this.state.open && (
-    //       <InfoWindow onClick={() => this.setState(state => ({open: !state.open}))}> {Name} </InfoWindow>
-    //     )} */}
-
+    };
   }
 
+  render() {
+    const { name, coordinates } = this.props.location;
+    const { _lat, _long } = coordinates;
+
+    return (
+      <div>
+      <Marker
+        {...this.props}
+        key={name}
+        title={name}
+        name={name}
+        position={{ lat: _lat, lng: _long }}
+        onClick={() => {
+          this.setState({
+            setSelectedCenter:true
+          })
+       }}
+       />
+       {this.state.selectedCenter && (
+         <InfoWindow
+           onClose={()=>{
+             this.setState({
+              setSelectedCenter:false
+             })
+           }}
+           position={{
+             lat:_lat,
+             lng:_long
+           }}
+           >
+           </InfoWindow>
+
+       )}
+      </div>
+
+
+    );
+
+  }
 }
 
 export default LocationMarker;

@@ -17,23 +17,27 @@ export const GoogleMap = (props) => {
           zoom={14}
           style={mapStyles}
           initialCenter={{
-            lat: props.allLocations[0].Coordinates._lat,
-            lng: props.allLocations[0].Coordinates._long,
+            lat: props.allLocations[0].coordinates._lat,
+            lng: props.allLocations[0].coordinates._long,
           }}
         >
           {props.allLocations.length &&
             props.allLocations.map(
-              (location) => (
-                <Marker
-                  key={location.Name}
-                  title={location.Name}
-                  name={location.Name}
-                  position={{
-                    lat: location.Coordinates._lat,
-                    lng: location.Coordinates._long,
-                  }}
-                />
-              )
+              (location) => {
+                return (
+                <LocationMarker
+                location={location} />)
+
+                // <Marker
+                //   key={location.Name}
+                //   title={location.Name}
+                //   name={location.Name}
+                //   position={{
+                //     lat: location.coordinates._lat,
+                //     lng: location.coordinates._long,
+                //   }}
+                // />
+                }
 
               //  <LocationMarker location={location} key={location.Name} />
             )}
