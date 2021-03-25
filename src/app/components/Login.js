@@ -28,7 +28,7 @@ export function Login(props) {
       .then((userCredential) => {
         // Signed in user - can add functionality
         var user = userCredential.user;
-        props.history.push("/login");
+        props.history.push("/home");
       })
       .catch((error) => {
         console.log(error);
@@ -42,57 +42,43 @@ export function Login(props) {
 
   return (
     <div>
-      {user.email ? (
-        <>
-          <Heading level={3}>welcome {user.email}</Heading>
+      <Box pad="small">
+        <Form>
+          <Heading level={3}>login</Heading>
+          <FormField>
+            <TextInput
+              type="email"
+              value={email}
+              placeholder="email"
+              onChange={(evt) => setEmail(evt.target.value)}
+            />
+          </FormField>
+          <FormField>
+            <TextInput
+              type="password"
+              value={password}
+              placeholder="password"
+              onChange={(evt) => setPassword(evt.target.value)}
+            />
+          </FormField>
           <Button
-            label="sign out"
-            onClick={() => {
-              auth.signOut();
-              props.history.push("/login");
-            }}
+            style={{ width: "100%" }}
+            primary
+            label="login"
+            onClick={signInWithEmail}
           />
-        </>
-      ) : (
-        <Box pad="small">
-          <Form onSubmit={signInWithEmail(email, password)}>
-            <Heading level={3}>login</Heading>
-            <FormField>
-              <TextInput
-                type="email"
-                value={email}
-                placeholder="email"
-                onChange={(evt) => setEmail(evt.target.value)}
-              />
-            </FormField>
-            <FormField>
-              <TextInput
-                type="password"
-                value={password}
-                placeholder="password"
-                onChange={(evt) => setPassword(evt.target.value)}
-              />
-            </FormField>
+          <Box pad="small">
             <Button
               style={{ width: "100%" }}
-              primary
-              label="login"
-              type="submit"
-              onClick={signInWithEmail}
+              label="sign in with google"
+              onClick={signInWithGoogle}
             />
-            <Box pad="small">
-              <Button
-                style={{ width: "100%" }}
-                label="sign in with google"
-                onClick={signInWithGoogle}
-              />
-              <Text className="forgot-password text-right">
-                don't have an account? <Link to="/signup">sign up</Link>
-              </Text>
-            </Box>
-          </Form>
-        </Box>
-      )}
+            <Text className="forgot-password text-right">
+              don't have an account? <Link to="/signup">sign up</Link>
+            </Text>
+          </Box>
+        </Form>
+      </Box>
     </div>
   );
 }
