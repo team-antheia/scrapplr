@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import firebase, { storage, firestore, auth } from '../../index';
 import { EXIF } from 'exif-js';
+//npm install exif-js --save for installing exif js
 
 function PhotoUpload() {
   //declares names in state, set to empty string
@@ -120,13 +121,13 @@ function PhotoUpload() {
   }
 
   return (
-    <div className="photo-upload">
+    <div className='photo-upload'>
       <h1>Upload a photo</h1>
       <form onSubmit={handleFirebaseUpload}>
         <input
-          type="file"
+          type='file'
           onChange={handleImageAsFile}
-          accept="image/png, image/jpeg, image/jpg"
+          accept='image/png, image/jpeg, image/jpg'
         />
         <button>Upload</button>
       </form>

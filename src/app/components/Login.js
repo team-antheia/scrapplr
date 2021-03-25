@@ -1,5 +1,5 @@
-import { useState } from "react";
-import firebase, { auth } from "../../index";
+import { useState } from 'react';
+import firebase, { auth } from '../../index';
 import {
   Box,
   Button,
@@ -8,12 +8,12 @@ import {
   Heading,
   Text,
   TextInput,
-} from "grommet";
-import { Link } from "react-router-dom";
-
+} from 'grommet';
+import { Link } from 'react-router-dom';
+//small change
 export function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [user, setUser] = useState({});
 
   const signInWithGoogle = () => {
@@ -21,20 +21,21 @@ export function Login(props) {
     auth.signInWithPopup(provider);
   };
 
-  const signInWithEmail = () => {
+  const signInWithEmail = (evt) => {
+    evt.preventDefault();
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed in user - can add functionality
-        var user = userCredential.user;
-        
-        props.history.push("/login");
+        let user = userCredential.user;
+        props.history.push('/login');
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   auth.onAuthStateChanged((user) => {
     if (user) {
       setUser(user);
@@ -47,48 +48,48 @@ export function Login(props) {
         <>
           <Heading level={3}>welcome {user.email}</Heading>
           <Button
-            label="sign out"
+            label='sign out'
             onClick={() => {
               auth.signOut();
-              props.history.push("/login");
+              props.history.push('/login');
             }}
           />
         </>
       ) : (
-        <Box pad="small">
-          <Form onSubmit={signInWithEmail(email, password)}>
+        <Box pad='small'>
+          <Form>
             <Heading level={3}>login</Heading>
             <FormField>
               <TextInput
-                type="email"
+                type='email'
                 value={email}
-                placeholder="email"
+                placeholder='email'
                 onChange={(evt) => setEmail(evt.target.value)}
               />
             </FormField>
             <FormField>
               <TextInput
-                type="password"
+                type='password'
                 value={password}
-                placeholder="password"
+                placeholder='password'
                 onChange={(evt) => setPassword(evt.target.value)}
               />
             </FormField>
             <Button
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               primary
-              label="login"
-              type="submit"
+              label='login'
+              //type='submit'
               onClick={signInWithEmail}
             />
-            <Box pad="small">
+            <Box pad='small'>
               <Button
-                style={{ width: "100%" }}
-                label="sign in with google"
+                style={{ width: '100%' }}
+                label='sign in with google'
                 onClick={signInWithGoogle}
               />
-              <Text className="forgot-password text-right">
-                don't have an account? <Link to="/signup">sign up</Link>
+              <Text className='forgot-password text-right'>
+                don't have an account? <Link to='/signup'>sign up</Link>
               </Text>
             </Box>
           </Form>
