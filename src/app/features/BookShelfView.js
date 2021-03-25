@@ -9,7 +9,6 @@ import {
   Image,
 } from "grommet";
 import React, { Component } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
 
 export default class BookShelfView extends Component {

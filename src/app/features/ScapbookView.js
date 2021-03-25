@@ -1,33 +1,11 @@
+import { Box, ResponsiveContext } from 'grommet'
+import React from 'react';
 
-import React, { Component } from "react";
-import FlipPage from "react-flip-page";
-import Page1 from "./demo/DemoPage1";
-import { Modal } from "rsuite";
-import { Box, Button, ResponsiveContext } from "grommet";
-import PhotoUpload from "./PhotoUpload";
-import "rsuite/dist/styles/rsuite-default.css";
-import { Map } from "../components";
 
-export default class DemoScrapbook extends Component {
-  constructor() {
-    super();
 
-    this.state = {
-      show: false,
-    };
-    this.toggleModal = this.toggleModal.bind(this);
-  }
-  toggleModal() {
-    this.setState((prevState) => {
-      return {
-        show: !prevState.show,
-      };
-    });
-  }
-
-  render() {
+export default function ScapbookView() {
     return (
-      <Box justify="center" align="center">
+        <Box justify="center" align="center">
         <ResponsiveContext.Consumer>
           {(size) =>
             size === "small" ? (
@@ -35,7 +13,7 @@ export default class DemoScrapbook extends Component {
                 <FlipPage width={400} height={525}>
                   <div>
                     <article style={{ padding: 8 }}>
-                      <Page1 isStatic={true} />
+                      
                       <Button
                         size="small"
                         onClick={this.toggleModal}
@@ -46,12 +24,6 @@ export default class DemoScrapbook extends Component {
                   <div>
                     <article>hello2</article>
                   </div>
-                  <div>
-                    <article>hello3</article>
-                  </div>
-                  <div>
-                    <article>hello4</article>
-                  </div>
                 </FlipPage>
               </div>
             ) : (
@@ -60,7 +32,7 @@ export default class DemoScrapbook extends Component {
                   <div style={styles.twoPage}>
                     <div style={styles.singlePage}>
                       <article>
-                        <Page1 isStatic={true} />
+
                         <Button
                           size="small"
                           onClick={this.toggleModal}
@@ -106,24 +78,19 @@ export default class DemoScrapbook extends Component {
             backdrop={true}
             show={this.state.show}
           >
-            <Page1 />
+            
             <PhotoUpload />
             <Button onClick={this.toggleModal} label="close" />
           </Modal>
         </Box>
       </Box>
-    );
-  }
+    )
 }
 
-const styles = {
-  twoPage: { display: 'flex', justifyContent: 'space-around', padding: 'auto' },
-  container: {
-    padding: 8,
-    backgroundColor: 'white',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  singlePage: { width: 390, backgroundColor: '#FFF5EB', minHeight: 500 },
-};
+
+// this is where we will make the firebase call for all pages in a scrapbook
+
+// grab the Id for the scrapbook and save it to state
+
+// pass this Id down to pages and check for it when calling for page content
+

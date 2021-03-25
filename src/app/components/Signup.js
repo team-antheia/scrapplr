@@ -18,18 +18,22 @@ export function SignUp(props) {
         firestore.collection("Users").add({
           email: user.email,
         });
-
-        props.history.push("/login");
       })
       .catch((error) => {
         setErrorMessage(error.message);
       });
   };
 
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    signUp();
+    props.history.push("/home");
+  };
+
   return (
     <div>
       <div>
-        <Form onSubmit={signUp()}>
+        <Form onSubmit={handleSumbit}>
           <Heading level="1">
             sign up for{" "}
             <Link style={{ textDecoration: "none" }} to="/">
