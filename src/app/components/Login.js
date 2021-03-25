@@ -21,25 +21,18 @@ export function Login(props) {
     auth.signInWithPopup(provider);
   };
 
-  const settingEmail = (evt) => {
-    setEmail(evt.target.value);
-  };
-
   const signInWithEmail = (evt) => {
-    //evt.preventDefault();
-    //WOULD WE WANT TO TRIGGER THIS WHEN THE USER IS DONE INPUTTING FIELDS ??
+    evt.preventDefault();
     firebase
       .auth()
-      //THIS IS BEING GRABBED FROM STATE BEFORE THE STATE IS READY??
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed in user - can add functionality
-        var user = userCredential.user;
+        let user = userCredential.user;
         props.history.push('/login');
       })
       .catch((error) => {
-        //consle is loggin the error everytime we type...why is that??
-        console.log('IN HERE', error);
+        console.log(error);
       });
   };
 
@@ -64,14 +57,14 @@ export function Login(props) {
         </>
       ) : (
         <Box pad='small'>
-          <Form onSubmit={signInWithEmail()}>
+          <Form>
             <Heading level={3}>login</Heading>
             <FormField>
               <TextInput
                 type='email'
                 value={email}
                 placeholder='email'
-                onChange={settingEmail}
+                onChange={(evt) => setEmail(evt.target.value)}
               />
             </FormField>
             <FormField>
@@ -86,7 +79,7 @@ export function Login(props) {
               style={{ width: '100%' }}
               primary
               label='login'
-              type='submit'
+              //type='submit'
               onClick={signInWithEmail}
             />
             <Box pad='small'>
