@@ -8,10 +8,9 @@ import { SignUp } from "./components/Signup";
 import { DemoScrapbook, BookShelfView, UserHome } from "./features";
 import { Box } from "grommet";
 import { auth } from "../index";
-import LocationSearchInput from './components/GoogleSuggest'
-import { StreetView } from './components/StreetView';
+import LocationSearchInput from './components/LocationSearchInput'
+import StreetView from './components/StreetView';
 import MapContainer from './components/MapContainer';
-
 
 export default class routes extends Component {
   render() {
@@ -36,13 +35,13 @@ export default class routes extends Component {
           <Route exact path="/demo">
             <DemoScrapbook />
           </Route>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/bookshelf">
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/bookshelf">
             <BookShelfView />
           </Route>
-        <Route path="/test" component={LocationSearchInput} />
-        <Route path='/streetview' component={StreetView} />
+        <Route exact path="/test" component={LocationSearchInput} />
+        <Route exact path='/streetview' component={StreetView} />
         </Switch>
       </Box>
     );
