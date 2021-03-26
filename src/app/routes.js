@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 
-import { Route, Switch } from 'react-router-dom';
-import { LandingPage } from './components';
-import { Login } from './components/Login';
-import { SignUp } from './components/Signup';
-import { DemoScrapbook, BookShelfView, UserHome } from './features';
-import { Box } from 'grommet';
-import { auth } from '../index';
-import LocationSearchInput from './components/GoogleSuggest';
-import { StreetView } from './components/StreetView';
+
+import { Route, Switch } from "react-router-dom";
+import { LandingPage } from "./components";
+import { Login } from "./components/Login";
+import { SignUp } from "./components/Signup";
+import { DemoScrapbook, BookShelfView, UserHome } from "./features";
+import { Box } from "grommet";
+import { auth } from "../index";
+import LocationSearchInput from './components/LocationSearchInput'
+import StreetView from './components/StreetView';
 import MapContainer from './components/MapContainer';
 
 export default class routes extends Component {
