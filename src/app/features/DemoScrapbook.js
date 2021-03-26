@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FlipPage from "react-flip-page";
 import Page1 from "./demo/DemoPage1";
+import Page2 from "./demo/DemoPage2";
 import { Modal } from "rsuite";
 import { Box, Button, ResponsiveContext } from "grommet";
 import PhotoUpload from "./PhotoUpload";
@@ -13,18 +14,19 @@ export default class DemoScrapbook extends Component {
     super();
 
     this.state = {
-      show: false,
+      edit: false,
       buttons:true,
       type: "",
     };
-    this.toggleModal = this.toggleModal.bind(this);
     this.selectType = this.selectType.bind(this)
     this.goBack = this.goBack.bind(this)
+    this.toggleEdit = this.toggleEdit.bind(this);
+
   }
-  toggleModal() {
+  toggleEdit() {
     this.setState((prevState) => {
       return {
-        show: !prevState.show,
+        edit: !prevState.edit,
       };
     });
   }
@@ -53,6 +55,7 @@ export default class DemoScrapbook extends Component {
 
   render() {
     return (
+
       <div>
         <Box justify="center" align="center">
           <ResponsiveContext.Consumer>
@@ -64,9 +67,11 @@ export default class DemoScrapbook extends Component {
                       <article style={{ padding: 8 }}>
                         <Page1 isStatic={true} />
                         <Button
+                          primary
                           size="small"
-                          onClick={this.toggleModal}
-                          label="edit page"
+                          onClick={this.toggleEdit}
+                          label={this.state.edit ? "done" : "edit page"}
+                          style={{ position: "absolute", bottom: 3 }}
                         />
                       </article>
                     </div>
@@ -79,6 +84,7 @@ export default class DemoScrapbook extends Component {
                     <div>
                       <article>hello4</article>
                     </div>
+
                   </FlipPage>
                 </div>
               ) : (
