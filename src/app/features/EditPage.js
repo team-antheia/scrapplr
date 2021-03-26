@@ -58,19 +58,4 @@ class EditPage extends React.Component {
   }
 }
 
-// <div>
-//   {isUpload && <PhotoUpload />}
-//   {is360 && <LocationSearchInput />}
-//   {isDescription && <di>
-//     <label for="description">Description</label>
-
-//  <textarea id="description" name="description" rows="4" cols="50">
-//   </textarea>
-//   </di>
-
-//   }
-// </div>
-//   );
-// };
-
 export default EditPage;
