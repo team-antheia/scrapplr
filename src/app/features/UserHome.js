@@ -1,4 +1,8 @@
-import firebase, { auth, firestore } from '../../index';
+
+import { auth, firestore } from '../../index';
+import firebase from 'firebase/app';
+//import 'firebase/auth'; // 👈 this could also be in your `firebase.js` file
+
 import {
   Heading,
   Button,
@@ -34,13 +38,26 @@ export default class UserHome extends Component {
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.getScrapbooks = this.getScrapbooks.bind(this);
     this.addNewScrapbook = this.addNewScrapbook.bind(this);
   }
 
   async componentDidMount() {
-    const user = firebase.auth().currentUser;
-    const userId = user.uid;
-    const scrapbooks = await this.getScrapbooks(userId);
+    //CURRENT USER IS NULL
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log('in the new function');
+      if (user) {
+        console.log('user in userhome', user);
+        // User is signed in.
+        this.setState({ user: user });
+        const userId = user.uid;
+
+        const scrapbooks = this.getScrapbooks(userId);
+      } else {
+        // No user is signed in.
+        console.log('Not logged in');
+      }
+    });
   }
 
   async getScrapbooks(userId) {
@@ -99,7 +116,8 @@ export default class UserHome extends Component {
 
   render() {
     // console.log('userHome props', this.props);
-    const { user } = this.props;
+    // const { history, user } = this.props;
+
 
     // map over scrapbooks and grab the following information:
 
@@ -120,9 +138,9 @@ export default class UserHome extends Component {
               direction="column"
             >
               <Button label="add a new book" onClick={this.toggleModal} />
-              <Heading level={3}>welcome {user.email}</Heading>
+              <Heading level={3}>welcome {this.state.user.email}</Heading>
               {this.state.scrapbooks.map((book) => {
-                return <BookCard {...book} email={user.email} />;
+                return <BookCard {...book} email={this.state.user.email} />;
               })}
               <Button label="logout" onClick={this.handleLogout} />
             </Box>
