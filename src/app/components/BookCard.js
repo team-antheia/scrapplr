@@ -6,7 +6,7 @@ import { cover } from "polished";
 export default function BookCard({ coverImageUrl, title, email, type }) {
   console.log("bookcard props", email);
   return (
-    <Link to="/demo">
+    <Link to="/scrapbook">
       <Card elevation="medium" height="small" width="medium" background="glass">
         <CardHeader style={{ color: "black" }} pad="small">
           {title}

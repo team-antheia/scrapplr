@@ -1,23 +1,40 @@
 import React, { Component } from "react";
 import FlipPage from "react-flip-page";
-import Page1 from "./demo/DemoPage1";
 import Page2 from "./demo/DemoPage2";
-import { Modal } from "rsuite";
 import { Box, Button, ResponsiveContext } from "grommet";
-import PhotoUpload from "./PhotoUpload";
 import "rsuite/dist/styles/rsuite-default.css";
-import { Map } from "../components";
-import { linearGradient } from "polished";
+import { firestore } from "../../index";
+import { SinglePage } from "../components";
 
-export default class DemoScrapbook extends Component {
+export default class ScrapbookView extends Component {
   constructor() {
     super();
 
     this.state = {
       edit: false,
+      pages: [],
     };
     this.toggleEdit = this.toggleEdit.bind(this);
   }
+
+  async componentDidMount() {
+    if (this.props.user.uid) {
+      return;
+    }
+
+    const pagesRef = firestore.collection("Pages");
+    const pagesQuery = pagesRef.where("scrapbookId", "==", "demo");
+    const pages = await pagesQuery.get();
+
+    pages.forEach((page) => {
+      this.setState((prevState) => {
+        return {
+          pages: [...prevState.pages, page],
+        };
+      });
+    });
+  }
+
   toggleEdit() {
     this.setState((prevState) => {
       return {
@@ -27,6 +44,8 @@ export default class DemoScrapbook extends Component {
   }
 
   render() {
+    console.log("scrapbook view state", this.state);
+    const { pages } = this.state;
     return (
       <Box
         width={{ min: "85vw" }}
@@ -70,6 +89,11 @@ export default class DemoScrapbook extends Component {
                   height={700}
                   orientation="horizontal"
                 >
+                  {pages
+                    ? pages.map((page, idx) => (
+                        <SinglePage key={idx} {...page.data()} />
+                      ))
+                    : ""}
                   <div style={styles.twoPage}>
                     <div style={styles.singlePage}>
                       <article>
