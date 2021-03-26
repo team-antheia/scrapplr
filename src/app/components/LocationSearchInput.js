@@ -4,11 +4,12 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import StreetView from "./StreetView";
 
 class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: "", lat: "", long: "" };
+    this.state = { address: "", lat: "", long: "", searchBar:true };
   }
 
   handleChange = (address) => {
@@ -24,6 +25,7 @@ class LocationSearchInput extends React.Component {
           address: results[0].formatted_address,
           lat: coords.lat,
           long: coords.lng,
+          searchBar:false
         });
         // adds location and name to mapLocations
         let scrapbookRef = firestore
@@ -44,8 +46,13 @@ class LocationSearchInput extends React.Component {
     }
   };
 
+  addCard = () =>{
+
+  }
+
   render() {
     return (
+      // <div>
       <PlacesAutocomplete
         value={this.state.address}
         onChange={this.handleChange}
@@ -81,9 +88,19 @@ class LocationSearchInput extends React.Component {
                 );
               })}
             </div>
+            <StreetView
+            lat={this.state.lat}
+            long={this.state.long}
+             />
+             {/* <button
+             onClick=()
+             >Add a Card</button> */}
+
           </div>
         )}
       </PlacesAutocomplete>
+
+      // </div>
     );
   }
 }

@@ -7,7 +7,7 @@ import { Box, Button, ResponsiveContext } from "grommet";
 import PhotoUpload from "./PhotoUpload";
 import "rsuite/dist/styles/rsuite-default.css";
 import { Map } from "../components";
-import { linearGradient } from "polished";
+import EditPage from "./EditPage";
 
 export default class DemoScrapbook extends Component {
   constructor() {
@@ -15,8 +15,13 @@ export default class DemoScrapbook extends Component {
 
     this.state = {
       edit: false,
+      buttons:true,
+      type: "",
     };
+    this.selectType = this.selectType.bind(this)
+    this.goBack = this.goBack.bind(this)
     this.toggleEdit = this.toggleEdit.bind(this);
+
   }
   toggleEdit() {
     this.setState((prevState) => {
@@ -26,54 +31,41 @@ export default class DemoScrapbook extends Component {
     });
   }
 
+  selectType(event) {
+    if (event.target.value === "Upload Photo") {
+      this.setState({
+        type: "Upload Photo",
+      });
+    } else if (event.target.value === "360") {
+      this.setState({
+        type: "360",
+      });
+    } else {
+      this.setState({
+        type: "Description",
+      });
+    }
+  }
+
+  goBack(){
+    this.setState({
+      type:""
+    })
+  }
+
   render() {
     return (
-      <Box
-        width={{ min: "85vw" }}
-        height={{ min: "75vh" }}
-        justify="center"
-        align="center"
-      >
-        <ResponsiveContext.Consumer>
-          {(size) =>
-            size === "small" ? (
-              <div>
-                <FlipPage width={400} height={525}>
-                  <div>
-                    <article style={{ padding: 8 }}>
-                      <Page2 isStatic={true} />
-                      <Button
-                        size="small"
-                        onClick={this.toggleModal}
-                        label="edit page"
-                      />
-                    </article>
-                  </div>
-                  <div>
-                    <article>hello2</article>
-                  </div>
-                  <div>
-                    <article>hello3</article>
-                  </div>
-                  <div>
-                    <article>hello4</article>
-                  </div>
-                </FlipPage>
-              </div>
-            ) : (
-              <div style={styles.container}>
-                <FlipPage
-                  width={900}
-                  disableSwipe={this.state.edit}
-                  flipOnTouch={this.state.edit}
-                  flipOnTouchZone={0}
-                  height={700}
-                  orientation="horizontal"
-                >
-                  <div style={styles.twoPage}>
-                    <div style={styles.singlePage}>
-                      <article>
-                        <Page2 editMode={this.state.edit} isStatic={true} />
+
+      <div>
+        <Box justify="center" align="center">
+          <ResponsiveContext.Consumer>
+            {(size) =>
+              size === "small" ? (
+                <div>
+                  <FlipPage width={400} height={525}>
+                    <div>
+                      <article style={{ padding: 8 }}>
+                        <Page1 isStatic={true} />
                         <Button
                           primary
                           size="small"
@@ -83,57 +75,118 @@ export default class DemoScrapbook extends Component {
                         />
                       </article>
                     </div>
-                    <div style={styles.singlePage}>
-                      <article>
-                        <h1>My wonderful second article</h1>
-                        <p>My wonderful second content</p>
-                      </article>
+                    <div>
+                      <article>hello2</article>
                     </div>
-                  </div>
+                    <div>
+                      <article>hello3</article>
+                    </div>
+                    <div>
+                      <article>hello4</article>
+                    </div>
 
-                  <div style={styles.twoPage}>
-                    <div style={styles.singlePage}>
-                      <article>
-                        <h1>My awesome third article</h1>
-                        <p>My awesome third content</p>
-                      </article>
+                  </FlipPage>
+                </div>
+              ) : (
+                <div style={styles.container}>
+                  {/* <FlipPage width={800} height={525} */}
+                  <FlipPage width={1500} height={900} orientation="horizontal">
+                    <div style={styles.twoPage}>
+                      <div style={styles.singlePage}>
+                        <article>
+                          <Page1 isStatic={true} />
+                          <Button
+                            size="small"
+                            onClick={this.toggleModal}
+                            label="edit page"
+                          />
+                        </article>
+                      </div>
+                      <div style={styles.singlePage}>
+                        <article>
+                          <h1>My wonderful second article</h1>
+                          <p>My wonderful second content</p>
+                        </article>
+                      </div>
                     </div>
-                    <div style={styles.singlePage}>
-                      <article>
-                        <h1>My wonderful fourth article</h1>
-                        <p>My wonderful fourth content</p>
-                      </article>
+
+                    <div style={styles.twoPage}>
+                      <div style={styles.singlePage}>
+                        <article>
+                          <h1>My awesome third article</h1>
+                          <p>My awesome third content</p>
+                        </article>
+                      </div>
+                      <div style={styles.singlePage}>
+                        <article>
+                          <h1>My wonderful fourth article</h1>
+                          <p>My wonderful fourth content</p>
+                        </article>
+                      </div>
                     </div>
-                  </div>
-                </FlipPage>
+                  </FlipPage>
+                </div>
+              )
+            }
+          </ResponsiveContext.Consumer>
+          <Box
+            // width={{ min: null, max: "100vw" }}
+            justify="center"
+            align="center"
+          >
+            <Modal
+              style={{ maxWidth: "100vw" }}
+              // full
+              // show={this.state.show}
+              // size={"medium"}
+              overflow={true}
+              backdrop={true}
+              show={this.state.show}
+            >
+              <Page1/>
+              <EditPage type={this.state.type}/>
+              {/* <PhotoUpload /> */}
+              <div>
+                {!this.state.type
+                ? <div> <Button
+                onClick={this.selectType}
+                label="Upload Photo"
+                value="Upload Photo"
+              />
+              <Button onClick={this.selectType} label="360" value="360" />
+              <Button
+                onClick={this.selectType}
+                label="Description"
+                value="Description"
+              />
               </div>
-            )
-          }
-        </ResponsiveContext.Consumer>
-      </Box>
+              : <div>
+                <Button
+                onClick={this.goBack}
+                label="Go Back"
+                value="Go Back"
+                />
+                </div>}
+              </div>
+              <br />
+              <Button onClick={this.toggleModal} label="close" />
+            </Modal>
+          </Box>
+        </Box>
+      </div>
     );
   }
 }
 
 const styles = {
-  twoPage: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "space-around",
-    padding: "auto",
-    background: "rgba(255,255,255, 0.1)",
-  },
+  twoPage: { display: "flex", justifyContent: "space-around", padding: "auto" },
   container: {
     padding: 8,
-    background:
-      "linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))",
+    backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "75vh",
-    minWidth: "95vw",
-    borderRadius: "11px",
   },
-  singlePage: { width: 390, height: "100%", minHeight: 500 },
+  singlePage: { width: 700, backgroundColor: "#FFF5EB", minHeight: 900 },
 };
+//singlePage: { width: 390, backgroundColor: '#FFF5EB', minHeight: 500 }

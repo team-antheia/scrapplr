@@ -7,16 +7,18 @@ import { SignUp } from "./components/Signup";
 import { ScrapbookView, BookShelfView, UserHome } from "./features";
 import { Box } from "grommet";
 import { auth } from "../index";
-import LocationSearchInput from "./components/GoogleSuggest";
-import { StreetView } from "./components/StreetView";
-import MapContainer from "./components/MapContainer";
+
+import LocationSearchInput from './components/LocationSearchInput'
+import StreetView from './components/StreetView';
+import MapContainer from './components/MapContainer';
 
 export default class routes extends Component {
   render() {
-    const isLoggedIn = !!auth.currentUser;
-    console.log("user in routes", auth.currentUser);
+    // const isLoggedIn = !!auth.currentUser;
+    // console.log('user in routes', auth.currentUser);
 
     return (
+
       <Box justify="center" align="center" height="100vh">
         <Route
           exact
@@ -26,23 +28,28 @@ export default class routes extends Component {
           )}
         />
 
+
         <Switch>
-          <Route exact path="/">
+          <Route exact path='/'>
             <LandingPage />
           </Route>
+
           <Route path="/scrapbook">
             <ScrapbookView user={auth.currentUser} />
           </Route>
           <Route path="/demo">
             <ScrapbookView user={"demo"} />
+
           </Route>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/bookshelf">
+          <Route path='/signup' component={SignUp} />
+          <Route path='/login' component={Login} />
+          <Route path='/bookshelf'>
             <BookShelfView />
           </Route>
+
           <Route path="/test" component={LocationSearchInput} />
           <Route path="/streetview" component={StreetView} />
+
         </Switch>
       </Box>
     );
