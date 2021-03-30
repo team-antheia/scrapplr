@@ -7,12 +7,6 @@ import {
   Button,
   Box,
   ResponsiveContext,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Text,
   Form,
   FormField,
   TextInput,
@@ -31,39 +25,34 @@ export default class UserHome extends Component {
     super();
 
     this.state = {
-      user: {},
+      // user: {},
       scrapbooks: [],
       show: false,
       title: "My Scrapbook",
+      selectedScrapbook: "",
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.getScrapbooks = this.getScrapbooks.bind(this);
     this.addNewScrapbook = this.addNewScrapbook.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
   async componentDidMount() {
-    //CURRENT USER IS NULL
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log("in the new function");
-      if (user) {
-        console.log("user in userhome", user);
-        // User is signed in.
-        this.setState({ user: user });
-        const userId = user.uid;
-
-        const scrapbooks = this.getScrapbooks(userId);
-      } else {
-        // No user is signed in.
-        console.log("Not logged in");
-      }
-    });
+    //User is logged in
+    if (this.props.userId) {
+      // User is signed in.
+      const userId = this.props.userId;
+      this.getScrapbooks(userId);
+    } else {
+      // No user is signed in.
+      console.log("Not logged in");
+    }
   }
 
   async getScrapbooks(userId) {
     const scrapbooksRef = firestore.collection("Scrapbooks");
     const queryRef = await scrapbooksRef.where("owner", "==", userId).get();
-    console.log("userHome userId", userId);
     if (queryRef.empty) {
       console.log("no matching documents");
       return;
@@ -86,8 +75,9 @@ export default class UserHome extends Component {
   }
 
   async addNewScrapbook() {
-    const user = firebase.auth().currentUser.uid;
-    const collectionRef = await firestore.collection("Scrapbooks").add({
+    const user = this.props.userId;
+    const scrapbookRef = firestore.collection("Scrapbooks").doc();
+    scrapbookRef.set({
       title: this.state.title,
       collaborators: [],
       coverImageUrl:
@@ -100,6 +90,7 @@ export default class UserHome extends Component {
       ],
       owner: user,
       pages: [],
+      scrapbookId: scrapbookRef.id,
     });
     this.toggleModal();
   }
@@ -115,69 +106,72 @@ export default class UserHome extends Component {
     history.push("/login");
   }
 
+  async onSelect(event, scrapbookId) {
+    console.log("the event", scrapbookId);
+    this.setState({
+      selectedScrapbook: scrapbookId,
+    });
+  }
+
   render() {
-    // console.log('userHome props', this.props);
-    // const { history, user } = this.props;
-
-    // map over scrapbooks and grab the following information:
-
-    // console.log("userhome user", user);
-    // scrapbook title
-    // scapnook owner
-    // scrapbook coverphoto
-    // console.log('userhome state', this.state.scrapbooks);
-
     return (
       <Box>
-        {this.state.scrapbooks.length ? (
-          <Box>
-            <ResponsiveContext.Consumer>
-              {(size) => (
-                <Box
-                  align="center"
-                  height="85vh"
-                  width={size === "small" ? "80vw" : "75vw"}
-                  direction="column"
-                >
-                  <Button label="add a new book" onClick={this.toggleModal} />
-                  <Heading level={3}>welcome {this.state.user.email}</Heading>
-                  {this.state.scrapbooks.map((book) => {
-                    console.log("userhome scrapbook instance", book);
-                    return <BookCard {...book} email={this.state.user.email} />;
-                  })}
-                  <Button label="logout" onClick={this.handleLogout} />
-                </Box>
-              )}
-            </ResponsiveContext.Consumer>
-            <Box>
-              <Modal
-                style={{ maxWidth: "100vw" }}
-                overflow={true}
-                backdrop={true}
-                show={this.state.show}
-              >
-                <Form>
-                  <FormField>
-                    <TextInput
-                      placeholder="scrapbook title"
-                      name="title"
-                      onChange={(evt) => this.handleChange(evt)}
-                      value={this.state.title}
-                      type="text"
-                    ></TextInput>
-                  </FormField>
-                  <Button
-                    onClick={this.addNewScrapbook}
-                    label="add scrapbook"
-                  />
-                </Form>
-                <Button onClick={this.toggleModal} label="close" />
-              </Modal>
+        <ResponsiveContext.Consumer>
+          {(size) => (
+            <Box
+              align="center"
+              height="85vh"
+              width={size === "small" ? "80vw" : "75vw"}
+              direction="column"
+            >
+              <Button label="add a new book" onClick={this.toggleModal} />
+
+              <Heading level={3}>welcome {this.props.email}</Heading>
+              {this.state.scrapbooks.map((book) => {
+                return (
+                  <div>
+                    <Link
+                      to={`/scrapbooks/${book.scrapbookId}`}
+                      key={book.scrapbookId}
+                    >
+                      <BookCard
+                        {...book}
+                        scrapbookId={book.scrapbookId}
+                        email={this.props.email}
+                        selectedScrapbook={this.state.selectedScrapbook}
+                        onSelect={this.onSelect}
+                      />
+                    </Link>
+                  </div>
+                );
+              })}
+
+              <Button label="logout" onClick={this.handleLogout} />
             </Box>
-          </Box>
-        ) : (
-          <Spinner />
-        )}
+          )}
+        </ResponsiveContext.Consumer>
+        <Box>
+          <Modal
+            style={{ maxWidth: "100vw" }}
+            overflow={true}
+            backdrop={true}
+            show={this.state.show}
+          >
+            <Form>
+              <FormField>
+                <TextInput
+                  placeholder="scrapbook title"
+                  name="title"
+                  onChange={(evt) => this.handleChange(evt)}
+                  value={this.state.title}
+                  type="text"
+                ></TextInput>
+              </FormField>
+              <Button onClick={this.addNewScrapbook} label="add scrapbook" />
+            </Form>
+            <Button onClick={this.toggleModal} label="close" />
+          </Modal>
+        </Box>
       </Box>
     );
   }

@@ -11,7 +11,6 @@ import { Modal } from "rsuite";
 export default class ScrapbookView extends Component {
   constructor() {
     super();
-
     this.state = {
       edit: false,
       pages: [],
@@ -20,17 +19,30 @@ export default class ScrapbookView extends Component {
   }
 
   async componentDidMount() {
-    const pagesRef = firestore.collection("Pages");
-    const pagesQuery = pagesRef.where("scrapbookId", "==", "demo");
-    const pages = await pagesQuery.get();
+    if (this.props.params.scrapbookId) {
+      const pagesRef = firestore.collection("Pages");
+      const queryRef = await pagesRef.where(
+        "scrapbookId",
+        "==",
+        this.props.params.scrapbookId
+      ).get()
 
-    pages.forEach((page) => {
-      this.setState((prevState) => {
-        return {
-          pages: [...prevState.pages, page],
-        };
+      if (queryRef.empty) {
+        console.log("No matching docs");
+        return;
+      }
+      // else{
+        queryRef.forEach((doc) => {
+        this.setState((prevState) =>{
+          return {
+            pages:[...prevState.pages,doc.data()]
+          }
+        })
       });
-    });
+      return;
+    }
+
+    //  }
   }
 
   toggleEdit() {
@@ -42,20 +54,46 @@ export default class ScrapbookView extends Component {
   }
 
   render() {
-    console.log("scrapbook view state", this.state);
+    console.log("pages view state", this.state.pages);
+
     const { pages } = this.state;
+    const bookStyle = {
+      position: "relative",
+      alignItems: "flex-end",
+      display: "flex",
+      height: "100%",
+      width: "100%",
+    };
+
     return (
       <Box
-        width={{ min: "85vw" }}
-        height={{ min: "75vh" }}
+        // width={{ min: "85vw" }}
+        // height={{ min: "75vh" }}
+        width="xlarge"
+        height="xlarge"
         justify="center"
         align="center"
+        background={{
+          color: "neutral-1",
+          opacity: true,
+          position: "bottom",
+          repeat: "no-repeat",
+          size: "cover",
+        }}
+        border={{
+          color: "border",
+          size: "large",
+          style: "groove",
+          side: "all",
+        }}
       >
         <ResponsiveContext.Consumer>
+          {/* mobile view */}
           {(size) =>
             size === "small" ? (
               <div>
-                <FlipPage width={400} height={525}>
+                <FlipPage style={bookStyle} flipOnTouch={true}>
+                  {/* <FlipPage width={400} height={525}> */}
                   <div>
                     <article style={{ padding: 8 }}>
                       <Page2 isStatic={true} />
@@ -78,23 +116,28 @@ export default class ScrapbookView extends Component {
                 </FlipPage>
               </div>
             ) : (
-              <div style={styles.container}>
+              // Webpage
+              <div>
                 <FlipPage
-                  width={900}
                   disableSwipe={this.state.edit}
                   flipOnTouch={this.state.edit}
                   flipOnTouchZone={0}
+                  style={bookStyle}
+                  width={900}
                   height={700}
                   orientation="horizontal"
                   showSwipeHint={true}
                 >
-                  {pages
-                    ? pages.map((page, idx) => (
-                        <SinglePage key={idx} {...page.data()} />
-                      ))
+                  {pages.length
+                    ?
+                         <SinglePage {...this.state.pages} key={pages} />
                     : ""}
-                  <div style={styles.twoPage}>
-                    <div style={styles.singlePage}>
+                  <div
+                  // style={styles.twoPage}
+                  >
+                    <div
+                    // style={styles.singlePage}
+                    >
                       <article>
                         <Page2 editMode={this.state.edit} isStatic={true} />
                         <Button
@@ -106,7 +149,9 @@ export default class ScrapbookView extends Component {
                         />
                       </article>
                     </div>
-                    <div style={styles.singlePage}>
+                    <div
+                    // style={styles.singlePage}
+                    >
                       <article>
                         <h1>My wonderful second article</h1>
                         <p>My wonderful second content</p>
@@ -114,7 +159,7 @@ export default class ScrapbookView extends Component {
                     </div>
                   </div>
 
-                  <div style={styles.twoPage}>
+                  {/* <div style={styles.twoPage}>
                     <div style={styles.singlePage}>
                       <article>
                         <h1>My awesome third article</h1>
@@ -127,7 +172,7 @@ export default class ScrapbookView extends Component {
                         <p>My wonderful fourth content</p>
                       </article>
                     </div>
-                  </div>
+                  </div> */}
                 </FlipPage>
               </div>
             )

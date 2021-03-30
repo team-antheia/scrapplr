@@ -7,7 +7,7 @@ import { SignUp } from "./components/Signup";
 import { ScrapbookView, BookShelfView, UserHome } from "./features";
 import { Box } from "grommet";
 import firebase, { auth, firestore } from "../index";
-
+import SinglePage from "./features/SinglePage";
 import LocationSearchInput from "./components/LocationSearchInput";
 import StreetView from "./components/StreetView";
 import MapContainer from "./components/MapContainer";
@@ -21,7 +21,6 @@ export default class routes extends Component {
     };
   }
   async componentDidMount() {
-    //CURRENT USER IS NULL
     firebase.auth().onAuthStateChanged(async (auth) => {
       if (auth) {
         const email = auth.email;
@@ -43,16 +42,39 @@ export default class routes extends Component {
       }
     });
   }
+
   render() {
+    // const isLoggedIn = !!auth.currentUser;
+    console.log('state in route', this.state)
     return (
       <Box justify="center" align="center" height="100vh">
+        {/* {auth.currentUser !== null && auth.currentUser.email && (
+          <Route
+            exact
+            path="/home"
+            component={() => (
+              <UserHome
+                userId={auth.currentUser ? this.state.userId : false}
+                email={this.state.email}
+              />
+            )}
+          />
+        )} */}
+
         <Switch>
           <Route exact path="/">
             <LandingPage />
           </Route>
-          <Route path="/scrapbooks/:scrapbookId">
-            <ScrapbookView userId={this.state.userId} />
-          </Route>
+
+          <Route
+            path="/scrapbooks/:scrapbookId"
+            render={(props) => (
+              <ScrapbookView
+                userId={this.state.userId}
+                params={props.match.params}
+              />
+            )}
+          ></Route>
           <Route path="/demo">
             <ScrapbookView user={"demo"} />
           </Route>
