@@ -21,23 +21,21 @@ export default class ScrapbookView extends Component {
   async componentDidMount() {
     if (this.props.params.scrapbookId) {
       const pagesRef = firestore.collection("Pages");
-      const queryRef = await pagesRef.where(
-        "scrapbookId",
-        "==",
-        this.props.params.scrapbookId
-      ).get()
+      const queryRef = await pagesRef
+        .where("scrapbookId", "==", this.props.params.scrapbookId)
+        .get();
 
       if (queryRef.empty) {
         console.log("No matching docs");
         return;
       }
       // else{
-        queryRef.forEach((doc) => {
-        this.setState((prevState) =>{
+      queryRef.forEach((doc) => {
+        this.setState((prevState) => {
           return {
-            pages:[...prevState.pages,doc.data()]
-          }
-        })
+            pages: [...prevState.pages, doc.data()],
+          };
+        });
       });
       return;
     }
@@ -122,16 +120,20 @@ export default class ScrapbookView extends Component {
                   disableSwipe={this.state.edit}
                   flipOnTouch={this.state.edit}
                   flipOnTouchZone={0}
-                  style={bookStyle}
-                  width={900}
-                  height={700}
+                  width={400}
+                  height={525}
+                  style={{
+                    minWidth: "75vw",
+                    minHeight: "100%",
+                  }}
                   orientation="horizontal"
                   showSwipeHint={true}
                 >
-                  {pages.length
-                    ?
-                         <SinglePage {...this.state.pages} key={pages} />
-                    : ""}
+                  {pages.length ? (
+                    <SinglePage {...this.state.pages} key={pages} />
+                  ) : (
+                    ""
+                  )}
                   <div
                   // style={styles.twoPage}
                   >
