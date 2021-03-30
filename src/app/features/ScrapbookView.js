@@ -124,6 +124,7 @@ export default class ScrapbookView extends Component {
                   width={900}
                   height={700}
                   orientation="horizontal"
+                  showSwipeHint={true}
                 >
                   {pages.length
                     ?

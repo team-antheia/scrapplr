@@ -8,7 +8,6 @@ import { ScrapbookView, BookShelfView, UserHome } from "./features";
 import { Box } from "grommet";
 import firebase, { auth, firestore } from "../index";
 import SinglePage from "./features/SinglePage";
-
 import LocationSearchInput from "./components/LocationSearchInput";
 import StreetView from "./components/StreetView";
 import MapContainer from "./components/MapContainer";
@@ -49,7 +48,7 @@ export default class routes extends Component {
     console.log('state in route', this.state)
     return (
       <Box justify="center" align="center" height="100vh">
-        {auth.currentUser !== null && auth.currentUser.email && (
+        {/* {auth.currentUser !== null && auth.currentUser.email && (
           <Route
             exact
             path="/home"
@@ -60,7 +59,7 @@ export default class routes extends Component {
               />
             )}
           />
-        )}
+        )} */}
 
         <Switch>
           <Route exact path="/">
@@ -84,11 +83,22 @@ export default class routes extends Component {
           <Route path="/bookshelf">
             <BookShelfView />
           </Route>
-
           <Route path="/test" component={LocationSearchInput} />
           <Route path="/streetview" component={StreetView} />
-          <Route path="/page" component={SinglePage} />
           {/* <Route path="/map" component={MapContainer} /> */}
+          {auth.currentUser !== null && auth.currentUser.email && (
+            <Route
+              exact
+              path="/home"
+              component={() => (
+                <UserHome
+                  userId={auth.currentUser ? this.state.userId : false}
+                  email={this.state.email}
+                />
+              )}
+            />
+          )}
+          <Route path="/" component={LandingPage} />
         </Switch>
       </Box>
     );
