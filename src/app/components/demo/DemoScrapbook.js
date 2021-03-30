@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import FlipPage from "react-flip-page";
-import Page1 from "./demo/DemoPage1";
-import Page2 from "./demo/DemoPage2";
-import { Modal } from "rsuite";
-import { Box, Button, ResponsiveContext } from "grommet";
-import PhotoUpload from "./PhotoUpload";
-import "rsuite/dist/styles/rsuite-default.css";
-import { Map } from "../components";
-import EditPage from "./EditPage";
+import React, { Component } from 'react';
+import FlipPage from 'react-flip-page';
+import Page1 from './DemoPage1';
+import Page2 from './DemoPage2';
+import { Modal } from 'rsuite';
+import { Box, Button, ResponsiveContext } from 'grommet';
+import PhotoUpload from '../scrapbook/PhotoUpload';
+import 'rsuite/dist/styles/rsuite-default.css';
+import { Map } from '..';
+import EditPage from '../scrapbook/EditPage';
 
 export default class DemoScrapbook extends Component {
   constructor() {
@@ -15,13 +15,12 @@ export default class DemoScrapbook extends Component {
 
     this.state = {
       edit: false,
-      buttons:true,
-      type: "",
+      buttons: true,
+      type: '',
     };
-    this.selectType = this.selectType.bind(this)
-    this.goBack = this.goBack.bind(this)
+    this.selectType = this.selectType.bind(this);
+    this.goBack = this.goBack.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
-
   }
   toggleEdit() {
     this.setState((prevState) => {
@@ -32,35 +31,34 @@ export default class DemoScrapbook extends Component {
   }
 
   selectType(event) {
-    if (event.target.value === "Upload Photo") {
+    if (event.target.value === 'Upload Photo') {
       this.setState({
-        type: "Upload Photo",
+        type: 'Upload Photo',
       });
-    } else if (event.target.value === "360") {
+    } else if (event.target.value === '360') {
       this.setState({
-        type: "360",
+        type: '360',
       });
     } else {
       this.setState({
-        type: "Description",
+        type: 'Description',
       });
     }
   }
 
-  goBack(){
+  goBack() {
     this.setState({
-      type:""
-    })
+      type: '',
+    });
   }
 
   render() {
     return (
-
       <div>
-        <Box justify="center" align="center">
+        <Box justify='center' align='center'>
           <ResponsiveContext.Consumer>
             {(size) =>
-              size === "small" ? (
+              size === 'small' ? (
                 <div>
                   <FlipPage width={400} height={525}>
                     <div>
@@ -68,10 +66,10 @@ export default class DemoScrapbook extends Component {
                         <Page1 isStatic={true} />
                         <Button
                           primary
-                          size="small"
+                          size='small'
                           onClick={this.toggleEdit}
-                          label={this.state.edit ? "done" : "edit page"}
-                          style={{ position: "absolute", bottom: 3 }}
+                          label={this.state.edit ? 'done' : 'edit page'}
+                          style={{ position: 'absolute', bottom: 3 }}
                         />
                       </article>
                     </div>
@@ -84,21 +82,20 @@ export default class DemoScrapbook extends Component {
                     <div>
                       <article>hello4</article>
                     </div>
-
                   </FlipPage>
                 </div>
               ) : (
                 <div style={styles.container}>
                   {/* <FlipPage width={800} height={525} */}
-                  <FlipPage width={1500} height={900} orientation="horizontal">
+                  <FlipPage width={1500} height={900} orientation='horizontal'>
                     <div style={styles.twoPage}>
                       <div style={styles.singlePage}>
                         <article>
                           <Page1 isStatic={true} />
                           <Button
-                            size="small"
+                            size='small'
                             onClick={this.toggleModal}
-                            label="edit page"
+                            label='edit page'
                           />
                         </article>
                       </div>
@@ -129,47 +126,44 @@ export default class DemoScrapbook extends Component {
               )
             }
           </ResponsiveContext.Consumer>
-          <Box
-            // width={{ min: null, max: "100vw" }}
-            justify="center"
-            align="center"
-          >
+          <Box justify='center' align='center'>
             <Modal
-              style={{ maxWidth: "100vw" }}
-              // full
-              // show={this.state.show}
-              // size={"medium"}
+              style={{ maxWidth: '100vw' }}
               overflow={true}
               backdrop={true}
               show={this.state.show}
             >
-              <Page1/>
-              <EditPage type={this.state.type}/>
+              <Page1 />
+              <EditPage type={this.state.type} />
               {/* <PhotoUpload /> */}
               <div>
-                {!this.state.type
-                ? <div> <Button
-                onClick={this.selectType}
-                label="Upload Photo"
-                value="Upload Photo"
-              />
-              <Button onClick={this.selectType} label="360" value="360" />
-              <Button
-                onClick={this.selectType}
-                label="Description"
-                value="Description"
-              />
-              </div>
-              : <div>
-                <Button
-                onClick={this.goBack}
-                label="Go Back"
-                value="Go Back"
-                />
-                </div>}
+                {!this.state.type ? (
+                  <div>
+                    {' '}
+                    <Button
+                      onClick={this.selectType}
+                      label='Upload Photo'
+                      value='Upload Photo'
+                    />
+                    <Button onClick={this.selectType} label='360' value='360' />
+                    <Button
+                      onClick={this.selectType}
+                      label='Description'
+                      value='Description'
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <Button
+                      onClick={this.goBack}
+                      label='Go Back'
+                      value='Go Back'
+                    />
+                  </div>
+                )}
               </div>
               <br />
-              <Button onClick={this.toggleModal} label="close" />
+              <Button onClick={this.toggleModal} label='close' />
             </Modal>
           </Box>
         </Box>
@@ -179,14 +173,13 @@ export default class DemoScrapbook extends Component {
 }
 
 const styles = {
-  twoPage: { display: "flex", justifyContent: "space-around", padding: "auto" },
+  twoPage: { display: 'flex', justifyContent: 'space-around', padding: 'auto' },
   container: {
     padding: 8,
-    backgroundColor: "white",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  singlePage: { width: 700, backgroundColor: "#FFF5EB", minHeight: 900 },
+  singlePage: { width: 700, backgroundColor: '#FFF5EB', minHeight: 900 },
 };
-//singlePage: { width: 390, backgroundColor: '#FFF5EB', minHeight: 500 }

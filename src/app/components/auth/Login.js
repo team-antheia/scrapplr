@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import firebase from 'firebase/app';
-import 'firebase/auth'; // 👈 this could also be in your `firebase.js` file
-import { auth } from '../../index';
+
+import { auth } from '../../../index';
 import {
   Box,
   Button,
@@ -12,14 +12,13 @@ import {
   TextInput,
 } from 'grommet';
 import { Link } from 'react-router-dom';
-//small change
 export function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState({});
+
   const provider = new firebase.auth.GoogleAuthProvider();
   const signInWithGoogle = () => {
-    console.log('made it into the google signin');
     auth.signInWithPopup(provider);
     props.history.push('/home');
   };
@@ -33,13 +32,12 @@ export function Login(props) {
         // Signed in user - can add functionality
         var user = userCredential.user;
         props.history.push('/home');
-        //console.log('props for home page', props.history);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  //what is happening with user here?
+
   auth.onAuthStateChanged((user) => {
     if (user) {
       setUser(user);

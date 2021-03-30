@@ -1,13 +1,13 @@
-import React from "react";
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import React from 'react';
+import { Map, GoogleApiWrapper } from 'google-maps-react';
 
-import LocationMarker from "./LocationMarker";
+import LocationMarker from './LocationMarker';
 
 const key = process.env.REACT_APP_GOOGLE_API_KEY;
 export const GoogleMap = (props) => {
   const mapStyles = {
-    width: "50%",
-    height: "50%",
+    width: '50%',
+    height: '50%',
   };
   return (
     <div>
@@ -24,9 +24,7 @@ export const GoogleMap = (props) => {
           {props.allLocations.length &&
             props.allLocations.map(
               (location) => {
-                return (
-                <LocationMarker
-                location={location} />)
+                return <LocationMarker location={location} />;
 
                 // <Marker
                 //   key={location.Name}
@@ -37,7 +35,7 @@ export const GoogleMap = (props) => {
                 //     lng: location.coordinates._long,
                 //   }}
                 // />
-                }
+              }
 
               //  <LocationMarker location={location} key={location.Name} />
             )}
