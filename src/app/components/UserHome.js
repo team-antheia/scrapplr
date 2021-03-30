@@ -56,9 +56,8 @@ export default class UserHome extends Component {
       return;
     }
     queryRef.forEach((doc) => {
-      const id = doc.id;
       this.setState({
-        scrapbooks: [...this.state.scrapbooks, { ...doc.data(), id }],
+        scrapbooks: [...this.state.scrapbooks, doc.data()],
       });
     });
     return;

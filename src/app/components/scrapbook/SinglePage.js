@@ -19,11 +19,8 @@ const SinglePage = (props) => {
     width: '100%',
   };
 
-  const pages = props;
   return (
     <div>
-      {pages.map((page) => {
-        return (
           <article style={bookStyle}>
             <Grommet theme={grommet}>
               <Card>
@@ -40,8 +37,6 @@ const SinglePage = (props) => {
               </Card>
             </Grommet>
           </article>
-        );
-      })}
     </div>
   );
 };

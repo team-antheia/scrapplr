@@ -9,6 +9,7 @@ export default function BookCard({
   scrapbookId,
   onSelect,
 }) {
+  console.log('props in card')
   return (
     <Card
       elevation='medium'
