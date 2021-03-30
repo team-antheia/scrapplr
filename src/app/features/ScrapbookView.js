@@ -88,6 +88,7 @@ export default class ScrapbookView extends Component {
                   flipOnTouchZone={0}
                   height={700}
                   orientation="horizontal"
+                  showSwipeHint={true}
                 >
                   {pages
                     ? pages.map((page, idx) => (
