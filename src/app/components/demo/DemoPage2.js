@@ -1,7 +1,7 @@
-import React from "react";
-import { WidthProvider, Responsive } from "react-grid-layout";
-import _ from "lodash";
-import { Box, Button } from "grommet";
+import React from 'react';
+import { WidthProvider, Responsive } from 'react-grid-layout';
+import _ from 'lodash';
+import { Box, Button } from 'grommet';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 /**
@@ -9,7 +9,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
  */
 export default class AddRemoveLayout extends React.PureComponent {
   static defaultProps = {
-    className: "layout",
+    className: 'layout',
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     rowHeight: 100,
   };
@@ -34,40 +34,39 @@ export default class AddRemoveLayout extends React.PureComponent {
 
     this.onAddItem = this.onAddItem.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
-    this.onLayoutChange = this.onLayoutChange.bind(this);
   }
 
   createElement(el) {
     const removeStyle = {
-      position: "absolute",
-      right: "2px",
+      position: 'absolute',
+      right: '2px',
       top: 0,
-      cursor: "pointer",
+      cursor: 'pointer',
     };
-    const i = el.add ? "+" : el.i;
+    const i = el.add ? '+' : el.i;
     return (
       <div key={i} data-grid={el}>
         {el.add ? (
           <span
-            className="add text"
+            className='add text'
             onClick={this.onAddItem}
-            title="You can add an item by clicking here, too."
+            title='You can add an item by clicking here, too.'
           >
             Add +
           </span>
         ) : (
-          <span className="text">{i}</span>
+          <span className='text'>{i}</span>
         )}
         {this.props.editMode ? (
           <span
-            className="remove"
+            className='remove'
             style={removeStyle}
             onClick={this.onRemoveItem.bind(this, i)}
           >
             x
           </span>
         ) : (
-          ""
+          ''
         )}
       </div>
     );
@@ -75,7 +74,6 @@ export default class AddRemoveLayout extends React.PureComponent {
 
   onAddItem() {
     /*eslint no-console: 0*/
-    console.log("adding", "n" + this.state.counter);
     this.setState({
       // Add a new item. It must have a unique key!
       items: this.state.items.concat({
@@ -98,23 +96,17 @@ export default class AddRemoveLayout extends React.PureComponent {
     });
   }
 
-  onLayoutChange(layout) {
-    // this.props.onLayoutChange(layout);
-    // this.setState({ layout: layout });
-  }
-
   onRemoveItem(i) {
-    console.log("removing", i);
+    console.log('removing', i);
     this.setState({ items: _.reject(this.state.items, { i: i }) });
   }
 
   render() {
     return (
-      <Box justify="end" width="100%" height="100%">
+      <Box justify='end' width='100%' height='100%'>
         <ResponsiveReactGridLayout
           isDraggable={!this.props.isStatic}
           isResizable={!this.props.isStatic}
-          onLayoutChange={this.onLayoutChange}
           onBreakpointChange={this.onBreakpointChange}
           autoSize={false}
           isBounded={true}
@@ -122,11 +114,11 @@ export default class AddRemoveLayout extends React.PureComponent {
         >
           {_.map(this.state.items, (el) => this.createElement(el))}
         </ResponsiveReactGridLayout>
-        <Box style={{ position: "absolute", bottom: 40 }}>
+        <Box style={{ position: 'absolute', bottom: 40 }}>
           {this.props.editMode ? (
-            <Button size="xsmall" label="add item" onClick={this.onAddItem} />
+            <Button size='xsmall' label='add item' onClick={this.onAddItem} />
           ) : (
-            ""
+            ''
           )}
         </Box>
       </Box>

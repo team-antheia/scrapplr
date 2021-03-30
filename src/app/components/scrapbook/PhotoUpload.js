@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import firebase, { storage, firestore, auth } from '../../index';
+import firebase, { storage, firestore, auth } from '../../../index';
 import { EXIF } from 'exif-js';
-//npm install exif-js --save for installing exif js
 
 function PhotoUpload() {
   //declares names in state, set to empty string
@@ -76,10 +75,7 @@ function PhotoUpload() {
     //initiates the firebase side uploading
     uploadTask.on(
       'state_changed',
-      (snapshot) => {
-        //takes a snap shot of the process as it is happening
-        console.log(snapshot);
-      },
+      null,
       (err) => {
         //catches the errors
         console.log(err);
@@ -102,9 +98,6 @@ function PhotoUpload() {
 
   async function updateDatabase(lat, lon) {
     // ------ Access signed in user -----
-    // let userId = auth.currentUser.uid;
-
-    console.log(lat, lon);
 
     //Reference to scrapbook -- will need to update with current scrapbook doc
     let scrapbookRef = await firestore

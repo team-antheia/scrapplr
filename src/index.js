@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app';
-import store from './app/store';
-import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import firebase from 'firebase/app';
 import 'firebase/storage';
@@ -35,9 +33,7 @@ const firestore = firebase.firestore();
 ReactDOM.render(
   <Grommet full theme={theme}>
     <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </React.StrictMode>
   </Grommet>,
   document.getElementById('root')

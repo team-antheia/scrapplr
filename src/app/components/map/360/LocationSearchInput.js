@@ -1,15 +1,15 @@
-import React from "react";
-import firebase, { firestore } from "../../index";
+import React from 'react';
+import firebase, { firestore } from '../../../../index';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
-} from "react-places-autocomplete";
-import StreetView from "./StreetView";
+} from 'react-places-autocomplete';
+import StreetView from './StreetView';
 
 class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: "", lat: "", long: "", searchBar:true };
+    this.state = { address: '', lat: '', long: '', searchBar: true };
   }
 
   handleChange = (address) => {
@@ -25,13 +25,13 @@ class LocationSearchInput extends React.Component {
           address: results[0].formatted_address,
           lat: coords.lat,
           long: coords.lng,
-          searchBar:false
+          searchBar: false,
         });
         // adds location and name to mapLocations
         let scrapbookRef = firestore
-          .collection("Scrapbooks")
-          .doc("XQkebrXC1teAOhImleg3");
-          await scrapbookRef.update({
+          .collection('Scrapbooks')
+          .doc('XQkebrXC1teAOhImleg3');
+        await scrapbookRef.update({
           mapLocations: firebase.firestore.FieldValue.arrayUnion({
             coordinates: new firebase.firestore.GeoPoint(
               this.state.lat,
@@ -42,17 +42,14 @@ class LocationSearchInput extends React.Component {
         });
       }
     } catch (error) {
-      console.log("Location not found", error);
+      console.log('Location not found', error);
     }
   };
 
-  addCard = () =>{
-
-  }
+  addCard = () => {};
 
   render() {
     return (
-      // <div>
       <PlacesAutocomplete
         value={this.state.address}
         onChange={this.handleChange}
@@ -62,20 +59,20 @@ class LocationSearchInput extends React.Component {
           <div>
             <input
               {...getInputProps({
-                placeholder: "Search Places ...",
-                className: "location-search-input",
+                placeholder: 'Search Places ...',
+                className: 'location-search-input',
               })}
             />
-            <div className="autocomplete-dropdown-container">
+            <div className='autocomplete-dropdown-container'>
               {loading && <div>Loading...</div>}
               {suggestions.map((suggestion) => {
                 const className = suggestion.active
-                  ? "suggestion-item--active"
-                  : "suggestion-item";
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
                 // inline style for demonstration purpose
                 const style = suggestion.active
-                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                  : { backgroundColor: "#ffffff", cursor: "pointer" };
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
                 return (
                   <div
                     {...getSuggestionItemProps(suggestion, {
@@ -88,19 +85,13 @@ class LocationSearchInput extends React.Component {
                 );
               })}
             </div>
-            <StreetView
-            lat={this.state.lat}
-            long={this.state.long}
-             />
-             {/* <button
+            <StreetView lat={this.state.lat} long={this.state.long} />
+            {/* <button
              onClick=()
              >Add a Card</button> */}
-
           </div>
         )}
       </PlacesAutocomplete>
-
-      // </div>
     );
   }
 }

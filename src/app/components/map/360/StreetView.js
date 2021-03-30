@@ -1,8 +1,7 @@
-import React from "react";
-import ReactStreetview from "react-google-streetview";
+import React from 'react';
+import ReactStreetview from 'react-google-streetview';
 
 const StreetView = (props) => {
-  // API key from env file
   const googleMapsApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
   const streetViewPanoramaOptions = {
@@ -11,16 +10,14 @@ const StreetView = (props) => {
     zoom: 1,
   };
   if (props.lat) {
-    console.log("in the if");
     streetViewPanoramaOptions.position = { lat: props.lat, lng: props.long };
   }
-  console.log("in streetview", streetViewPanoramaOptions);
   return (
     <div
       style={{
-        width: "400px",
-        height: "150px",
-        backgroundColor: "#eeeeee",
+        width: '400px',
+        height: '150px',
+        backgroundColor: '#eeeeee',
       }}
     >
       <ReactStreetview
