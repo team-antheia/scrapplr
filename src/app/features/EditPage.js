@@ -10,6 +10,7 @@ import {
   CardHeader,
   Grommet,
   Text,
+  FormField,
 } from "grommet";
 
 class EditPage extends React.Component {
@@ -40,7 +41,7 @@ class EditPage extends React.Component {
           {is360 && <LocationSearchInput />}
           {isDescription && (
             <di>
-              <label for="description">Description</label>
+              <FormField for="description">Description</FormField>
               <textarea
                 id="description"
                 name="description"

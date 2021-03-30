@@ -1,4 +1,4 @@
-import { firestore } from "../../index";
+import { auth, firestore } from "../../index";
 import firebase from "firebase/app";
 //import 'firebase/auth'; // 👈 this could also be in your `firebase.js` file
 
@@ -10,6 +10,7 @@ import {
   Form,
   FormField,
   TextInput,
+  Spinner,
 } from "grommet";
 import { Modal } from "rsuite";
 import { Link } from "react-router-dom";
@@ -57,8 +58,9 @@ export default class UserHome extends Component {
       return;
     }
     queryRef.forEach((doc) => {
+      const id = doc.id;
       this.setState({
-        scrapbooks: [...this.state.scrapbooks, doc.data()],
+        scrapbooks: [...this.state.scrapbooks, { ...doc.data(), id }],
       });
     });
     return;

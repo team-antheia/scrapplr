@@ -4,7 +4,9 @@ import Page2 from "./demo/DemoPage2";
 import { Box, Button, ResponsiveContext } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../index";
-import  SinglePage  from "./SinglePage";
+import { SinglePage, Map } from "../components";
+import MapContainer from "../components/MapContainer";
+import { Modal } from "rsuite";
 
 export default class ScrapbookView extends Component {
   constructor() {
