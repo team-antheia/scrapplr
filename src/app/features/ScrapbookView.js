@@ -4,7 +4,7 @@ import Page2 from "./demo/DemoPage2";
 import { Box, Button, ResponsiveContext } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../index";
-import { SinglePage } from "../components";
+import  SinglePage  from "./SinglePage";
 
 export default class ScrapbookView extends Component {
   constructor() {
@@ -17,21 +17,30 @@ export default class ScrapbookView extends Component {
   }
 
   async componentDidMount() {
-    console.log('cdm',this.props)
-    if (this.props.userId) {
+    if (this.props.params.scrapbookId) {
+      const pagesRef = firestore.collection("Pages");
+      const queryRef = await pagesRef.where(
+        "scrapbookId",
+        "==",
+        this.props.params.scrapbookId
+      ).get()
+
+      if (queryRef.empty) {
+        console.log("No matching docs");
+        return;
+      }
+      // else{
+        queryRef.forEach((doc) => {
+        this.setState((prevState) =>{
+          return {
+            pages:[...prevState.pages,doc.data()]
+          }
+        })
+      });
       return;
     }
-    const pagesRef = firestore.collection("Pages");
-    const pagesQuery = pagesRef.where("scrapbookId", "==", "demo");
-    const pages = await pagesQuery.get();
 
-    pages.forEach((page) => {
-      this.setState((prevState) => {
-        return {
-          pages: [...prevState.pages, page],
-        };
-      });
-    });
+    //  }
   }
 
   toggleEdit() {
@@ -43,7 +52,7 @@ export default class ScrapbookView extends Component {
   }
 
   render() {
-    console.log("scrapbook view state", this.props);
+    console.log("pages view state", this.state.pages);
 
     const { pages } = this.state;
     const bookStyle = {
@@ -116,10 +125,9 @@ export default class ScrapbookView extends Component {
                   height={700}
                   orientation="horizontal"
                 >
-                  {pages
-                    ? pages.map((page, idx) => (
-                        <SinglePage key={idx} {...page.data()} />
-                      ))
+                  {pages.length
+                    ?
+                         <SinglePage {...this.state.pages} key={pages} />
                     : ""}
                   <div
                   // style={styles.twoPage}

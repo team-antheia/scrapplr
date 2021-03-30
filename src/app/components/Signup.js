@@ -10,7 +10,7 @@ export function SignUp(props) {
 
   const signUp = () => {
     firebase
-      .auth()
+      .auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -22,6 +22,7 @@ export function SignUp(props) {
       .catch((error) => {
         setErrorMessage(error.message);
       });
+
   };
 
   const handleSumbit = (e) => {
@@ -29,7 +30,6 @@ export function SignUp(props) {
     signUp();
     props.history.push("/home");
   };
-
   return (
     <div>
       <div>
