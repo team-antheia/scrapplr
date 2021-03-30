@@ -1,6 +1,7 @@
 import React from "react";
 import { Nav, Anchor, Text } from "grommet";
 import { Link } from "react-router-dom";
+import { auth } from "../../index";
 
 export default function NavBar() {
   return (
