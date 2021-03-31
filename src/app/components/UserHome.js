@@ -74,8 +74,8 @@ export default class UserHome extends Component {
 
   async addNewScrapbook() {
     const user = this.props.userId;
-    const scrapbookRef = firestore.collection('Scrapbooks').doc();
-    scrapbookRef.set({
+
+    let newScrapbook = {
       title: this.state.title,
       collaborators: [],
       coverImageUrl:
@@ -88,8 +88,13 @@ export default class UserHome extends Component {
       ],
       owner: user,
       pages: [],
-      scrapbookId: scrapbookRef.id,
-    });
+    };
+    const scrapbookRef = firestore.collection('Scrapbooks').doc();
+    scrapbookRef.set(
+      Object.assign(newScrapbook, { scrapbookId: scrapbookRef.id })
+    );
+
+    this.setState({ scrapbooks: [...this.state.scrapbooks, newScrapbook] });
     this.toggleModal();
   }
 
@@ -116,14 +121,14 @@ export default class UserHome extends Component {
         <ResponsiveContext.Consumer>
           {(size) => (
             <Box
-              align='center'
-              height='85vh'
+              align="center"
+              height="85vh"
               width={size === 'small' ? '80vw' : '75vw'}
-              direction='column'
+              direction="column"
             >
-              <Button label='add a new book' onClick={this.toggleModal} />
+              <Button label="add a new book" onClick={this.toggleModal} />
 
-              <Heading level={3}>welcome {this.props.email}</Heading>
+              <Heading level={3}>welcome {this.props.name}</Heading>
               {this.state.scrapbooks.map((book) => {
                 return (
                   <div>
@@ -135,6 +140,7 @@ export default class UserHome extends Component {
                         {...book}
                         scrapbookId={book.scrapbookId}
                         email={this.props.email}
+                        name={this.props.name}
                         selectedScrapbook={this.state.selectedScrapbook}
                         onSelect={this.onSelect}
                       />
@@ -143,7 +149,7 @@ export default class UserHome extends Component {
                 );
               })}
 
-              <Button label='logout' onClick={this.handleLogout} />
+              <Button label="logout" onClick={this.handleLogout} />
             </Box>
           )}
         </ResponsiveContext.Consumer>
@@ -157,16 +163,16 @@ export default class UserHome extends Component {
             <Form>
               <FormField>
                 <TextInput
-                  placeholder='scrapbook title'
-                  name='title'
+                  placeholder="scrapbook title"
+                  name="title"
                   onChange={(evt) => this.handleChange(evt)}
                   value={this.state.title}
-                  type='text'
+                  type="text"
                 ></TextInput>
               </FormField>
-              <Button onClick={this.addNewScrapbook} label='add scrapbook' />
+              <Button onClick={this.addNewScrapbook} label="add scrapbook" />
             </Form>
-            <Button onClick={this.toggleModal} label='close' />
+            <Button onClick={this.toggleModal} label="close" />
           </Modal>
         </Box>
       </Box>

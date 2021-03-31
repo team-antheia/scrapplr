@@ -7,16 +7,21 @@ export function SignUp(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setErrorMessage] = useState('');
+  const [username, setUsername] = useState('');
 
   const signUp = () => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
+        await user.updateProfile({
+          displayName: username,
+        });
         // Signed in user - can add functionality
         firestore.collection('Users').add({
           email: user.email,
+          name: user.displayName,
         });
       })
       .catch((error) => {
@@ -33,9 +38,9 @@ export function SignUp(props) {
     <div>
       <div>
         <Form onSubmit={handleSumbit}>
-          <Heading level='1'>
+          <Heading level="1">
             sign up for{' '}
-            <Link style={{ textDecoration: 'none' }} to='/'>
+            <Link style={{ textDecoration: 'none' }} to="/">
               scrapplr
             </Link>{' '}
           </Heading>
@@ -43,28 +48,35 @@ export function SignUp(props) {
 
           <FormField>
             <TextInput
-              placeholder='email'
+              placeholder="email"
               value={email}
-              type='email'
+              type="email"
               onChange={(evt) => setEmail(evt.target.value)}
             ></TextInput>
           </FormField>
           <FormField>
             <TextInput
-              placeholder='password'
-              onChange={(evt) => setPassword(evt.target.value)}
-              value={password}
-              type='password'
+              placeholder="username"
+              value={username}
+              onChange={(evt) => setUsername(evt.target.value)}
             ></TextInput>
           </FormField>
-          <Text size='xsmall'>password must be at least 6 characters.</Text>
+          <FormField>
+            <TextInput
+              placeholder="password"
+              onChange={(evt) => setPassword(evt.target.value)}
+              value={password}
+              type="password"
+            ></TextInput>
+          </FormField>
+          <Text size="xsmall">password must be at least 6 characters.</Text>
           {error ? console.log(error) : ''}
           <div>
-            <Button label='sign up' type='submit' />
+            <Button label="sign up" type="submit" />
           </div>
           <hr></hr>
           <Text>
-            already have an account? <Link to='/login'>login</Link>
+            already have an account? <Link to="/login">login</Link>
           </Text>
         </Form>
       </div>
