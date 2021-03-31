@@ -1,18 +1,20 @@
-import React, { Component } from "react";
-import FlipPage from "react-flip-page";
-import Page2 from "../demo/DemoPage2";
-import { Box, Button, ResponsiveContext } from "grommet";
-import "rsuite/dist/styles/rsuite-default.css";
-import { firestore } from "../../../index";
-import { SinglePage, Map } from "..";
-import MapContainer from "../map/markerMap/MapContainer";
-import { Modal } from "rsuite";
-import Default from "./layouts/Default";
-import CaptionMiddle from "./layouts/CaptionMiddle";
-import CaptionTop from "./layouts/CaptionTop";
-import CaptionBottom from "./layouts/CaptionBottom";
+import React, { Component } from 'react';
+import FlipPage from 'react-flip-page';
+import Page2 from '../demo/DemoPage2';
+import { Box, Button, ResponsiveContext } from 'grommet';
+import 'rsuite/dist/styles/rsuite-default.css';
+import { firestore } from '../../../index';
+import { SinglePage, Map } from '..';
+import MapContainer from '../map/markerMap/MapContainer';
+import { Modal } from 'rsuite';
+import Default from './layouts/Default';
+import CaptionMiddle from './layouts/CaptionMiddle';
+import CaptionTop from './layouts/CaptionTop';
+import CaptionBottom from './layouts/CaptionBottom';
+//CHILD COMPONENT WILL NEED THIS IN ORDER TO BE A BLE TO USE HISTORY
+import { withRouter } from 'react-router-dom';
 
-export default class ScrapbookView extends Component {
+class ScrapbookView extends Component {
   constructor() {
     super();
     this.state = {
@@ -20,17 +22,18 @@ export default class ScrapbookView extends Component {
       pages: [],
     };
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.backHome = this.backHome.bind(this);
   }
 
   async componentDidMount() {
     if (this.props.params.scrapbookId) {
-      const pagesRef = firestore.collection("Pages");
+      const pagesRef = firestore.collection('Pages');
       const queryRef = await pagesRef
-        .where("scrapbookId", "==", this.props.params.scrapbookId)
+        .where('scrapbookId', '==', this.props.params.scrapbookId)
         .get();
 
       if (queryRef.empty) {
-        console.log("No matching docs");
+        console.log('No matching docs');
         return;
       }
 
@@ -44,6 +47,13 @@ export default class ScrapbookView extends Component {
       return;
     }
   }
+  //ONCLICK FUNC TO TAKE USER BACK TO USERhOME
+  backHome() {
+    console.log('props', this.props);
+    const { history } = this.props;
+    console.log('history', history);
+    if (history) history.push('/home');
+  }
 
   toggleEdit() {
     this.setState((prevState) => {
@@ -56,37 +66,37 @@ export default class ScrapbookView extends Component {
   render() {
     const { pages } = this.state;
     const bookStyle = {
-      position: "relative",
-      alignItems: "flex-end",
-      display: "flex",
-      height: "100%",
-      width: "100%",
+      position: 'relative',
+      alignItems: 'flex-end',
+      display: 'flex',
+      height: '100%',
+      width: '100%',
     };
 
     return (
       <Box
-        width={{ min: "85vw" }}
-        height={{ min: "75vh" }}
-        justify="center"
-        align="center"
+        width={{ min: '85vw' }}
+        height={{ min: '75vh' }}
+        justify='center'
+        align='center'
         background={{
-          color: "neutral-1",
+          color: 'neutral-1',
           opacity: true,
-          position: "bottom",
-          repeat: "no-repeat",
-          size: "cover",
+          position: 'bottom',
+          repeat: 'no-repeat',
+          size: 'cover',
         }}
         border={{
-          color: "border",
-          size: "large",
-          style: "groove",
-          side: "all",
+          color: 'border',
+          size: 'large',
+          style: 'groove',
+          side: 'all',
         }}
       >
         <ResponsiveContext.Consumer>
           {/* mobile view */}
           {(size) =>
-            size === "small" ? (
+            size === 'small' ? (
               <div>
                 <FlipPage
                   style={bookStyle}
@@ -98,9 +108,9 @@ export default class ScrapbookView extends Component {
                     <article style={{ padding: 8 }}>
                       <Page2 isStatic={true} />
                       <Button
-                        size="small"
+                        size='small'
                         onClick={this.toggleModal}
-                        label="edit page"
+                        label='edit page'
                       />
                     </article>
                   </div>
@@ -125,18 +135,18 @@ export default class ScrapbookView extends Component {
                   width={400}
                   height={525}
                   style={{
-                    minWidth: "75vw",
-                    minHeight: "100%",
+                    minWidth: '75vw',
+                    minHeight: '100%',
                   }}
-                  orientation="horizontal"
+                  orientation='horizontal'
                   showSwipeHint={true}
                 >
                   {pages.length ? (
                     <SinglePage {...this.state.pages} key={pages} />
                   ) : (
-                    ""
+                    ''
                   )}
-                  <Box pad="xxsmall">
+                  <Box pad='xxsmall'>
                     <Default />
                   </Box>
                   <Box>
@@ -149,6 +159,14 @@ export default class ScrapbookView extends Component {
                     <CaptionBottom />
                   </Box>
                 </FlipPage>
+                {/* adding back button to go back to userHome bookshelf from scrapbookView*/}
+                <Button
+                  type='button'
+                  clasName='backHome'
+                  onClick={this.backHome}
+                >
+                  userHome
+                </Button>
               </div>
             )
           }
@@ -158,25 +176,27 @@ export default class ScrapbookView extends Component {
   }
 }
 
+export default withRouter(ScrapbookView);
+
 const styles = {
   twoPage: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "space-around",
-    padding: "auto",
-    background: "rgba(255,255,255, 0.1)",
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+    padding: 'auto',
+    background: 'rgba(255,255,255, 0.1)',
   },
   container: {
     padding: 8,
     background:
-      "linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "75vh",
-    minWidth: "95vw",
-    borderRadius: "11px",
+      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '75vh',
+    minWidth: '95vw',
+    borderRadius: '11px',
   },
-  singlePage: { width: 390, height: "100%", minHeight: 500 },
+  singlePage: { width: 390, height: '100%', minHeight: 500 },
 };
