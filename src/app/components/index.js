@@ -9,4 +9,5 @@ export { default as PhotoUpload } from './scrapbook/PhotoUpload';
 export { default as BookShelfView } from './demo/BookShelfView';
 export { default as ScrapbookView } from './scrapbook/ScrapbookView';
 export { default as Toolbar } from './scrapbook/Toolbar';
+export { default as DescriptionForm } from './scrapbook/DescriptionForm';
 export { default as UserHome } from './UserHome';

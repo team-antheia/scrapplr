@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import firebase, { storage, firestore, auth } from '../../../index';
 import { EXIF } from 'exif-js';
+import { Button, FileInput, Heading } from 'grommet';
 
 function PhotoUpload(props) {
   //declares names in state, set to empty string
@@ -125,7 +126,6 @@ function PhotoUpload(props) {
     }
 
     singlePageRef.forEach(async (doc) => {
-      console.log('page id', doc.id);
       await firestore
         .collection('Pages')
         .doc(doc.id)
@@ -141,14 +141,14 @@ function PhotoUpload(props) {
 
   return (
     <div className="photo-upload">
-      <h1>Upload a photo</h1>
+      <Heading level={3}>Upload a Photo</Heading>
       <form onSubmit={handleFirebaseUpload}>
-        <input
+        <FileInput
           type="file"
           onChange={handleImageAsFile}
           accept="image/png, image/jpeg, image/jpg"
         />
-        <button type="submit">Upload</button>
+        <Button style={{ width: '30%' }} primary label="upload" type="submit" />
       </form>
       {/* <img src={imageAsUrl} alt="" /> */}
     </div>
