@@ -15,19 +15,22 @@ import CaptionBottom from "./layouts/CaptionBottom";
 
 
 export default class ScrapbookView extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       edit: false,
       pages: [],
       pageNum: 1,
+      loaded:false
     };
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
+
   async componentDidMount() {
-    console.log('props with maplocations', this.props.location)
+    console.log('before the if')
     if (this.props.params.scrapbookId) {
+      console.log('inside cdm')
       const pagesRef = firestore.collection("Pages");
       const queryRef = await pagesRef
         .where("scrapbookId", "==", this.props.params.scrapbookId)
@@ -45,7 +48,7 @@ export default class ScrapbookView extends Component {
 
       this.setState(() => {
         return {
-          pages: [...pageData],
+          pages: [...this.state.pages,...pageData],
         };
       });
 
@@ -62,6 +65,7 @@ export default class ScrapbookView extends Component {
   }
 
   render() {
+    console.log('the state', this.state)
     const { pages, pageNum } = this.state;
     const mapLocations = [...this.props.location.state.mapLocations]
     const bookStyle = {
@@ -139,12 +143,14 @@ export default class ScrapbookView extends Component {
                   orientation="horizontal"
                   showSwipeHint={true}
                 >
-                  {pages.length ? (
-                    <SinglePage {...this.state.pages} key={pages} />
+                  {pages.length  ? (
+                    <div>
+                    <CaptionTop page={pages[1]} />
+                    </div>
                   ) : (
-                    ""
-                  )}
-                  <Box pad="xxsmall">
+
+                    <div>
+                    <Box pad="xxsmall">
                     <Default />
                   </Box>
                   <Box>
@@ -156,6 +162,10 @@ export default class ScrapbookView extends Component {
                   <Box>
                     <CaptionBottom />
                   </Box>
+                  </div>
+
+                  )}
+                  <div></div>
                 </FlipPage>
               </div>
             )
