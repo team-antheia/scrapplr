@@ -4,9 +4,10 @@ import Page2 from "../demo/DemoPage2";
 import { Box, Button, ResponsiveContext } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../../index";
-import { SinglePage, Map } from "..";
-import MapContainer from "../map/markerMap/MapContainer";
+import SinglePage from "./SinglePage";
+import MapContainer from "../map/markerMap/MapContainer"
 import { Modal } from "rsuite";
+import CardTemp from "./CardTemp";
 
 export default class ScrapbookView extends Component {
   constructor() {
@@ -14,11 +15,13 @@ export default class ScrapbookView extends Component {
     this.state = {
       edit: false,
       pages: [],
+      pageNum: 1,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   async componentDidMount() {
+    console.log('props with maplocations', this.props.location)
     if (this.props.params.scrapbookId) {
       const pagesRef = firestore.collection("Pages");
       const queryRef = await pagesRef
@@ -31,13 +34,13 @@ export default class ScrapbookView extends Component {
       }
 
       const pageData = [];
-      queryRef.docs.forEach((doc) => {
-        return doc.id, "=>", pageData.push(doc.data());
+      queryRef.forEach((doc) => {
+        pageData.push(doc.data());
       });
 
       this.setState(() => {
         return {
-          pages: [...this.state.pages, ...pageData],
+          pages: [...pageData],
         };
       });
 
@@ -54,7 +57,8 @@ export default class ScrapbookView extends Component {
   }
 
   render() {
-    const { pages } = this.state;
+    const { pages, pageNum } = this.state;
+    const mapLocations = [...this.props.location.state.mapLocations]
     const bookStyle = {
       position: "relative",
       alignItems: "flex-end",
@@ -62,7 +66,6 @@ export default class ScrapbookView extends Component {
       height: "100%",
       width: "100%",
     };
-
     return (
       <Box
         width={{ min: "85vw" }}
@@ -118,49 +121,36 @@ export default class ScrapbookView extends Component {
             ) : (
               // Webpage
               <div>
-                <FlipPage
-                  disableSwipe={this.state.edit}
-                  flipOnTouch={this.state.edit}
-                  flipOnTouchZone={0}
-                  width={400}
-                  height={525}
-                  style={{
-                    minWidth: "75vw",
-                    minHeight: "100%",
-                  }}
-                  orientation="horizontal"
-                  showSwipeHint={true}
-                >
-                  {pages.length ? (
-                    <div>
-                      {pages.map((page) => {
-                        return <SinglePage {...page} key={pages} />;
+                {pages.length ? (
+                  <article>
+                    <FlipPage
+                      disableSwipe={this.state.edit}
+                      flipOnTouch={this.state.edit}
+                      flipOnTouchZone={0}
+                      width={400}
+                      height={525}
+                      style={{
+                        minWidth: "75vw",
+                        minHeight: "100%",
+                      }}
+                      orientation="horizontal"
+                      showSwipeHint={true}
+                    >
+
+                      <div>
+
+                      <h1>{pages[pageNum].pageTitle}</h1>
+                      {/* <MapContainer mapLocations={mapLocations}/> */}
+                      {pages[pageNum].cards.map((card) => {
+                        return <CardTemp {...card} key={card} />;
                       })}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <div>
-                    <div>
-                      <article>
-                        <Page2 editMode={this.state.edit} isStatic={true} />
-                        <Button
-                          primary
-                          size="small"
-                          onClick={this.toggleEdit}
-                          label={this.state.edit ? "done" : "edit page"}
-                          style={{ position: "absolute", bottom: 3 }}
-                        />
-                      </article>
-                    </div>
-                    <div>
-                      <article>
-                        <h1>My wonderful second article</h1>
-                        <p>My wonderful second content</p>
-                      </article>
-                    </div>
-                  </div>
-                </FlipPage>
+                      </div>
+                      <div/>
+                    </FlipPage>
+                  </article>
+                ) : (
+                  ""
+                )}
               </div>
             )
           }

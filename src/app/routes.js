@@ -70,6 +70,7 @@ export default class routes extends Component {
               <ScrapbookView
                 userId={this.state.userId}
                 params={props.match.params}
+                location={props.location}
               />
             )}
           ></Route>

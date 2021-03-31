@@ -17,6 +17,7 @@ export class MapContainer extends Component {
   }
 
   async componentDidMount() {
+    if(!this.props.mapLocations){
     const getDocs = firestore
       .collection('Scrapbooks')
       .doc('XQkebrXC1teAOhImleg3')
@@ -26,7 +27,10 @@ export class MapContainer extends Component {
       const data = doc.data();
       this.setState({ locations: data.mapLocations });
     }
+  }else if(this.props.mapLocations){
+    this.setState({ locations: this.props.mapLocations });
   }
+}
 
   onMarkerClick(props, marker, e) {
     this.setState({
