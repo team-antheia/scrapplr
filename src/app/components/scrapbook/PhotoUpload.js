@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import firebase, { storage, firestore, auth } from '../../../index';
 import { EXIF } from 'exif-js';
 
-function PhotoUpload() {
+function PhotoUpload(props) {
   //declares names in state, set to empty string
   const [imageAsFile, setImageAsFile] = useState('');
 
@@ -17,7 +17,7 @@ function PhotoUpload() {
     setImageAsFile(e.target.files[0]);
   };
 
-  const handleFirebaseUpload = (e) => {
+  const handleFirebaseUpload = async (e) => {
     e.preventDefault();
 
     //Coordinates conversion function
@@ -64,7 +64,7 @@ function PhotoUpload() {
       setLon(lonFinal);
 
       //Stores coordinates in db
-      updateDatabase(latFinal, lonFinal);
+      updateCoordinates(latFinal, lonFinal);
     });
 
     //upload file to firebase storage
@@ -73,36 +73,35 @@ function PhotoUpload() {
       .put(imageAsFile);
 
     //initiates the firebase side uploading
-    uploadTask.on(
+    await uploadTask.on(
       'state_changed',
       null,
       (err) => {
         //catches the errors
         console.log(err);
       },
-      () => {
+      async () => {
         // gets storage reference from image storage in firebase
         // gets the download url from firebase file path
         // sets the image from firebase as a URL onto local state
-        storage
+        await storage
           .ref('images')
           .child(imageAsFile.name)
           .getDownloadURL()
           .then((firebaseUrl) => {
             setImageAsFile(null);
             setImageAsUrl(firebaseUrl);
+            updateDatabase(firebaseUrl);
           });
       }
     );
   };
 
-  async function updateDatabase(lat, lon) {
-    // ------ Access signed in user -----
-
+  async function updateCoordinates(lat, lon) {
     //Reference to scrapbook -- will need to update with current scrapbook doc
     let scrapbookRef = await firestore
       .collection('Scrapbooks')
-      .doc('XQkebrXC1teAOhImleg3');
+      .doc(props.scrapbookId);
 
     //Updates scrapbook map locations array with new geopoint
     await scrapbookRef.update({
@@ -113,16 +112,43 @@ function PhotoUpload() {
     });
   }
 
+  //new func to find correct page with scrapbookid and add a card
+  async function updateDatabase(url) {
+    const pagesRef = firestore.collection('Pages');
+    const singlePageRef = await pagesRef
+      .where('scrapbookId', '==', props.scrapbookId)
+      .get();
+
+    if (singlePageRef.empty) {
+      console.log('no matching documents');
+      return;
+    }
+
+    singlePageRef.forEach(async (doc) => {
+      console.log('page id', doc.id);
+      await firestore
+        .collection('Pages')
+        .doc(doc.id)
+        .update({
+          cards: firebase.firestore.FieldValue.arrayUnion({
+            body: url,
+            type: 'image',
+            //layout: props.layout
+          }),
+        });
+    });
+  }
+
   return (
-    <div className='photo-upload'>
+    <div className="photo-upload">
       <h1>Upload a photo</h1>
       <form onSubmit={handleFirebaseUpload}>
         <input
-          type='file'
+          type="file"
           onChange={handleImageAsFile}
-          accept='image/png, image/jpeg, image/jpg'
+          accept="image/png, image/jpeg, image/jpg"
         />
-        <button>Upload</button>
+        <button type="submit">Upload</button>
       </form>
       {/* <img src={imageAsUrl} alt="" /> */}
     </div>

@@ -4,7 +4,7 @@ import Page2 from '../demo/DemoPage2';
 import { Box, Button, ResponsiveContext } from 'grommet';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
-import { SinglePage, Map } from '..';
+import { SinglePage, Map, Toolbar } from '../../components';
 import MapContainer from '../map/markerMap/MapContainer';
 import { Modal } from 'rsuite';
 
@@ -63,8 +63,8 @@ export default class ScrapbookView extends Component {
       <Box
         width={{ min: '85vw' }}
         height={{ min: '75vh' }}
-        justify='center'
-        align='center'
+        justify="center"
+        align="center"
         background={{
           color: 'neutral-1',
           opacity: true,
@@ -94,9 +94,9 @@ export default class ScrapbookView extends Component {
                     <article style={{ padding: 8 }}>
                       <Page2 isStatic={true} />
                       <Button
-                        size='small'
+                        size="small"
                         onClick={this.toggleModal}
-                        label='edit page'
+                        label="edit page"
                       />
                     </article>
                   </div>
@@ -124,7 +124,7 @@ export default class ScrapbookView extends Component {
                     minWidth: '75vw',
                     minHeight: '100%',
                   }}
-                  orientation='horizontal'
+                  orientation="horizontal"
                   showSwipeHint={true}
                 >
                   {pages.length ? (
@@ -138,7 +138,7 @@ export default class ScrapbookView extends Component {
                         <Page2 editMode={this.state.edit} isStatic={true} />
                         <Button
                           primary
-                          size='small'
+                          size="small"
                           onClick={this.toggleEdit}
                           label={this.state.edit ? 'done' : 'edit page'}
                           style={{ position: 'absolute', bottom: 3 }}
@@ -157,6 +157,7 @@ export default class ScrapbookView extends Component {
             )
           }
         </ResponsiveContext.Consumer>
+        <Toolbar scrapbookId={this.props.params.scrapbookId} />
       </Box>
     );
   }

@@ -1,10 +1,12 @@
 export { default as NavBar } from './NavBar';
 export { default as LandingPage } from './LandingPage';
 export { default as Map } from './map/markerMap/MapContainer';
+export { default as LocationSearchInput } from './map/360/LocationSearchInput';
 export { default as BookCard } from './scrapbook/BookCard';
 export { default as SinglePage } from './scrapbook/SinglePage';
 export { default as DemoScrapbook } from './demo/DemoScrapbook';
 export { default as PhotoUpload } from './scrapbook/PhotoUpload';
 export { default as BookShelfView } from './demo/BookShelfView';
 export { default as ScrapbookView } from './scrapbook/ScrapbookView';
+export { default as Toolbar } from './scrapbook/Toolbar';
 export { default as UserHome } from './UserHome';
