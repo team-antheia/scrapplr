@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FlipPage from "react-flip-page";
 import Page2 from "../demo/DemoPage2";
-import { Box, Button, ResponsiveContext } from "grommet";
+import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../../index";
 import { SinglePage, Map } from "..";
@@ -63,7 +63,7 @@ export default class ScrapbookView extends Component {
       width: "100%",
     };
 
-    return (
+    return this.state.pages ? (
       <Box
         width={{ min: "85vw" }}
         height={{ min: "75vh" }}
@@ -87,73 +87,90 @@ export default class ScrapbookView extends Component {
           {/* mobile view */}
           {(size) =>
             size === "small" ? (
-              <div>
-                <FlipPage
-                  style={bookStyle}
-                  flipOnTouch={true}
-                  width={400}
-                  height={525}
+              <FlipPage
+                flipOnTouch={true}
+                width={425}
+                height={600}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "24x",
+                }}
+              >
+                <Grid
+                  rows={["small", "small", "small"]}
+                  columns={["small", "small"]}
+                  gap="xsmall"
+                  areas={[
+                    { name: "card1", start: [0, 0], end: [1, 0] },
+                    { name: "nav", start: [0, 1], end: [0, 1] },
+                    { name: "main", start: [1, 1], end: [1, 1] },
+                    { name: "sub", start: [0, 2], end: [1, 2] },
+                  ]}
                 >
-                  <div>
-                    <article style={{ padding: 8 }}>
-                      <Page2 isStatic={true} />
-                      <Button
-                        size="small"
-                        onClick={this.toggleModal}
-                        label="edit page"
-                      />
-                    </article>
-                  </div>
-                  <div>
-                    <article>hello2</article>
-                  </div>
-                  <div>
-                    <article>hello3</article>
-                  </div>
-                  <div>
-                    <article>hello4</article>
-                  </div>
-                </FlipPage>
-              </div>
+                  <Card gridArea="card1" background="brand" />
+                  <Card gridArea="nav" background="light-5" />
+                  <Card gridArea="main" background="light-2" />
+                  <Card gridArea="sub" background="light-2" />
+                </Grid>
+                <Grid
+                  rows={["small", "small", "small"]}
+                  columns={["small", "small"]}
+                  gap="xsmall"
+                  areas={[
+                    { name: "card1", start: [0, 0], end: [1, 0] },
+                    { name: "nav", start: [0, 1], end: [0, 1] },
+                    { name: "main", start: [1, 1], end: [1, 1] },
+                    { name: "sub", start: [0, 2], end: [1, 2] },
+                  ]}
+                >
+                  <Card gridArea="card1" background="brand" />
+                  <Card gridArea="nav" background="light-5" />
+                  <Card gridArea="main" background="light-2" />
+                  <Card gridArea="sub" background="light-2" />
+                </Grid>
+              </FlipPage>
             ) : (
               // Webpage
-              <div>
-                <FlipPage
-                  disableSwipe={this.state.edit}
-                  flipOnTouch={this.state.edit}
-                  flipOnTouchZone={0}
-                  width={400}
-                  height={525}
-                  style={{
-                    minWidth: "75vw",
-                    minHeight: "100%",
-                  }}
-                  orientation="horizontal"
-                  showSwipeHint={true}
-                >
-                  {pages.length ? (
-                    <SinglePage {...this.state.pages} key={pages} />
-                  ) : (
-                    ""
-                  )}
-                  <Box pad="xxsmall">
-                    <Default />
-                  </Box>
-                  <Box>
-                    <CaptionMiddle />
-                  </Box>
-                  <Box>
-                    <CaptionTop />
-                  </Box>
-                  <Box>
-                    <CaptionBottom />
-                  </Box>
-                </FlipPage>
-              </div>
+
+              <FlipPage
+                disableSwipe={this.state.edit}
+                flipOnTouch={this.state.edit}
+                flipOnTouchZone={0}
+                width={400}
+                height={525}
+                style={{
+                  minWidth: "75vw",
+                  minHeight: "95%",
+                }}
+                orientation="horizontal"
+                showSwipeHint={true}
+              >
+                {pages.length ? (
+                  <SinglePage {...this.state.pages} key={pages} />
+                ) : (
+                  ""
+                )}
+                <Box pad="xxsmall">
+                  <Default />
+                </Box>
+                <Box>
+                  <CaptionMiddle />
+                </Box>
+                <Box>
+                  <CaptionTop />
+                </Box>
+                <Box>
+                  <CaptionBottom />
+                </Box>
+              </FlipPage>
             )
           }
         </ResponsiveContext.Consumer>
       </Box>
+    ) : (
+      <Spinner />
     );
   }
 }
