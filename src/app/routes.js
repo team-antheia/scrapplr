@@ -18,6 +18,7 @@ export default class routes extends Component {
     this.state = {
       userId: '',
       email: '',
+      name: '',
     };
   }
   async componentDidMount() {
@@ -34,6 +35,7 @@ export default class routes extends Component {
           this.setState({
             userId: user.docs[0].id,
             email: email,
+            name: auth.displayName,
           });
         }
       } else {
@@ -45,7 +47,7 @@ export default class routes extends Component {
 
   render() {
     return (
-      <Box justify='center' align='center' height='100vh'>
+      <Box justify="center" align="center" height="100vh">
         {/* {auth.currentUser !== null && auth.currentUser.email && (
           <Route
             exact
@@ -60,12 +62,12 @@ export default class routes extends Component {
         )} */}
 
         <Switch>
-          <Route exact path='/'>
+          <Route exact path="/">
             <LandingPage />
           </Route>
 
           <Route
-            path='/scrapbooks/:scrapbookId'
+            path="/scrapbooks/:scrapbookId"
             render={(props) => (
               <ScrapbookView
                 userId={this.state.userId}
@@ -73,30 +75,31 @@ export default class routes extends Component {
               />
             )}
           ></Route>
-          <Route path='/demo'>
+          <Route path="/demo">
             <ScrapbookView user={'demo'} />
           </Route>
-          <Route path='/signup' component={SignUp} />
-          <Route path='/login' component={Login} />
-          <Route path='/bookshelf'>
+          <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Route path="/bookshelf">
             <BookShelfView />
           </Route>
-          <Route path='/test' component={LocationSearchInput} />
-          <Route path='/streetview' component={StreetView} />
+          <Route path="/test" component={LocationSearchInput} />
+          <Route path="/streetview" component={StreetView} />
           {/* <Route path="/map" component={MapContainer} /> */}
           {auth.currentUser !== null && auth.currentUser.email && (
             <Route
               exact
-              path='/home'
+              path="/home"
               component={() => (
                 <UserHome
                   userId={auth.currentUser ? this.state.userId : false}
                   email={this.state.email}
+                  name={this.state.name}
                 />
               )}
             />
           )}
-          <Route path='/' component={LandingPage} />
+          <Route path="/" component={LandingPage} />
         </Switch>
       </Box>
     );

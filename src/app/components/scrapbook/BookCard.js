@@ -5,26 +5,27 @@ export default function BookCard({
   coverImageUrl,
   title,
   email,
+  name,
   type,
   scrapbookId,
   onSelect,
 }) {
   return (
     <Card
-      elevation='medium'
-      height='small'
-      width='medium'
-      background='glass'
+      elevation="medium"
+      height="small"
+      width="medium"
+      background="glass"
       onClick={(event) => onSelect(event, scrapbookId)}
     >
-      <CardHeader style={{ color: 'black' }} pad='small'>
+      <CardHeader style={{ color: 'black' }} pad="small">
         {title}
       </CardHeader>
-      <CardBody background='glass' pad='small'>
-        <Image fit='cover' src={coverImageUrl} />
+      <CardBody background="glass" pad="small">
+        <Image fit="cover" src={coverImageUrl} />
       </CardBody>
-      <CardFooter background='background-contrast' pad='small'>
-        by {email}
+      <CardFooter background="background-contrast" pad="small">
+        by {name}
       </CardFooter>
     </Card>
   );
