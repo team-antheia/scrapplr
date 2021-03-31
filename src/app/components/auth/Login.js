@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import firebase from 'firebase/app';
-
-import { auth } from '../../../index';
+import firebase, { auth, firestore } from '../../../index';
 import {
   Box,
   Button,
@@ -19,7 +17,16 @@ export function Login(props) {
 
   const provider = new firebase.auth.GoogleAuthProvider();
   const signInWithGoogle = () => {
-    auth.signInWithPopup(provider);
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        let user = result.user;
+        firestore.collection('Users').add({
+          email: user.email,
+          name: user.displayName,
+        });
+      });
     props.history.push('/home');
   };
 
@@ -46,39 +53,39 @@ export function Login(props) {
 
   return (
     <div>
-      <Box pad='small'>
+      <Box pad="small">
         <Form>
           <Heading level={3}>login</Heading>
           <FormField>
             <TextInput
-              type='email'
+              type="email"
               value={email}
-              placeholder='email'
+              placeholder="email"
               onChange={(evt) => setEmail(evt.target.value)}
             />
           </FormField>
           <FormField>
             <TextInput
-              type='password'
+              type="password"
               value={password}
-              placeholder='password'
+              placeholder="password"
               onChange={(evt) => setPassword(evt.target.value)}
             />
           </FormField>
           <Button
             style={{ width: '100%' }}
             primary
-            label='login'
+            label="login"
             onClick={signInWithEmail}
           />
-          <Box pad='small'>
+          <Box pad="small">
             <Button
               style={{ width: '100%' }}
-              label='sign in with google'
+              label="sign in with google"
               onClick={signInWithGoogle}
             />
-            <Text className='forgot-password text-right'>
-              don't have an account? <Link to='/signup'>sign up</Link>
+            <Text className="forgot-password text-right">
+              don't have an account? <Link to="/signup">sign up</Link>
             </Text>
           </Box>
         </Form>

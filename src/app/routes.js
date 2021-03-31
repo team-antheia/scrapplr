@@ -22,6 +22,8 @@ export default class routes extends Component {
     this.state = {
       userId: "",
       email: "",
+      name: "",
+
     };
   }
   async componentDidMount() {
@@ -38,6 +40,7 @@ export default class routes extends Component {
           this.setState({
             userId: user.docs[0].id,
             email: email,
+            name: auth.displayName,
           });
         }
       } else {
@@ -78,7 +81,8 @@ export default class routes extends Component {
             )}
           ></Route>
           <Route path="/demo">
-            <ScrapbookView user={"demo"} />
+
+            <ScrapbookView user={'demo'} />
           </Route>
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={Login} />
@@ -96,10 +100,12 @@ export default class routes extends Component {
                 <UserHome
                   userId={auth.currentUser ? this.state.userId : false}
                   email={this.state.email}
+                  name={this.state.name}
                 />
               )}
             />
           )}
+
           <Route path="/grids">
             <Box width="100%" pad="medium">
               <Heading margin="small" level="4">
@@ -120,6 +126,7 @@ export default class routes extends Component {
               <CaptionBottom />
             </Box>
           </Route>
+
           <Route path="/" component={LandingPage} />
         </Switch>
       </Box>
