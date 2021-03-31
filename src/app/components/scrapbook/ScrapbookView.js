@@ -65,6 +65,7 @@ class ScrapbookView extends Component {
 
   render() {
     const { pages } = this.state;
+    console.log('pages', this.state);
     const bookStyle = {
       position: 'relative',
       alignItems: 'flex-end',
