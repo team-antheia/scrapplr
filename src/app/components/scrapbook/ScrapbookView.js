@@ -163,10 +163,11 @@ class ScrapbookView extends Component {
                 <Button
                   type='button'
                   clasName='backHome'
+                  label='back to home'
                   onClick={this.backHome}
-                >
-                  userHome
-                </Button>
+                  primary
+                  margin='small'
+                />
               </div>
             )
           }
