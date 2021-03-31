@@ -5,9 +5,14 @@ import { Box, Button, ResponsiveContext } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../../index";
 import SinglePage from "./SinglePage";
-import MapContainer from "../map/markerMap/MapContainer"
-import { Modal } from "rsuite";
 import CardTemp from "./CardTemp";
+import MapContainer from "../map/markerMap/MapContainer";
+import { Modal } from "rsuite";
+import Default from "./layouts/Default";
+import CaptionMiddle from "./layouts/CaptionMiddle";
+import CaptionTop from "./layouts/CaptionTop";
+import CaptionBottom from "./layouts/CaptionBottom";
+
 
 export default class ScrapbookView extends Component {
   constructor() {
@@ -121,36 +126,37 @@ export default class ScrapbookView extends Component {
             ) : (
               // Webpage
               <div>
-                {pages.length ? (
-                  <article>
-                    <FlipPage
-                      disableSwipe={this.state.edit}
-                      flipOnTouch={this.state.edit}
-                      flipOnTouchZone={0}
-                      width={400}
-                      height={525}
-                      style={{
-                        minWidth: "75vw",
-                        minHeight: "100%",
-                      }}
-                      orientation="horizontal"
-                      showSwipeHint={true}
-                    >
-
-                      <div>
-
-                      <h1>{pages[pageNum].pageTitle}</h1>
-                      {/* <MapContainer mapLocations={mapLocations}/> */}
-                      {pages[pageNum].cards.map((card) => {
-                        return <CardTemp {...card} key={card} />;
-                      })}
-                      </div>
-                      <div/>
-                    </FlipPage>
-                  </article>
-                ) : (
-                  ""
-                )}
+                <FlipPage
+                  disableSwipe={this.state.edit}
+                  flipOnTouch={this.state.edit}
+                  flipOnTouchZone={0}
+                  width={400}
+                  height={525}
+                  style={{
+                    minWidth: "75vw",
+                    minHeight: "100%",
+                  }}
+                  orientation="horizontal"
+                  showSwipeHint={true}
+                >
+                  {pages.length ? (
+                    <SinglePage {...this.state.pages} key={pages} />
+                  ) : (
+                    ""
+                  )}
+                  <Box pad="xxsmall">
+                    <Default />
+                  </Box>
+                  <Box>
+                    <CaptionMiddle />
+                  </Box>
+                  <Box>
+                    <CaptionTop />
+                  </Box>
+                  <Box>
+                    <CaptionBottom />
+                  </Box>
+                </FlipPage>
               </div>
             )
           }
