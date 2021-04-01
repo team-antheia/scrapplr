@@ -5,7 +5,6 @@ import { LandingPage } from './components';
 import { Login } from './components/auth/Login';
 import { SignUp } from './components/auth/Signup';
 import { ScrapbookView, BookShelfView, UserHome } from './components';
-import { ScrapbookInstructions } from './components/demo/ScrapbookInstructions';
 import { Box, Heading } from 'grommet';
 import firebase, { auth, firestore } from '../index';
 import SinglePage from './components/scrapbook/SinglePage';
@@ -13,9 +12,10 @@ import LocationSearchInput from './components/map/360/LocationSearchInput';
 import StreetView from './components/map/360/StreetView';
 import MapContainer from './components/map/markerMap/MapContainer';
 import Default from './components/scrapbook/layouts/Default';
-import CaptionTop from './components/scrapbook/layouts/CaptionTop';
+// import CaptionTop from "./components/scrapbook/layouts/CaptionTop";
 import CaptionBottom from './components/scrapbook/layouts/CaptionBottom';
 import CaptionMiddle from './components/scrapbook/layouts/CaptionMiddle';
+import { ScrapbookInstructions } from './components/demo/ScrapbookInstructions';
 
 export default class routes extends Component {
   constructor() {
@@ -77,6 +77,7 @@ export default class routes extends Component {
               <ScrapbookView
                 userId={this.state.userId}
                 params={props.match.params}
+                location={props.location}
               />
             )}
           ></Route>
@@ -117,7 +118,7 @@ export default class routes extends Component {
               <Heading margin='medium' level='4'>
                 Caption Top 👇🏽
               </Heading>
-              <CaptionTop />
+              {/* <CaptionTop /> */}
               <Heading margin='medium' level='4'>
                 Caption Middle 👇🏽
               </Heading>
