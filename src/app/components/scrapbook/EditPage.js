@@ -1,25 +1,13 @@
-import React from "react";
-import PhotoUpload from "./PhotoUpload";
-import LocationSearchInput from "../map/360/LocationSearchInput";
-import {
-  grommet,
-  Box,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Text,
-  FormField,
-} from "grommet";
+import React from 'react';
+import PhotoUpload from './PhotoUpload';
+import LocationSearchInput from '../map/360/LocationSearchInput';
+import { CardBody, FormField } from 'grommet';
 
 class EditPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
-    const isUpload = this.props.type === "Upload Photo";
-    const is360 = this.props.type === "360";
-    const isDescription = this.props.type === "Description";
+    const isUpload = this.props.type === 'Upload Photo';
+    const is360 = this.props.type === '360';
+    const isDescription = this.props.type === 'Description';
 
     return (
       <CardBody

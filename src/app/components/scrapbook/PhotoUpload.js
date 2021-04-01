@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import firebase, { storage, firestore, auth } from '../../../index';
+import firebase, { storage, firestore } from '../../../index';
 import { EXIF } from 'exif-js';
 import { Button, FileInput, Heading } from 'grommet';
 

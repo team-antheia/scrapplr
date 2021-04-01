@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import FlipPage from 'react-flip-page';
-import Page2 from '../demo/DemoPage2';
+
 import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from 'grommet';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
-import { SinglePage, Map, Toolbar } from '..';
-import MapContainer from '../map/markerMap/MapContainer';
-import { Modal } from 'rsuite';
+import { Toolbar } from '..';
+
 import Default from './layouts/Default';
-import CaptionMiddle from './layouts/CaptionMiddle';
+
 import CaptionTop from './layouts/CaptionTop';
 import CaptionBottom from './layouts/CaptionBottom';
-//CHILD COMPONENT WILL NEED THIS IN ORDER TO BE A BLE TO USE HISTORY
 import { withRouter } from 'react-router-dom';
 
 class ScrapbookView extends Component {
@@ -82,126 +80,124 @@ class ScrapbookView extends Component {
 
     return pages.length >= 1 ? (
       <Box>
-      <Box
-        width={{ min: '85vw' }}
-        height={{ min: '75vh' }}
-        justify='center'
-        align='center'
-        background={{
-          color: 'neutral-1',
-          opacity: true,
-          position: 'bottom',
-          repeat: 'no-repeat',
-          size: 'cover',
-        }}
-        border={{
-          color: 'border',
-          size: 'large',
-          style: 'groove',
-          side: 'all',
-        }}
-      >
-        <ResponsiveContext.Consumer>
-          {/* mobile view */}
-          {(size) =>
-            size === 'small' ? (
-              <FlipPage
-                flipOnTouch={true}
-                width={425}
-                height={600}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: '24x',
-                }}
-              >
-                <Grid
-                  rows={['small', 'small', 'small']}
-                  columns={['small', 'small']}
-                  gap='xsmall'
-                  areas={[
-                    { name: 'card1', start: [0, 0], end: [1, 0] },
-                    { name: 'nav', start: [0, 1], end: [0, 1] },
-                    { name: 'main', start: [1, 1], end: [1, 1] },
-                    { name: 'sub', start: [0, 2], end: [1, 2] },
-                  ]}
-                >
-                  <Card gridArea='card1' background='brand' />
-                  <Card gridArea='nav' background='light-5' />
-                  <Card gridArea='main' background='light-2' />
-                  <Card gridArea='sub' background='light-2' />
-                </Grid>
-                <Grid
-                  rows={['small', 'small', 'small']}
-                  columns={['small', 'small']}
-                  gap='xsmall'
-                  areas={[
-                    { name: 'card1', start: [0, 0], end: [1, 0] },
-                    { name: 'nav', start: [0, 1], end: [0, 1] },
-                    { name: 'main', start: [1, 1], end: [1, 1] },
-                    { name: 'sub', start: [0, 2], end: [1, 2] },
-                  ]}
-                >
-                  <Card gridArea='card1' background='brand' />
-                  <Card gridArea='nav' background='light-5' />
-                  <Card gridArea='main' background='light-2' />
-                  <Card gridArea='sub' background='light-2' />
-                </Grid>
-              </FlipPage>
-            ) : (
-              // Webpage
-              <div>
+        <Button
+          type="button"
+          clasName="backHome"
+          label="back to home"
+          onClick={this.backHome}
+          primary
+          margin="small"
+        />
+        <Box
+          width={{ min: '85vw' }}
+          height={{ min: '75vh' }}
+          justify="center"
+          align="center"
+          background={{
+            color: 'neutral-1',
+            opacity: true,
+            position: 'bottom',
+            repeat: 'no-repeat',
+            size: 'cover',
+          }}
+          border={{
+            color: 'border',
+            size: 'large',
+            style: 'groove',
+            side: 'all',
+          }}
+        >
+          <ResponsiveContext.Consumer>
+            {/* mobile view */}
+            {(size) =>
+              size === 'small' ? (
                 <FlipPage
-                  disableSwipe={this.state.edit}
-                  flipOnTouch={this.state.edit}
-                  flipOnTouchZone={0}
-                  width={400}
-                  height={525}
+                  flipOnTouch={true}
+                  width={425}
+                  height={600}
                   style={{
-                    minWidth: '75vw',
-                    minHeight: '100%',
-
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '24x',
                   }}
-                  orientation='horizontal'
-                  showSwipeHint={true}
                 >
-
-                  {pages.length > 1 ? (
-                    <div>
-                      <CaptionTop page={pages[1]} />
-                    </div>
-                  ) : (
-                    <div>
-                      <Box pad='xxsmall'>
-                        <Default />
-                      </Box>
-                      <Box>{/* <CaptionMiddle /> */}</Box>
-                      <Box>{/* <CaptionTop /> */}</Box>
-                      <Box>
-                        <CaptionBottom />
-                      </Box>
-                    </div>
-                  )}
-                  <div></div>
-                  <div></div>
+                  <Grid
+                    rows={['small', 'small', 'small']}
+                    columns={['small', 'small']}
+                    gap="xsmall"
+                    areas={[
+                      { name: 'card1', start: [0, 0], end: [1, 0] },
+                      { name: 'nav', start: [0, 1], end: [0, 1] },
+                      { name: 'main', start: [1, 1], end: [1, 1] },
+                      { name: 'sub', start: [0, 2], end: [1, 2] },
+                    ]}
+                  >
+                    <Card gridArea="card1" background="brand" />
+                    <Card gridArea="nav" background="light-5" />
+                    <Card gridArea="main" background="light-2" />
+                    <Card gridArea="sub" background="light-2" />
+                  </Grid>
+                  <Grid
+                    rows={['small', 'small', 'small']}
+                    columns={['small', 'small']}
+                    gap="xsmall"
+                    areas={[
+                      { name: 'card1', start: [0, 0], end: [1, 0] },
+                      { name: 'nav', start: [0, 1], end: [0, 1] },
+                      { name: 'main', start: [1, 1], end: [1, 1] },
+                      { name: 'sub', start: [0, 2], end: [1, 2] },
+                    ]}
+                  >
+                    <Card gridArea="card1" background="brand" />
+                    <Card gridArea="nav" background="light-5" />
+                    <Card gridArea="main" background="light-2" />
+                    <Card gridArea="sub" background="light-2" />
+                  </Grid>
                 </FlipPage>
-                <Button
-                  type='button'
-                  clasName='backHome'
-                  label='back to home'
-                  onClick={this.backHome}
-                  primary
-                  margin='small'
-                />
-              </div>
-            )
-          }
-        </ResponsiveContext.Consumer>
-        <Box direction="row">
-          <Toolbar scrapbookId={this.props.params.scrapbookId} />
+              ) : (
+                // Webpage
+                <div>
+                  <FlipPage
+                    disableSwipe={this.state.edit}
+                    flipOnTouch={this.state.edit}
+                    flipOnTouchZone={0}
+                    width={400}
+                    height={525}
+                    style={{
+                      minWidth: '75vw',
+                      minHeight: '100%',
+                    }}
+                    orientation="horizontal"
+                    showSwipeHint={true}
+                  >
+                    {pages.length > 1 ? (
+                      <div>
+                        <CaptionTop page={pages[1]} />
+                      </div>
+                    ) : (
+                      <div>
+                        <Box pad="xxsmall">
+                          <Default />
+                        </Box>
+                        <Box>{/* <CaptionMiddle /> */}</Box>
+                        <Box>{/* <CaptionTop /> */}</Box>
+                        <Box>
+                          <CaptionBottom />
+                        </Box>
+                      </div>
+                    )}
+                    <div></div>
+                    <div></div>
+                  </FlipPage>
+                </div>
+              )
+            }
+          </ResponsiveContext.Consumer>
+          <Box direction="row">
+            <Toolbar scrapbookId={this.props.params.scrapbookId} />
+          </Box>
         </Box>
-      </Box>
       </Box>
     ) : (
       <Spinner />
