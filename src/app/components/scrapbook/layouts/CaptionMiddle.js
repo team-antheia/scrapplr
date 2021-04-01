@@ -15,8 +15,8 @@ export default function CaptionMiddle() {
         { name: "media4", start: [1, 2], end: [1, 2] },
       ]}
     >
-      <Card gridArea="media1" background="light-1" />
-      <Card gridArea="media2" background="light-2" />
+      <Card gridArea="media1" background="light-1" ></Card>
+      <Card gridArea="media2" background="light-2" > </Card>
       <Card gridArea="caption" background="brand" />
       <Card gridArea="media3" background="light-3" />
       <Card gridArea="media4" background="light-4" />
