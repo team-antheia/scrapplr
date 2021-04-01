@@ -64,111 +64,115 @@ export default class ScrapbookView extends Component {
     };
 
     return this.state.pages ? (
-      <Box
-        width={{ min: "85vw" }}
-        height={{ min: "75vh" }}
-        justify="center"
-        align="center"
-        background={{
-          color: "neutral-1",
-          opacity: true,
-          position: "bottom",
-          repeat: "no-repeat",
-          size: "cover",
-        }}
-        border={{
-          color: "border",
-          size: "large",
-          style: "groove",
-          side: "all",
-        }}
-      >
-        <ResponsiveContext.Consumer>
-          {/* mobile view */}
-          {(size) =>
-            size === "small" ? (
-              <FlipPage
-                flipOnTouch={true}
-                width={425}
-                height={600}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "24x",
-                }}
-              >
-                <Grid
-                  rows={["small", "small", "small"]}
-                  columns={["small", "small"]}
-                  gap="xsmall"
-                  areas={[
-                    { name: "card1", start: [0, 0], end: [1, 0] },
-                    { name: "nav", start: [0, 1], end: [0, 1] },
-                    { name: "main", start: [1, 1], end: [1, 1] },
-                    { name: "sub", start: [0, 2], end: [1, 2] },
-                  ]}
+      <Box>
+        <Box
+          width={{ min: "85vw" }}
+          height={{ min: "75vh" }}
+          justify="center"
+          align="center"
+          background={{
+            color: "neutral-1",
+            opacity: true,
+            position: "bottom",
+            repeat: "no-repeat",
+            size: "cover",
+          }}
+          border={{
+            color: "border",
+            size: "large",
+            style: "groove",
+            side: "all",
+          }}
+        >
+          <ResponsiveContext.Consumer>
+            {/* mobile view */}
+            {(size) =>
+              size === "small" ? (
+                <FlipPage
+                  flipOnTouch={true}
+                  width={425}
+                  height={600}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "24x",
+                  }}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
-                </Grid>
-                <Grid
-                  rows={["small", "small", "small"]}
-                  columns={["small", "small"]}
-                  gap="xsmall"
-                  areas={[
-                    { name: "card1", start: [0, 0], end: [1, 0] },
-                    { name: "nav", start: [0, 1], end: [0, 1] },
-                    { name: "main", start: [1, 1], end: [1, 1] },
-                    { name: "sub", start: [0, 2], end: [1, 2] },
-                  ]}
-                >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
-                </Grid>
-              </FlipPage>
-            ) : (
-              // Webpage
+                  <Grid
+                    rows={["small", "small", "small"]}
+                    columns={["small", "small"]}
+                    gap="xsmall"
+                    areas={[
+                      { name: "card1", start: [0, 0], end: [1, 0] },
+                      { name: "nav", start: [0, 1], end: [0, 1] },
+                      { name: "main", start: [1, 1], end: [1, 1] },
+                      { name: "sub", start: [0, 2], end: [1, 2] },
+                    ]}
+                  >
+                    <Card gridArea="card1" background="brand" />
+                    <Card gridArea="nav" background="light-5" />
+                    <Card gridArea="main" background="light-2" />
+                    <Card gridArea="sub" background="light-2" />
+                  </Grid>
+                  <Grid
+                    rows={["small", "small", "small"]}
+                    columns={["small", "small"]}
+                    gap="xsmall"
+                    areas={[
+                      { name: "card1", start: [0, 0], end: [1, 0] },
+                      { name: "nav", start: [0, 1], end: [0, 1] },
+                      { name: "main", start: [1, 1], end: [1, 1] },
+                      { name: "sub", start: [0, 2], end: [1, 2] },
+                    ]}
+                  >
+                    <Card gridArea="card1" background="brand" />
+                    <Card gridArea="nav" background="light-5" />
+                    <Card gridArea="main" background="light-2" />
+                    <Card gridArea="sub" background="light-2" />
+                  </Grid>
+                </FlipPage>
+              ) : (
+                // Webpage
 
-              <FlipPage
-                disableSwipe={this.state.edit}
-                flipOnTouch={this.state.edit}
-                flipOnTouchZone={0}
-                width={400}
-                height={525}
-                style={{
-                  minWidth: "75vw",
-                  minHeight: "95%",
-                }}
-                orientation="horizontal"
-                showSwipeHint={true}
-              >
-                {pages.length ? (
-                  <SinglePage {...this.state.pages} key={pages} />
-                ) : (
-                  ""
-                )}
-                <Box pad="xxsmall">
-                  <Default />
-                </Box>
-                <Box>
-                  <CaptionMiddle />
-                </Box>
-                <Box>
-                  <CaptionTop />
-                </Box>
-                <Box>
-                  <CaptionBottom />
-                </Box>
-              </FlipPage>
-            )
-          }
-        </ResponsiveContext.Consumer>
-        <Toolbar scrapbookId={this.props.params.scrapbookId} />
+                <FlipPage
+                  disableSwipe={this.state.edit}
+                  flipOnTouch={this.state.edit}
+                  flipOnTouchZone={0}
+                  width={400}
+                  height={525}
+                  style={{
+                    minWidth: "75vw",
+                    minHeight: "95%",
+                  }}
+                  orientation="horizontal"
+                  showSwipeHint={true}
+                >
+                  {pages.length ? (
+                    <SinglePage {...this.state.pages} key={pages} />
+                  ) : (
+                    ""
+                  )}
+                  <Box pad="xxsmall">
+                    <Default />
+                  </Box>
+                  <Box>
+                    <CaptionMiddle />
+                  </Box>
+                  <Box>
+                    <CaptionTop />
+                  </Box>
+                  <Box>
+                    <CaptionBottom />
+                  </Box>
+                </FlipPage>
+              )
+            }
+          </ResponsiveContext.Consumer>
+        </Box>
+        <Box direction="row">
+          <Toolbar scrapbookId={this.props.params.scrapbookId} />
+        </Box>
       </Box>
     ) : (
       <Spinner />
