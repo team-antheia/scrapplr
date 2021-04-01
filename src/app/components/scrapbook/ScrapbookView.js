@@ -1,16 +1,16 @@
 import React, { Component, useEffect, useState } from 'react';
 import FlipPage from 'react-flip-page';
 
-import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from "grommet";
-import "rsuite/dist/styles/rsuite-default.css";
-import { firestore } from "../../../index";
-import { Toolbar } from "..";
+import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from 'grommet';
+import 'rsuite/dist/styles/rsuite-default.css';
+import { firestore } from '../../../index';
+import { Toolbar } from '..';
 
-import Default from "./layouts/Default";
+import Default from './layouts/Default';
 
-import CaptionTop from "./layouts/CaptionTop";
-import CaptionBottom from "./layouts/CaptionBottom";
-import { withRouter } from "react-router-dom";
+import CaptionTop from './layouts/CaptionTop';
+import CaptionBottom from './layouts/CaptionBottom';
+import { withRouter } from 'react-router-dom';
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -143,17 +143,16 @@ function ScrapbookView(props) {
             ) : (
               // Webpage
               <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  height: '100%',
+                }}
+              >
                 <FlipPage
-                  disableSwipe={this.state.isEditing}
+                  disableSwipe={isEditing}
                   height={320}
                   responsive={true}
-                  }}
                   orientation="horizontal"
                   showSwipeHint={true}
                 >
@@ -182,7 +181,6 @@ function ScrapbookView(props) {
         </ResponsiveContext.Consumer>
         <Box direction="row">
           <Toolbar scrapbookId={props.params.scrapbookId} />
-
         </Box>
       </Box>
     </Box>
@@ -195,23 +193,23 @@ export default withRouter(ScrapbookView);
 
 const styles = {
   twoPage: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "space-around",
-    padding: "auto",
-    background: "rgba(255,255,255, 0.1)",
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+    padding: 'auto',
+    background: 'rgba(255,255,255, 0.1)',
   },
   container: {
     padding: 8,
     background:
-      "linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "75vh",
-    minWidth: "95vw",
-    borderRadius: "11px",
+      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '75vh',
+    minWidth: '95vw',
+    borderRadius: '11px',
   },
-  singlePage: { width: 390, height: "100%", minHeight: 500 },
+  singlePage: { width: 390, height: '100%', minHeight: 500 },
 };
