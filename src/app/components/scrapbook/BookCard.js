@@ -1,5 +1,6 @@
-import React from 'react';
-import { Card, CardFooter, CardBody, CardHeader, Image } from 'grommet';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card, CardFooter, CardBody, CardHeader, Image } from "grommet";
 
 export default function BookCard({
   coverImageUrl,
@@ -9,8 +10,18 @@ export default function BookCard({
   type,
   scrapbookId,
   onSelect,
+  mapLocations
 }) {
+  console.log("mapLocations", mapLocations);
   return (
+    <Link
+      to={{
+        pathname: `/scrapbooks/${scrapbookId}`,
+        state: {
+          mapLocations: [...mapLocations],
+        },
+      }}
+    >
     <Card
       elevation="medium"
       height="small"
@@ -28,5 +39,7 @@ export default function BookCard({
         by {name}
       </CardFooter>
     </Card>
+    </Link>
+
   );
 }

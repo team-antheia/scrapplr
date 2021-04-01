@@ -3,24 +3,31 @@ import FlipPage from "react-flip-page";
 import { Box, ResponsiveContext, Grid, Card, Spinner } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../../index";
+
 import { SinglePage, Map } from "..";
+
 import Default from "./layouts/Default";
 import CaptionMiddle from "./layouts/CaptionMiddle";
 import CaptionTop from "./layouts/CaptionTop";
 import CaptionBottom from "./layouts/CaptionBottom";
 
+
 export default class ScrapbookView extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       edit: false,
       pages: [],
+      pageNum: 1,
+      loaded: false,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   async componentDidMount() {
+
     if (this.props.params.scrapbookId) {
+
       const pagesRef = firestore.collection("Pages");
       const queryRef = await pagesRef
         .where("scrapbookId", "==", this.props.params.scrapbookId)
@@ -31,13 +38,17 @@ export default class ScrapbookView extends Component {
         return;
       }
 
+      const pageData = [];
       queryRef.forEach((doc) => {
-        this.setState((prevState) => {
-          return {
-            pages: [...prevState.pages, doc.data()],
-          };
-        });
+        pageData.push(doc.data());
       });
+
+      this.setState(() => {
+        return {
+          pages: [...this.state.pages, ...pageData]
+        };
+      });
+
       return;
     }
   }
@@ -51,7 +62,8 @@ export default class ScrapbookView extends Component {
   }
 
   render() {
-    const { pages } = this.state;
+    const { pages, pageNum } = this.state;
+    // const mapLocations = [this.state.mapLocations];
     const bookStyle = {
       position: "relative",
       alignItems: "flex-end",
@@ -60,7 +72,7 @@ export default class ScrapbookView extends Component {
       width: "100%",
     };
 
-    return this.state.pages ? (
+    return pages.length > 1 ? (
       <Box
         width={{ min: "85vw" }}
         height={{ min: "75vh" }}
@@ -130,41 +142,46 @@ export default class ScrapbookView extends Component {
               </FlipPage>
             ) : (
               // Webpage
-
-              <FlipPage
-                disableSwipe={this.state.edit}
-                flipOnTouch={this.state.edit}
-                flipOnTouchZone={0}
-                width={400}
-                height={525}
-                style={{
-                  minWidth: "75vw",
-                  minHeight: "95%",
-                }}
-                orientation="horizontal"
-                showSwipeHint={true}
-              >
-                {pages.length ? (
-                  <SinglePage {...this.state.pages} key={pages} />
-                ) : (
-                  ""
-                )}
-                <Box pad="xxsmall">
-                  <Default />
-                </Box>
-                <Box>
-                  <CaptionMiddle />
-                </Box>
-                <Box>
-                  <CaptionTop />
-                </Box>
-                <Box>
-                  <CaptionBottom />
-                </Box>
-              </FlipPage>
+              <div>
+                <FlipPage
+                  disableSwipe={this.state.edit}
+                  flipOnTouch={this.state.edit}
+                  flipOnTouchZone={0}
+                  width={400}
+                  height={525}
+                  style={{
+                    minWidth: "75vw",
+                    minHeight: "100%",
+                  }}
+                  orientation="horizontal"
+                  showSwipeHint={true}
+                >
+                  {pages.length > 1 ? (
+                    <div>
+                      <CaptionTop page={pages[1]} />
+                    </div>
+                  ) : (
+                    <div>
+                      <Box pad="xxsmall">
+                        <Default />
+                      </Box>
+                      <Box>
+                        {/* <CaptionMiddle /> */}
+                      </Box>
+                      <Box>{/* <CaptionTop /> */}</Box>
+                      <Box>
+                        <CaptionBottom />
+                      </Box>
+                    </div>
+                  )}
+                  <div></div>
+                  <div></div>
+                </FlipPage>
+              </div>
             )
           }
         </ResponsiveContext.Consumer>
+        <Toolbar scrapbookId={this.props.params.scrapbookId} />
       </Box>
     ) : (
       <Spinner />
