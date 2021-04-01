@@ -27,7 +27,7 @@ export default class UserHome extends Component {
       scrapbooks: [],
       show: false,
       title: "My Scrapbook",
-      selectedScrapbook: "",
+      selectedScrapbook: ""
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -56,9 +56,8 @@ export default class UserHome extends Component {
       return;
     }
     queryRef.forEach((doc) => {
-      const id = doc.id;
       this.setState({
-        scrapbooks: [...this.state.scrapbooks, { ...doc.data(), id }],
+        scrapbooks: [...this.state.scrapbooks, doc.data()],
       });
     });
     return;
@@ -124,6 +123,8 @@ export default class UserHome extends Component {
     });
   }
 
+
+
   render() {
     return !this.state.scrapbooks.length ? (
       <Spinner />
@@ -143,19 +144,13 @@ export default class UserHome extends Component {
               {this.state.scrapbooks.map((book) => {
                 return (
                   <div>
-                    <Link
-                      to={`/scrapbooks/${book.scrapbookId}`}
-                      key={book.scrapbookId}
-                    >
                       <BookCard
                         {...book}
-                        scrapbookId={book.scrapbookId}
                         email={this.props.email}
                         name={this.props.name}
                         selectedScrapbook={this.state.selectedScrapbook}
                         onSelect={this.onSelect}
                       />
-                    </Link>
                   </div>
                 );
               })}
