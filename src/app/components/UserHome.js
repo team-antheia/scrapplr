@@ -73,6 +73,7 @@ export default class UserHome extends Component {
 
   async addNewScrapbook() {
     const user = this.props.userId;
+    const scrapbookRef = firestore.collection('Scrapbooks').doc();
 
     let newScrapbook = {
       title: this.state.title,
@@ -87,12 +88,20 @@ export default class UserHome extends Component {
       ],
       owner: user,
       pages: [],
+      scrapbookId: scrapbookRef.id,
     };
-    const scrapbookRef = firestore.collection("Scrapbooks").doc();
-    scrapbookRef.set(
-      Object.assign(newScrapbook, { scrapbookId: scrapbookRef.id })
-    );
 
+    await scrapbookRef.set(newScrapbook);
+
+    //  New scrapbook page needs to be added with new scrapbook
+    const pagesRef = firestore.collection('Pages').add({
+      cards: [],
+      pageNum: '1',
+      pageTitle: '',
+      scrapbookId: scrapbookRef.id,
+    });
+
+    //Updates state to re-render the page
     this.setState({ scrapbooks: [...this.state.scrapbooks, newScrapbook] });
     this.toggleModal();
   }
