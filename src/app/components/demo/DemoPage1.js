@@ -1,7 +1,7 @@
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 
-import { Box, Card, CardBody, CardFooter, CardHeader, Text } from "grommet";
+import { Card } from "grommet";
 import ReactGridLayout from "react-grid-layout";
 
 import React, { Component } from "react";
