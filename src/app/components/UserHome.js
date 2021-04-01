@@ -1,5 +1,5 @@
-import { auth, firestore } from '../../index';
-import firebase from 'firebase/app';
+import { auth, firestore } from "../../index";
+import firebase from "firebase/app";
 
 import {
   Heading,
@@ -10,14 +10,14 @@ import {
   FormField,
   TextInput,
   Spinner,
-} from 'grommet';
-import { Modal } from 'rsuite';
-import { Link } from 'react-router-dom';
-import 'rsuite/dist/styles/rsuite-default.css';
-import BookCard from './scrapbook/BookCard';
-import { history } from '../index';
+} from "grommet";
+import { Modal } from "rsuite";
+import { Link } from "react-router-dom";
+import "rsuite/dist/styles/rsuite-default.css";
+import BookCard from "./scrapbook/BookCard";
+import { history } from "../index";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export default class UserHome extends Component {
   constructor() {
@@ -26,8 +26,8 @@ export default class UserHome extends Component {
     this.state = {
       scrapbooks: [],
       show: false,
-      title: 'My Scrapbook',
-      selectedScrapbook: '',
+      title: "My Scrapbook",
+      selectedScrapbook: "",
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -44,15 +44,15 @@ export default class UserHome extends Component {
       this.getScrapbooks(userId);
     } else {
       // No user is signed in.
-      console.log('Not logged in');
+      console.log("Not logged in");
     }
   }
 
   async getScrapbooks(userId) {
-    const scrapbooksRef = firestore.collection('Scrapbooks');
-    const queryRef = await scrapbooksRef.where('owner', '==', userId).get();
+    const scrapbooksRef = firestore.collection("Scrapbooks");
+    const queryRef = await scrapbooksRef.where("owner", "==", userId).get();
     if (queryRef.empty) {
-      console.log('no matching documents');
+      console.log("no matching documents");
       return;
     }
     queryRef.forEach((doc) => {
@@ -80,11 +80,11 @@ export default class UserHome extends Component {
       title: this.state.title,
       collaborators: [],
       coverImageUrl:
-        'https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg',
+        "https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg",
       mapLocations: [
         {
           coordinates: new firebase.firestore.GeoPoint(40.7128, 74.006),
-          name: 'New York, NY',
+          name: "New York, NY",
         },
       ],
       owner: user,
@@ -115,7 +115,7 @@ export default class UserHome extends Component {
 
   async handleLogout() {
     await firebase.auth().signOut();
-    history.push('/login');
+    history.push("/login");
   }
 
   async onSelect(event, scrapbookId) {
@@ -125,14 +125,16 @@ export default class UserHome extends Component {
   }
 
   render() {
-    return (
+    return !this.state.scrapbooks.length ? (
+      <Spinner />
+    ) : (
       <Box>
         <ResponsiveContext.Consumer>
           {(size) => (
             <Box
               align="center"
               height="85vh"
-              width={size === 'small' ? '80vw' : '75vw'}
+              width={size === "small" ? "80vw" : "75vw"}
               direction="column"
             >
               <Button label="add a new book" onClick={this.toggleModal} />
@@ -164,7 +166,7 @@ export default class UserHome extends Component {
         </ResponsiveContext.Consumer>
         <Box>
           <Modal
-            style={{ maxWidth: '100vw' }}
+            style={{ maxWidth: "100vw" }}
             overflow={true}
             backdrop={true}
             show={this.state.show}
