@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import firebase, { firestore } from '../../../index';
-import {
-  grommet,
-  Box,
-  Text,
-  Button,
-  FormField,
-  Form,
-  Heading,
-  TextInput,
-} from 'grommet';
+import { Button, FormField, Form, Heading, TextInput } from 'grommet';
 
 const CaptionForm = (props) => {
   const [description, setDescription] = useState('');
