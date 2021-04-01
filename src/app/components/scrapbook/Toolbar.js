@@ -11,11 +11,21 @@ import { Box, Button } from "grommet";
 const Toolbar = (props) => {
   const [tool, setTool] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const addPage = (scrapbookId) => {
+    // create a new page instance in the DB
+    // get scrapbook instance from DB
+    // push new page ID into pages array of the current scrapbook
+  };
   return (
     <Box direction="row" pad="small">
       <Button
         onClick={() => setIsEditing(!isEditing)}
         label={isEditing ? "done" : "edit page"}
+      />
+      <Button
+        style={{ visibility: isEditing ? "hidden" : "visible" }}
+        label="add new page"
+        onClick={() => addPage(props.scrapbookId)}
       />
       {isEditing ? (
         <Box direction="row">
