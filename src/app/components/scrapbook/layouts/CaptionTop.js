@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Card, Text, Image, Anchor } from "grommet";
-import StreetView from "../../map/360/StreetView"
+import StreetView from "../../map/360/StreetView";
 
 export default function CaptionTop(props) {
   console.log("the props ", props);
@@ -14,7 +14,7 @@ export default function CaptionTop(props) {
       areas={[
         { name: "caption", start: [0, 0], end: [0, 0] },
         { name: "media", start: [0, 1], end: [0, 1] },
-        {name:'media2' , start:[0,2], end:[1,2]}
+        { name: "media2", start: [0, 2], end: [1, 2] },
       ]}
     >
       <div>
@@ -32,9 +32,10 @@ export default function CaptionTop(props) {
                 )}
               </div>
               {card.type === "panoramic" && (
-                  <Card gridArea="media" background="brand" flex>
-                  <StreetView lat={card.body._lat} long={card.body._long}/></Card>
-                )}
+                <Card gridArea="media" background="brand" flex>
+                  <StreetView lat={card.body._lat} long={card.body._long} />
+                </Card>
+              )}
               <div>
                 {card.type === "image" && (
                   <Card gridArea="media2" background="brand">

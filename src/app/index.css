@@ -7,3 +7,7 @@ a:hover {
   cursor: pointer;
   text-decoration: none;
 }
+
+* {
+  scale: 2;
+}
