@@ -95,6 +95,7 @@ export default class UserHome extends Component {
     //  New scrapbook page needs to be added with new scrapbook
     const pagesRef = firestore.collection('Pages').add({
       cards: [],
+      layout: [],
       pageNum: '1',
       pageTitle: '',
       scrapbookId: scrapbookRef.id,
