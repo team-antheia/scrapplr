@@ -88,7 +88,7 @@ export default class UserHome extends Component {
       owner: user,
       pages: [],
     };
-    const scrapbookRef = firestore.collection('Scrapbooks').doc();
+    const scrapbookRef = firestore.collection("Scrapbooks").doc();
     scrapbookRef.set(
       Object.assign(newScrapbook, { scrapbookId: scrapbookRef.id })
     );
@@ -117,14 +117,16 @@ export default class UserHome extends Component {
 
 
   render() {
-    return (
+    return !this.state.scrapbooks.length ? (
+      <Spinner />
+    ) : (
       <Box>
         <ResponsiveContext.Consumer>
           {(size) => (
             <Box
               align="center"
               height="85vh"
-              width={size === 'small' ? '80vw' : '75vw'}
+              width={size === "small" ? "80vw" : "75vw"}
               direction="column"
             >
               <Button label="add a new book" onClick={this.toggleModal} />

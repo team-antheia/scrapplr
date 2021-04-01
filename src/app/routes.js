@@ -12,7 +12,7 @@ import LocationSearchInput from "./components/map/360/LocationSearchInput";
 import StreetView from "./components/map/360/StreetView";
 import MapContainer from "./components/map/markerMap/MapContainer";
 import Default from "./components/scrapbook/layouts/Default";
-import CaptionTop from "./components/scrapbook/layouts/CaptionTop";
+// import CaptionTop from "./components/scrapbook/layouts/CaptionTop";
 import CaptionBottom from "./components/scrapbook/layouts/CaptionBottom";
 import CaptionMiddle from "./components/scrapbook/layouts/CaptionMiddle";
 
@@ -116,7 +116,7 @@ export default class routes extends Component {
               <Heading margin="medium" level="4">
                 Caption Top 👇🏽
               </Heading>
-              <CaptionTop />
+              {/* <CaptionTop /> */}
               <Heading margin="medium" level="4">
                 Caption Middle 👇🏽
               </Heading>
