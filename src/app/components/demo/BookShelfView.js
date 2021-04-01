@@ -24,11 +24,12 @@ export default class BookShelfView extends Component {
           >
             <Heading>bookshelf</Heading>
             <p>
-              We at Scrappl believe that a special moment can happen at any time
-              or any place. Share those special moments with those dear to you
-              no matter where they are by creating scrapbooks that are not only
-              shareable but also collaboartive...What will you create on the
-              Scrappl app?
+              We at Scrappl believe that a moment worth capturing can happen at
+              any time or any place. With pictures of your adventures you can
+              now desighn a unique place to store them. Share those special
+              moments with those dear to you no matter where they are by
+              creating scrapbooks that are not only shareable but also
+              collaboartive...What will you create on the Scrappl app?
             </p>
 
             <Link to='/instructions'> First time creating a scrapbook?</Link>
