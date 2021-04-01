@@ -202,6 +202,7 @@ class ScrapbookView extends Component {
           <Toolbar scrapbookId={this.props.params.scrapbookId} />
         </Box>
       </Box>
+      </Box>
     ) : (
       <Spinner />
     );
