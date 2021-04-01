@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase, { firestore } from '../../../../index';
+import { Button } from 'grommet';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -10,6 +11,7 @@ class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = { address: '', lat: '', long: '', searchBar: true };
+    this.addCard = this.addCard.bind(this);
   }
 
   handleChange = (address) => {
@@ -46,52 +48,93 @@ class LocationSearchInput extends React.Component {
     }
   };
 
-  addCard = () => {};
+  async addCard() {
+    const pagesRef = firestore.collection('Pages');
+    const singlePageRef = await pagesRef
+      .where('scrapbookId', '==', this.props.scrapbookId)
+      .get();
+
+    if (singlePageRef.empty) {
+      console.log('no matching documents');
+      return;
+    }
+
+    singlePageRef.forEach(async (doc) => {
+      // Grab page:
+      console.log('page id', doc.id);
+      await firestore
+        .collection('Pages')
+        .doc(doc.id)
+        .update({
+          cards: firebase.firestore.FieldValue.arrayUnion({
+            body: new firebase.firestore.GeoPoint(
+              this.state.lat,
+              this.state.long
+            ),
+            type: 'panoramic',
+            //layout: props.layout
+          }),
+        });
+    });
+  }
 
   render() {
     return (
-      <PlacesAutocomplete
-        value={this.state.address}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
-              })}
-            />
-            <div className='autocomplete-dropdown-container'>
-              {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion) => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <StreetView lat={this.state.lat} long={this.state.long} />
-            {/* <button
+      <div>
+        <PlacesAutocomplete
+          value={this.state.address}
+          onChange={this.handleChange}
+          onSelect={this.handleSelect}
+        >
+          {({
+            getInputProps,
+            suggestions,
+            getSuggestionItemProps,
+            loading,
+          }) => (
+            <div>
+              <input
+                {...getInputProps({
+                  placeholder: 'Search Places ...',
+                  className: 'location-search-input',
+                })}
+              />
+              <div className="autocomplete-dropdown-container">
+                {loading && <div>Loading...</div>}
+                {suggestions.map((suggestion) => {
+                  const className = suggestion.active
+                    ? 'suggestion-item--active'
+                    : 'suggestion-item';
+                  // inline style for demonstration purpose
+                  const style = suggestion.active
+                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                  return (
+                    <div
+                      {...getSuggestionItemProps(suggestion, {
+                        className,
+                        style,
+                      })}
+                    >
+                      <span>{suggestion.description}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <StreetView lat={this.state.lat} long={this.state.long} />
+              {/* <button
              onClick=()
              >Add a Card</button> */}
-          </div>
-        )}
-      </PlacesAutocomplete>
+            </div>
+          )}
+        </PlacesAutocomplete>
+        <Button
+          style={{ width: '40%' }}
+          primary
+          label="add card"
+          onClick={this.addCard}
+        />
+      </div>
     );
   }
 }
