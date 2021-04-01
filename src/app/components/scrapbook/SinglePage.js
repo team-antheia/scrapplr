@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Card, CardBody } from "grommet";
+import { Card, CardBody, Grommet, grommet, Text, Box, Image } from "grommet";
 
 
 const SinglePage = (props) => {
