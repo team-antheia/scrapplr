@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import FlipPage from "react-flip-page";
-import Page2 from "../demo/DemoPage2";
-import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from "grommet";
+import { Box, ResponsiveContext, Grid, Card, Spinner } from "grommet";
 import "rsuite/dist/styles/rsuite-default.css";
 import { firestore } from "../../../index";
-import { SinglePage, Map, Toolbar } from "..";
-import MapContainer from "../map/markerMap/MapContainer";
-import { Modal } from "rsuite";
+
+import { SinglePage, Map } from "..";
+
 import Default from "./layouts/Default";
 import CaptionMiddle from "./layouts/CaptionMiddle";
 import CaptionTop from "./layouts/CaptionTop";
