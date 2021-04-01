@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import FlipPage from 'react-flip-page';
+import React, { Component } from "react";
+import FlipPage from "react-flip-page";
 
-import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from 'grommet';
-import 'rsuite/dist/styles/rsuite-default.css';
-import { firestore } from '../../../index';
-import { Toolbar } from '..';
+import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from "grommet";
+import "rsuite/dist/styles/rsuite-default.css";
+import { firestore } from "../../../index";
+import { Toolbar } from "..";
 
-import Default from './layouts/Default';
+import Default from "./layouts/Default";
 
-import CaptionTop from './layouts/CaptionTop';
-import CaptionBottom from './layouts/CaptionBottom';
-import { withRouter } from 'react-router-dom';
+import CaptionTop from "./layouts/CaptionTop";
+import CaptionBottom from "./layouts/CaptionBottom";
+import { withRouter } from "react-router-dom";
 
 class ScrapbookView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      edit: false,
+      isEditing: false,
       pages: [],
       pageNum: 1,
       loaded: false,
@@ -27,13 +27,13 @@ class ScrapbookView extends Component {
 
   async componentDidMount() {
     if (this.props.params.scrapbookId) {
-      const pagesRef = firestore.collection('Pages');
+      const pagesRef = firestore.collection("Pages");
       const queryRef = await pagesRef
-        .where('scrapbookId', '==', this.props.params.scrapbookId)
+        .where("scrapbookId", "==", this.props.params.scrapbookId)
         .get();
 
       if (queryRef.empty) {
-        console.log('No matching docs');
+        console.log("No matching docs");
         return;
       }
 
@@ -53,16 +53,16 @@ class ScrapbookView extends Component {
   }
   //ONCLICK FUNC TO TAKE USER BACK TO USERhOME
   backHome() {
-    console.log('props', this.props);
+    console.log("props", this.props);
     const { history } = this.props;
-    console.log('history', history);
-    if (history) history.push('/home');
+    console.log("history", history);
+    if (history) history.push("/home");
   }
 
   toggleEdit() {
     this.setState((prevState) => {
       return {
-        edit: !prevState.edit,
+        isEditing: !prevState.isEditing,
       };
     });
   }
@@ -71,11 +71,11 @@ class ScrapbookView extends Component {
     const { pages, pageNum } = this.state;
     // const mapLocations = [this.state.mapLocations];
     const bookStyle = {
-      position: 'relative',
-      alignItems: 'flex-end',
-      display: 'flex',
-      height: '100%',
-      width: '100%',
+      position: "relative",
+      alignItems: "flex-end",
+      display: "flex",
+      height: "100%",
+      width: "100%",
     };
 
     return pages.length >= 1 ? (
@@ -89,48 +89,47 @@ class ScrapbookView extends Component {
           margin="small"
         />
         <Box
-          width={{ min: '85vw' }}
-          height={{ min: '75vh' }}
+          width={{ min: "85vw" }}
+          height={{ min: "75vh" }}
           justify="center"
           align="center"
           background={{
-            color: 'neutral-1',
+            color: "neutral-1",
             opacity: true,
-            position: 'bottom',
-            repeat: 'no-repeat',
-            size: 'cover',
+            position: "bottom",
+            repeat: "no-repeat",
+            size: "cover",
           }}
           border={{
-            color: 'border',
-            size: 'large',
-            style: 'groove',
-            side: 'all',
+            color: "border",
+            size: "large",
+            style: "groove",
+            side: "all",
           }}
         >
           <ResponsiveContext.Consumer>
             {/* mobile view */}
             {(size) =>
-              size === 'small' ? (
+              size === "small" ? (
                 <FlipPage
                   flipOnTouch={true}
-                  width={425}
-                  height={600}
+                  responsive={true}
                   style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '24x',
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "24x",
                   }}
                 >
                   <Grid
-                    rows={['small', 'small', 'small']}
-                    columns={['small', 'small']}
+                    rows={["small", "small", "small"]}
+                    columns={["small", "small"]}
                     gap="xsmall"
                     areas={[
-                      { name: 'card1', start: [0, 0], end: [1, 0] },
-                      { name: 'nav', start: [0, 1], end: [0, 1] },
-                      { name: 'main', start: [1, 1], end: [1, 1] },
-                      { name: 'sub', start: [0, 2], end: [1, 2] },
+                      { name: "card1", start: [0, 0], end: [1, 0] },
+                      { name: "nav", start: [0, 1], end: [0, 1] },
+                      { name: "main", start: [1, 1], end: [1, 1] },
+                      { name: "sub", start: [0, 2], end: [1, 2] },
                     ]}
                   >
                     <Card gridArea="card1" background="brand" />
@@ -139,14 +138,14 @@ class ScrapbookView extends Component {
                     <Card gridArea="sub" background="light-2" />
                   </Grid>
                   <Grid
-                    rows={['small', 'small', 'small']}
-                    columns={['small', 'small']}
+                    rows={["small", "small", "small"]}
+                    columns={["small", "small"]}
                     gap="xsmall"
                     areas={[
-                      { name: 'card1', start: [0, 0], end: [1, 0] },
-                      { name: 'nav', start: [0, 1], end: [0, 1] },
-                      { name: 'main', start: [1, 1], end: [1, 1] },
-                      { name: 'sub', start: [0, 2], end: [1, 2] },
+                      { name: "card1", start: [0, 0], end: [1, 0] },
+                      { name: "nav", start: [0, 1], end: [0, 1] },
+                      { name: "main", start: [1, 1], end: [1, 1] },
+                      { name: "sub", start: [0, 2], end: [1, 2] },
                     ]}
                   >
                     <Card gridArea="card1" background="brand" />
@@ -157,17 +156,17 @@ class ScrapbookView extends Component {
                 </FlipPage>
               ) : (
                 // Webpage
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
                   <FlipPage
-                    disableSwipe={this.state.edit}
-                    flipOnTouch={this.state.edit}
-                    flipOnTouchZone={0}
-                    width={400}
-                    height={525}
-                    style={{
-                      minWidth: '75vw',
-                      minHeight: '100%',
-                    }}
+                    disableSwipe={this.state.isEditing}
+                    height={320}
+                    responsive={true}
                     orientation="horizontal"
                     showSwipeHint={true}
                   >
@@ -194,9 +193,9 @@ class ScrapbookView extends Component {
               )
             }
           </ResponsiveContext.Consumer>
-          <Box direction="row">
-            <Toolbar scrapbookId={this.props.params.scrapbookId} />
-          </Box>
+        </Box>
+        <Box direction="row">
+          <Toolbar scrapbookId={this.props.params.scrapbookId} />
         </Box>
       </Box>
     ) : (
@@ -209,23 +208,23 @@ export default withRouter(ScrapbookView);
 
 const styles = {
   twoPage: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-around',
-    padding: 'auto',
-    background: 'rgba(255,255,255, 0.1)',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "space-around",
+    padding: "auto",
+    background: "rgba(255,255,255, 0.1)",
   },
   container: {
     padding: 8,
     background:
-      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '75vh',
-    minWidth: '95vw',
-    borderRadius: '11px',
+      "linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "75vh",
+    minWidth: "95vw",
+    borderRadius: "11px",
   },
-  singlePage: { width: 390, height: '100%', minHeight: 500 },
+  singlePage: { width: 390, height: "100%", minHeight: 500 },
 };
