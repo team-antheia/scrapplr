@@ -14,7 +14,7 @@ export default function Default() {
         { name: "sub", start: [0, 2], end: [1, 2] },
       ]}
     >
-      <Card gridArea="card1" background="brand" />
+      <Card gridArea="card1" background="#92abb3" />
       <Card gridArea="nav" background="light-5" />
       <Card gridArea="main" background="light-2" />
       <Card gridArea="sub" background="light-2" />

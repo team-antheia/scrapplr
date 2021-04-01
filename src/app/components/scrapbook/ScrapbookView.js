@@ -81,6 +81,7 @@ class ScrapbookView extends Component {
     };
 
     return pages.length >= 1 ? (
+      <Box>
       <Box
         width={{ min: '85vw' }}
         height={{ min: '75vh' }}
@@ -160,10 +161,12 @@ class ScrapbookView extends Component {
                   style={{
                     minWidth: '75vw',
                     minHeight: '100%',
+
                   }}
                   orientation='horizontal'
                   showSwipeHint={true}
                 >
+
                   {pages.length > 1 ? (
                     <div>
                       <CaptionTop page={pages[1]} />
@@ -195,7 +198,9 @@ class ScrapbookView extends Component {
             )
           }
         </ResponsiveContext.Consumer>
-        <Toolbar scrapbookId={this.props.params.scrapbookId} />
+        <Box direction="row">
+          <Toolbar scrapbookId={this.props.params.scrapbookId} />
+        </Box>
       </Box>
     ) : (
       <Spinner />
