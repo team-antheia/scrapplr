@@ -1,19 +1,20 @@
-import React, { Component } from "react";
-import FlipPage from "react-flip-page";
-import Page2 from "../demo/DemoPage2";
-import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from "grommet";
-import "rsuite/dist/styles/rsuite-default.css";
-import { firestore } from "../../../index";
-import { SinglePage, Map, Toolbar } from "..";
-import MapContainer from "../map/markerMap/MapContainer";
-import { Modal } from "rsuite";
-import Default from "./layouts/Default";
-import CaptionMiddle from "./layouts/CaptionMiddle";
-import CaptionTop from "./layouts/CaptionTop";
-import CaptionBottom from "./layouts/CaptionBottom";
+import React, { Component } from 'react';
+import FlipPage from 'react-flip-page';
+import Page2 from '../demo/DemoPage2';
+import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from 'grommet';
+import 'rsuite/dist/styles/rsuite-default.css';
+import { firestore } from '../../../index';
+import { SinglePage, Map, Toolbar } from '..';
+import MapContainer from '../map/markerMap/MapContainer';
+import { Modal } from 'rsuite';
+import Default from './layouts/Default';
+import CaptionMiddle from './layouts/CaptionMiddle';
+import CaptionTop from './layouts/CaptionTop';
+import CaptionBottom from './layouts/CaptionBottom';
+//CHILD COMPONENT WILL NEED THIS IN ORDER TO BE A BLE TO USE HISTORY
+import { withRouter } from 'react-router-dom';
 
-
-export default class ScrapbookView extends Component {
+class ScrapbookView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,19 +24,18 @@ export default class ScrapbookView extends Component {
       loaded: false,
     };
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.backHome = this.backHome.bind(this);
   }
 
   async componentDidMount() {
-
     if (this.props.params.scrapbookId) {
-
-      const pagesRef = firestore.collection("Pages");
+      const pagesRef = firestore.collection('Pages');
       const queryRef = await pagesRef
-        .where("scrapbookId", "==", this.props.params.scrapbookId)
+        .where('scrapbookId', '==', this.props.params.scrapbookId)
         .get();
 
       if (queryRef.empty) {
-        console.log("No matching docs");
+        console.log('No matching docs');
         return;
       }
 
@@ -46,12 +46,19 @@ export default class ScrapbookView extends Component {
 
       this.setState(() => {
         return {
-          pages: [...this.state.pages, ...pageData]
+          pages: [...this.state.pages, ...pageData],
         };
       });
 
       return;
     }
+  }
+  //ONCLICK FUNC TO TAKE USER BACK TO USERhOME
+  backHome() {
+    console.log('props', this.props);
+    const { history } = this.props;
+    console.log('history', history);
+    if (history) history.push('/home');
   }
 
   toggleEdit() {
@@ -66,79 +73,80 @@ export default class ScrapbookView extends Component {
     const { pages, pageNum } = this.state;
     // const mapLocations = [this.state.mapLocations];
     const bookStyle = {
-      position: "relative",
-      alignItems: "flex-end",
-      display: "flex",
-      height: "100%",
-      width: "100%",
+      position: 'relative',
+      alignItems: 'flex-end',
+      display: 'flex',
+      height: '100%',
+      width: '100%',
     };
 
-    return pages.length > 1 ? (
+    return pages.length >= 1 ? (
+      <Box>
       <Box
-        width={{ min: "85vw" }}
-        height={{ min: "75vh" }}
-        justify="center"
-        align="center"
+        width={{ min: '85vw' }}
+        height={{ min: '75vh' }}
+        justify='center'
+        align='center'
         background={{
-          color: "neutral-1",
+          color: 'neutral-1',
           opacity: true,
-          position: "bottom",
-          repeat: "no-repeat",
-          size: "cover",
+          position: 'bottom',
+          repeat: 'no-repeat',
+          size: 'cover',
         }}
         border={{
-          color: "border",
-          size: "large",
-          style: "groove",
-          side: "all",
+          color: 'border',
+          size: 'large',
+          style: 'groove',
+          side: 'all',
         }}
       >
         <ResponsiveContext.Consumer>
           {/* mobile view */}
           {(size) =>
-            size === "small" ? (
+            size === 'small' ? (
               <FlipPage
                 flipOnTouch={true}
                 width={425}
                 height={600}
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "24x",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '24x',
                 }}
               >
                 <Grid
-                  rows={["small", "small", "small"]}
-                  columns={["small", "small"]}
-                  gap="xsmall"
+                  rows={['small', 'small', 'small']}
+                  columns={['small', 'small']}
+                  gap='xsmall'
                   areas={[
-                    { name: "card1", start: [0, 0], end: [1, 0] },
-                    { name: "nav", start: [0, 1], end: [0, 1] },
-                    { name: "main", start: [1, 1], end: [1, 1] },
-                    { name: "sub", start: [0, 2], end: [1, 2] },
+                    { name: 'card1', start: [0, 0], end: [1, 0] },
+                    { name: 'nav', start: [0, 1], end: [0, 1] },
+                    { name: 'main', start: [1, 1], end: [1, 1] },
+                    { name: 'sub', start: [0, 2], end: [1, 2] },
                   ]}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
+                  <Card gridArea='card1' background='brand' />
+                  <Card gridArea='nav' background='light-5' />
+                  <Card gridArea='main' background='light-2' />
+                  <Card gridArea='sub' background='light-2' />
                 </Grid>
                 <Grid
-                  rows={["small", "small", "small"]}
-                  columns={["small", "small"]}
-                  gap="xsmall"
+                  rows={['small', 'small', 'small']}
+                  columns={['small', 'small']}
+                  gap='xsmall'
                   areas={[
-                    { name: "card1", start: [0, 0], end: [1, 0] },
-                    { name: "nav", start: [0, 1], end: [0, 1] },
-                    { name: "main", start: [1, 1], end: [1, 1] },
-                    { name: "sub", start: [0, 2], end: [1, 2] },
+                    { name: 'card1', start: [0, 0], end: [1, 0] },
+                    { name: 'nav', start: [0, 1], end: [0, 1] },
+                    { name: 'main', start: [1, 1], end: [1, 1] },
+                    { name: 'sub', start: [0, 2], end: [1, 2] },
                   ]}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
+                  <Card gridArea='card1' background='brand' />
+                  <Card gridArea='nav' background='light-5' />
+                  <Card gridArea='main' background='light-2' />
+                  <Card gridArea='sub' background='light-2' />
                 </Grid>
               </FlipPage>
             ) : (
@@ -151,24 +159,24 @@ export default class ScrapbookView extends Component {
                   width={400}
                   height={525}
                   style={{
-                    minWidth: "75vw",
-                    minHeight: "100%",
+                    minWidth: '75vw',
+                    minHeight: '100%',
+
                   }}
-                  orientation="horizontal"
+                  orientation='horizontal'
                   showSwipeHint={true}
                 >
+
                   {pages.length > 1 ? (
                     <div>
                       <CaptionTop page={pages[1]} />
                     </div>
                   ) : (
                     <div>
-                      <Box pad="xxsmall">
+                      <Box pad='xxsmall'>
                         <Default />
                       </Box>
-                      <Box>
-                        {/* <CaptionMiddle /> */}
-                      </Box>
+                      <Box>{/* <CaptionMiddle /> */}</Box>
                       <Box>{/* <CaptionTop /> */}</Box>
                       <Box>
                         <CaptionBottom />
@@ -178,11 +186,21 @@ export default class ScrapbookView extends Component {
                   <div></div>
                   <div></div>
                 </FlipPage>
+                <Button
+                  type='button'
+                  clasName='backHome'
+                  label='back to home'
+                  onClick={this.backHome}
+                  primary
+                  margin='small'
+                />
               </div>
             )
           }
         </ResponsiveContext.Consumer>
-        <Toolbar scrapbookId={this.props.params.scrapbookId} />
+        <Box direction="row">
+          <Toolbar scrapbookId={this.props.params.scrapbookId} />
+        </Box>
       </Box>
     ) : (
       <Spinner />
@@ -190,25 +208,27 @@ export default class ScrapbookView extends Component {
   }
 }
 
+export default withRouter(ScrapbookView);
+
 const styles = {
   twoPage: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "space-around",
-    padding: "auto",
-    background: "rgba(255,255,255, 0.1)",
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+    padding: 'auto',
+    background: 'rgba(255,255,255, 0.1)',
   },
   container: {
     padding: 8,
     background:
-      "linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "75vh",
-    minWidth: "95vw",
-    borderRadius: "11px",
+      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '75vh',
+    minWidth: '95vw',
+    borderRadius: '11px',
   },
-  singlePage: { width: 390, height: "100%", minHeight: 500 },
+  singlePage: { width: 390, height: '100%', minHeight: 500 },
 };

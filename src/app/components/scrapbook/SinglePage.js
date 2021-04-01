@@ -1,21 +1,14 @@
-import React, { Component } from "react";
-import {
-  Box,
-  Button,
-  ResponsiveContext,
-  Card,
-  CardBody,
-  Grommet,
-  grommet,
-  Text,
-  Image
-} from "grommet";
+
+import React from "react";
+import { Card, CardBody } from "grommet";
+
 
 const SinglePage = (props) => {
   const bookStyle = {
     position: "relative",
     alignItems: "stretch",
     display: "flex",
+
     height: "10%",
     width: "10%",
   };
@@ -31,6 +24,7 @@ const SinglePage = (props) => {
   const { cards } = props.page;
   return (
     <div>
+
       <article style={bookStyle}>
         <Grommet theme={grommet}>
           {cards.map((card) => {
