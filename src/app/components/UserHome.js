@@ -56,7 +56,7 @@ export default class UserHome extends Component {
     const scrapbooksRef = firestore.collection('Scrapbooks');
     const queryRef = await scrapbooksRef
       .where('owner', '==', userId)
-      .orderBy('timestamp', 'desc')
+      // .orderBy('timestamp', 'desc')
       .get();
     if (queryRef.empty) {
       console.log('no matching documents');
@@ -71,6 +71,23 @@ export default class UserHome extends Component {
     // this makes it so that old scrapbooks never get added to state
     this.setState({ scrapbooks: scrapbooks });
     return;
+  }
+
+  async handleDelete(scrapbookId) {
+    //QUERY FOR THAT SCARPBOOK
+    const book = await firebase
+      .firestore()
+      .collection('Scrapbooks')
+      .doc(scrapbookId);
+    await book
+      .delete()
+      .then(() => {
+        console.log('deleted');
+      })
+      .catch((error) => {
+        console.log('ohs nos!!', error);
+      });
+    this.getScrapbooks(this.props.userId);
   }
 
   toggleModal() {
@@ -176,7 +193,7 @@ export default class UserHome extends Component {
                 return (
                   <div
                     onMouseOver={() => {
-                      this.setState({ hoverTarget: book.title });
+                      this.setState({ hoverTarget: book.scrapbookId });
                     }}
                     onMouseLeave={() => {
                       this.setState({ hoverTarget: '' });
@@ -201,7 +218,7 @@ export default class UserHome extends Component {
                       alignSelf="center"
                       style={{
                         visibility:
-                          this.state.hoverTarget === book.title
+                          this.state.hoverTarget === book.scrapbookId
                             ? 'visible'
                             : 'hidden',
                       }}
@@ -209,6 +226,21 @@ export default class UserHome extends Component {
                       onClick={() =>
                         this.editBook(book.title, book.scrapbookId)
                       }
+                    />
+                    <Button
+                      // style={{ position: 'static', right: 100 }}
+                      alignSelf="center"
+                      color="status-critical"
+                      primary
+                      margin="small"
+                      style={{
+                        visibility:
+                          this.state.hoverTarget === book.scrapbookId
+                            ? 'visible'
+                            : 'hidden',
+                      }}
+                      label="DELETE book"
+                      onClick={() => this.handleDelete(book.scrapbookId)}
                     />
                   </div>
                 );
