@@ -23,6 +23,7 @@ import { withRouter } from 'react-router-dom';
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
+  const [cards, setCards] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -32,7 +33,7 @@ function ScrapbookView(props) {
         const pagesRef = firestore.collection('Pages');
         const queryRef = await pagesRef
           .where('scrapbookId', '==', props.params.scrapbookId)
-          .orderBy('pageNum', 'desc')
+          .orderBy('pageNum')
           .get();
 
         if (queryRef.empty) {
@@ -41,16 +42,22 @@ function ScrapbookView(props) {
         }
 
         const pageData = [];
-        queryRef.forEach((doc) => {
+        await queryRef.forEach((doc) => {
           pageData.push(doc.data());
         });
         setPages(pageData);
-        // setPages([...pages, ...pageData]);
+        if (pageData[pageNum - 1]) {
+          setCards(pageData[pageNum - 1].cards);
+        }
       }
     }
 
     fetchPages();
-  }, [props.params.scrapbookId]);
+  }, [props.params.scrapbookId, pageNum, cards]);
+
+  const useCardStatus = () => {
+    setCards([...cards]);
+  };
 
   const addPage = async (scrapbookId) => {
     const pagesRef = firestore.collection('Pages');
@@ -191,9 +198,13 @@ function ScrapbookView(props) {
                     pages.map((page) => {
                       return (
                         <div>
-                          {/* <CaptionTop page={pages[pageNum]} /> */}
+                          {/* <CaptionTop page={pages[pageNum - 1]} /> */}
 
                           <Text>{page.pageNum}</Text>
+                          <Card background="brand" gridArea="header">
+                            {page.pageTitle}
+                          </Card>
+                          <CaptionTop cards={cards} />
                         </div>
                       );
                     })
@@ -218,6 +229,7 @@ function ScrapbookView(props) {
         </ResponsiveContext.Consumer>
         <Box direction="row">
           <Toolbar
+            setCards={useCardStatus}
             setIsEditing={setIsEditing}
             isEditing={isEditing}
             addPage={addPage}

@@ -81,7 +81,12 @@ export function SignUp(props) {
           type: 'description',
         },
       ],
-      layout: [],
+      layout: [
+        { name: 'top', start: [0, 0], end: [1, 0] },
+        { name: 'midLeft', start: [0, 1], end: [0, 1] },
+        { name: 'midRight', start: [1, 1], end: [1, 1] },
+        { name: 'bot', start: [0, 2], end: [1, 2] },
+      ],
       pageNum: 1,
       pageTitle: 'My Trip To Bora Bora',
       scrapbookId: scrapbookRef.id,

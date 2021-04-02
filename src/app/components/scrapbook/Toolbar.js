@@ -34,6 +34,7 @@ const Toolbar = (props) => {
           />
           <Box style={{ visibility: tool === 'photo' ? 'visible' : 'hidden' }}>
             <PhotoUpload
+              setCards={props.setCards}
               scrapbookId={props.scrapbookId} /*layout={props.layout}*/
             />
           </Box>
@@ -44,6 +45,7 @@ const Toolbar = (props) => {
           />
           <Box style={{ visibility: tool === 'map' ? 'visible' : 'hidden' }}>
             <LocationSearchInput
+              setCards={props.setCards}
               scrapbookId={props.scrapbookId} /*layout={props.layout}*/
             />
           </Box>
@@ -60,6 +62,7 @@ const Toolbar = (props) => {
             }}
           >
             <DescriptionForm
+              setCards={props.setCards}
               scrapbookId={props.scrapbookId} /*layout={props.layout}*/
             />
           </Box>
