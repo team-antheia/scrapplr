@@ -32,6 +32,7 @@ function ScrapbookView(props) {
         const pagesRef = firestore.collection('Pages');
         const queryRef = await pagesRef
           .where('scrapbookId', '==', props.params.scrapbookId)
+          .orderBy('pageNum', 'desc')
           .get();
 
         if (queryRef.empty) {
@@ -187,10 +188,15 @@ function ScrapbookView(props) {
                   // showSwipeHint={true}
                 >
                   {pages.length >= 1 ? (
-                    // <div>
-                    //   <CaptionTop page={pages[0]} />
-                    // </div>
-                    pages.map((page) => <Text>{page.pageNum}</Text>)
+                    pages.map((page) => {
+                      return (
+                        <div>
+                          {/* <CaptionTop page={pages[pageNum]} /> */}
+
+                          <Text>{page.pageNum}</Text>
+                        </div>
+                      );
+                    })
                   ) : (
                     <div>
                       <Box pad="xxsmall">

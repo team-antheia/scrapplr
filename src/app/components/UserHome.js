@@ -140,7 +140,7 @@ export default class UserHome extends Component {
     const pagesRef = firestore.collection('Pages').add({
       cards: [],
       layout: [],
-      pageNum: '1',
+      pageNum: 1,
       pageTitle: '',
       scrapbookId: scrapbookRef.id,
     });
