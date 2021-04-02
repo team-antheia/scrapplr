@@ -71,7 +71,6 @@ function ScrapbookView(props) {
     // can't figure out how to actually get this number to incremenet
     setPageNum(pageNum + 1);
   };
-  console.log('scrapbook isEditing', isEditing);
 
   const backHome = () => {
     const { history } = props;

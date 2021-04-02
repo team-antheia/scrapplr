@@ -11,7 +11,6 @@ import { Box, Button } from 'grommet';
 const Toolbar = (props) => {
   const [tool, setTool] = useState('');
   const { isEditing, setIsEditing } = props;
-  console.log('toolbar isEditing', isEditing);
 
   const addPage = async (scrapbookId) => {
     await props.addPage(props.scrapbookId);
