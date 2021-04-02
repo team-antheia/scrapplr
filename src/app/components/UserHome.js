@@ -173,6 +173,9 @@ export default class UserHome extends Component {
                     onMouseOver={() => {
                       this.setState({ hoverTarget: book.title });
                     }}
+                    onMouseLeave={() => {
+                      this.setState({ hoverTarget: '' });
+                    }}
                     style={{
                       width: '75vw',
                       display: 'flex',
@@ -191,6 +194,12 @@ export default class UserHome extends Component {
                     <Button
                       // style={{ position: 'static', right: 100 }}
                       alignSelf="center"
+                      style={{
+                        visibility:
+                          this.state.hoverTarget === book.title
+                            ? 'visible'
+                            : 'hidden',
+                      }}
                       label="edit book"
                       onClick={() =>
                         this.editBook(book.title, book.scrapbookId)
