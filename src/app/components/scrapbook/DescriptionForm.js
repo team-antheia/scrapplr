@@ -12,6 +12,8 @@ const CaptionForm = (props) => {
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', props.scrapbookId)
       .get();
+    //^^^ When we know what page the user is on, insert query here ^^^
+    // .where('pageNum', '==', props.pageNum)
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
@@ -37,6 +39,7 @@ const CaptionForm = (props) => {
     });
     setDescription('');
     setIsClicked(true);
+    props.setCards();
   };
 
   return (

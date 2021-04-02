@@ -60,6 +60,8 @@ class LocationSearchInput extends React.Component {
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', this.props.scrapbookId)
       .get();
+    //^^^ When we know what page the user is on, insert query here ^^^
+    // .where('pageNum', '==', props.pageNum)
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
@@ -88,6 +90,7 @@ class LocationSearchInput extends React.Component {
     });
 
     this.setState({ isClicked: true });
+    this.props.setCards();
   }
 
   render() {

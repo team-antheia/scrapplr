@@ -117,12 +117,13 @@ function PhotoUpload(props) {
     });
   }
 
-  //new func to find correct page with scrapbookid and add a card
   async function updateDatabase(url) {
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', props.scrapbookId)
       .get();
+    //^^^ When we know what page the user is on, insert query here ^^^
+    // .where('pageNum', '==', props.pageNum)
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
@@ -147,6 +148,7 @@ function PhotoUpload(props) {
     });
     setIsLoading(false);
     setIsClicked(true);
+    props.setCards();
   }
 
   return (
