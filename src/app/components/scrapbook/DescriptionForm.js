@@ -4,6 +4,7 @@ import { Button, FormField, Form, Heading, TextInput } from 'grommet';
 
 const CaptionForm = (props) => {
   const [description, setDescription] = useState('');
+  const [isClicked, setIsClicked] = useState(false);
 
   const updateDatabase = async () => {
     const pagesRef = firestore.collection('Pages');
@@ -29,14 +30,17 @@ const CaptionForm = (props) => {
           }),
         });
     });
-
     setDescription('');
+    setIsClicked(true);
   };
 
   return (
     <div>
       <Form>
-        <Heading level={3}>Add a description</Heading>
+        <Heading level={4}>Add a description</Heading>
+        <Button style={{ width: '40%' }} primary onClick={updateDatabase}>
+          {isClicked ? 'added!' : 'add'}
+        </Button>
         <FormField>
           <TextInput
             type="description"
@@ -45,12 +49,6 @@ const CaptionForm = (props) => {
             onChange={(evt) => setDescription(evt.target.value)}
           />
         </FormField>
-        <Button
-          style={{ width: '40%' }}
-          primary
-          label="add card"
-          onClick={updateDatabase}
-        />
       </Form>
     </div>
   );

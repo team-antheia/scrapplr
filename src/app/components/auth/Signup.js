@@ -10,6 +10,8 @@ export function SignUp(props) {
   const [username, setUsername] = useState('');
 
   const signUp = () => {
+    const userRef = firestore.collection('Users').doc();
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -18,8 +20,7 @@ export function SignUp(props) {
         await user.updateProfile({
           displayName: username,
         });
-        // Signed in user - can add functionality
-        firestore.collection('Users').add({
+        userRef.set({
           email: user.email,
           name: user.displayName,
         });
@@ -27,6 +28,8 @@ export function SignUp(props) {
       .catch((error) => {
         setErrorMessage(error.message);
       });
+
+    addFirstScrapbook(userRef.id);
   };
 
   const handleSumbit = (e) => {
@@ -34,6 +37,56 @@ export function SignUp(props) {
     signUp();
     props.history.push('/home');
   };
+
+  const addFirstScrapbook = async (userId) => {
+    const scrapbookRef = firestore.collection('Scrapbooks').doc();
+
+    let newScrapbook = {
+      title: 'My First Scrapbook',
+      collaborators: [],
+      coverImageUrl:
+        'https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg',
+      mapLocations: [
+        {
+          coordinates: new firebase.firestore.GeoPoint(40.7128, 74.006),
+          name: 'New York, NY',
+        },
+      ],
+      owner: userId,
+      pages: [],
+      scrapbookId: scrapbookRef.id,
+    };
+
+    await scrapbookRef.set(newScrapbook);
+
+    //  New scrapbook page needs to be added with new scrapbook
+    const pagesRef = firestore.collection('Pages').add({
+      cards: [
+        {
+          body:
+            'https://specials-images.forbesimg.com/imageserve/930322352/960x0.jpg?fit=scale',
+          type: 'image',
+        },
+        {
+          body: 'Add descriptions to caption your pictures',
+          type: 'description',
+        },
+        {
+          body: new firebase.firestore.GeoPoint(-16.5004, -151.7415),
+          type: 'panoramic',
+        },
+        {
+          body: 'Upload panoramics to make your experiences come to life',
+          type: 'description',
+        },
+      ],
+      layout: [],
+      pageNum: '2',
+      pageTitle: 'My Trip To Bora Bora',
+      scrapbookId: scrapbookRef.id,
+    });
+  };
+
   return (
     <div>
       <div>
@@ -71,6 +124,7 @@ export function SignUp(props) {
           </FormField>
           <Text size="xsmall">password must be at least 6 characters.</Text>
           {error ? console.log(error) : ''}
+          {error && <Text>{error}</Text>}
           <div>
             <Button label="sign up" type="submit" />
           </div>
