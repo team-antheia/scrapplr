@@ -35,7 +35,12 @@ export default function CaptionTop(props) {
               )}
               <div>
                 {card.type === 'image' && (
-                  <Card gridArea="media2" background="brand">
+                  <Card
+                    gridArea="media2"
+                    background="brand"
+                    height="small"
+                    width="small"
+                  >
                     <Anchor href="#">
                       <Image fill src={card.body} />
                     </Anchor>
