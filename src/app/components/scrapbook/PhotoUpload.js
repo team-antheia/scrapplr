@@ -6,6 +6,8 @@ import { Button, FileInput, Heading } from 'grommet';
 function PhotoUpload(props) {
   //declares names in state, set to empty string
   const [imageAsFile, setImageAsFile] = useState('');
+  const [isClicked, setIsClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState();
 
   //----- If image is need on page, use imageAsUrl to access from firebase storage --------
   const [imageAsUrl, setImageAsUrl] = useState('');
@@ -20,6 +22,36 @@ function PhotoUpload(props) {
 
   const handleFirebaseUpload = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
+    //upload file to firebase storage
+    const uploadTask = storage
+      .ref(`/images/${imageAsFile.name}`)
+      .put(imageAsFile);
+
+    //initiates the firebase side uploading
+    await uploadTask.on(
+      'state_changed',
+      null,
+      (err) => {
+        //catches the errors
+        console.log(err);
+      },
+      async () => {
+        // gets storage reference from image storage in firebase
+        // gets the download url from firebase file path
+        // sets the image from firebase as a URL onto local state
+        await storage
+          .ref('images')
+          .child(imageAsFile.name)
+          .getDownloadURL()
+          .then((firebaseUrl) => {
+            setImageAsFile(null);
+            setImageAsUrl(firebaseUrl);
+            updateDatabase(firebaseUrl);
+          });
+      }
+    );
 
     //Coordinates conversion function
     function ConvertDMSToDD(degrees, minutes, seconds, direction) {
@@ -67,35 +99,6 @@ function PhotoUpload(props) {
       //Stores coordinates in db
       updateCoordinates(latFinal, lonFinal);
     });
-
-    //upload file to firebase storage
-    const uploadTask = storage
-      .ref(`/images/${imageAsFile.name}`)
-      .put(imageAsFile);
-
-    //initiates the firebase side uploading
-    await uploadTask.on(
-      'state_changed',
-      null,
-      (err) => {
-        //catches the errors
-        console.log(err);
-      },
-      async () => {
-        // gets storage reference from image storage in firebase
-        // gets the download url from firebase file path
-        // sets the image from firebase as a URL onto local state
-        await storage
-          .ref('images')
-          .child(imageAsFile.name)
-          .getDownloadURL()
-          .then((firebaseUrl) => {
-            setImageAsFile(null);
-            setImageAsUrl(firebaseUrl);
-            updateDatabase(firebaseUrl);
-          });
-      }
-    );
   };
 
   async function updateCoordinates(lat, lon) {
@@ -137,18 +140,28 @@ function PhotoUpload(props) {
           }),
         });
     });
+    setIsLoading(false);
+    setIsClicked(true);
   }
 
+  console.log('CURRENT CLICK', isClicked);
   return (
     <div className="photo-upload">
-      <Heading level={3}>Upload a Photo</Heading>
-      <form onSubmit={handleFirebaseUpload}>
+      <Heading level={4}>Upload a Photo</Heading>
+      <Button
+        style={{ width: '30%' }}
+        primary
+        // label="upload"
+        onClick={handleFirebaseUpload}
+      >
+        {isClicked ? 'uploaded!' : isLoading ? 'one moment...' : 'upload'}
+      </Button>
+      <form>
         <FileInput
           type="file"
           onChange={handleImageAsFile}
           accept="image/png, image/jpeg, image/jpg"
         />
-        <Button style={{ width: '30%' }} primary label="upload" type="submit" />
       </form>
       {/* <img src={imageAsUrl} alt="" /> */}
     </div>

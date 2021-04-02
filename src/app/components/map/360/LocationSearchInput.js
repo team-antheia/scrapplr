@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase, { firestore } from '../../../../index';
-import { Button } from 'grommet';
+import { Button, Box } from 'grommet';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -10,7 +10,13 @@ import StreetView from './StreetView';
 class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: '', lat: '', long: '', searchBar: true };
+    this.state = {
+      address: '',
+      lat: '',
+      long: '',
+      searchBar: true,
+      isClicked: false,
+    };
     this.addCard = this.addCard.bind(this);
   }
 
@@ -76,64 +82,62 @@ class LocationSearchInput extends React.Component {
           }),
         });
     });
+
+    this.setState({ isClicked: true });
   }
 
   render() {
     return (
       <div>
-        <PlacesAutocomplete
-          value={this.state.address}
-          onChange={this.handleChange}
-          onSelect={this.handleSelect}
-        >
-          {({
-            getInputProps,
-            suggestions,
-            getSuggestionItemProps,
-            loading,
-          }) => (
-            <div>
-              <input
-                {...getInputProps({
-                  placeholder: 'Search Places ...',
-                  className: 'location-search-input',
-                })}
-              />
-              <div className="autocomplete-dropdown-container">
-                {loading && <div>Loading...</div>}
-                {suggestions.map((suggestion) => {
-                  const className = suggestion.active
-                    ? 'suggestion-item--active'
-                    : 'suggestion-item';
-                  // inline style for demonstration purpose
-                  const style = suggestion.active
-                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                  return (
-                    <div
-                      {...getSuggestionItemProps(suggestion, {
-                        className,
-                        style,
-                      })}
-                    >
-                      <span>{suggestion.description}</span>
-                    </div>
-                  );
-                })}
+        <Box direction="row">
+          <Button style={{ width: '40%' }} primary onClick={this.addCard}>
+            {this.state.isClicked ? 'added!' : 'add'}
+          </Button>
+          <PlacesAutocomplete
+            value={this.state.address}
+            onChange={this.handleChange}
+            onSelect={this.handleSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div>
+                <input
+                  {...getInputProps({
+                    placeholder: 'Search Places ...',
+                    className: 'location-search-input',
+                  })}
+                />
+                <div className="autocomplete-dropdown-container">
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion) => {
+                    const className = suggestion.active
+                      ? 'suggestion-item--active'
+                      : 'suggestion-item';
+                    // inline style for demonstration purpose
+                    const style = suggestion.active
+                      ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                      : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                    return (
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style,
+                        })}
+                      >
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <StreetView lat={this.state.lat} long={this.state.long} />
-              {/* <button
-             onClick=()
-             >Add a Card</button> */}
-            </div>
-          )}
-        </PlacesAutocomplete>
-        <Button
-          style={{ width: '40%' }}
-          primary
-          label="add card"
-          onClick={this.addCard}
-        />
+            )}
+          </PlacesAutocomplete>
+        </Box>
+        <StreetView lat={this.state.lat} long={this.state.long} />
       </div>
     );
   }
