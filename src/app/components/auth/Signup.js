@@ -61,10 +61,28 @@ export function SignUp(props) {
 
     //  New scrapbook page needs to be added with new scrapbook
     const pagesRef = firestore.collection('Pages').add({
-      cards: [],
+      cards: [
+        {
+          body:
+            'https://specials-images.forbesimg.com/imageserve/930322352/960x0.jpg?fit=scale',
+          type: 'image',
+        },
+        {
+          body: 'Add descriptions to caption your pictures',
+          type: 'description',
+        },
+        {
+          body: new firebase.firestore.GeoPoint(-16.5004, -151.7415),
+          type: 'panoramic',
+        },
+        {
+          body: 'Upload panoramics to make your experiences come to life',
+          type: 'description',
+        },
+      ],
       layout: [],
-      pageNum: '1',
-      pageTitle: '',
+      pageNum: '2',
+      pageTitle: 'My Trip To Bora Bora',
       scrapbookId: scrapbookRef.id,
     });
   };
