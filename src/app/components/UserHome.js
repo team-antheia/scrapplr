@@ -49,12 +49,16 @@ export default class UserHome extends Component {
 
   async getScrapbooks(userId) {
     const scrapbooksRef = firestore.collection('Scrapbooks');
-    const queryRef = await scrapbooksRef.where('owner', '==', userId).get();
+    const queryRef = await scrapbooksRef
+      .where('owner', '==', userId)
+      .orderBy('timestamp', 'desc')
+      .get();
     if (queryRef.empty) {
       console.log('no matching documents');
       return;
     }
     queryRef.forEach((doc) => {
+      console.log(doc.data());
       this.setState({
         scrapbooks: [...this.state.scrapbooks, doc.data()],
       });
@@ -88,6 +92,7 @@ export default class UserHome extends Component {
       owner: user,
       pages: [],
       scrapbookId: scrapbookRef.id,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
     await scrapbookRef.set(newScrapbook);
@@ -102,7 +107,7 @@ export default class UserHome extends Component {
     });
 
     //Updates state to re-render the page
-    this.setState({ scrapbooks: [...this.state.scrapbooks, newScrapbook] });
+    this.setState({ scrapbooks: [newScrapbook, ...this.state.scrapbooks] });
     this.toggleModal();
   }
 
