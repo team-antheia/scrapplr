@@ -23,8 +23,13 @@ function PhotoUpload(props) {
 
   const handleFirebaseUpload = async (e) => {
     e.preventDefault();
+    if (!imageAsFile) {
+      alert('Error: No image selected');
+      return;
+    }
 
     setIsLoading(true);
+
     //upload file to firebase storage
     const uploadTask = storage
       .ref(`/images/${imageAsFile.name}`)
