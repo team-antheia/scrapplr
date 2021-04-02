@@ -25,14 +25,19 @@ export default class UserHome extends Component {
     this.state = {
       scrapbooks: [],
       show: false,
+      showEdit: false,
       title: 'My Scrapbook',
       selectedScrapbook: '',
+      hoverTarget: '',
+      currentScrapbookTitle: '',
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.getScrapbooks = this.getScrapbooks.bind(this);
     this.addNewScrapbook = this.addNewScrapbook.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.editBook = this.editBook.bind(this);
+    this.updateScrapbook = this.updateScrapbook.bind(this);
   }
 
   async componentDidMount() {
@@ -54,11 +59,14 @@ export default class UserHome extends Component {
       console.log('no matching documents');
       return;
     }
+    // changed this so that previous state woulnd't get spread into current state
+    const scrapbooks = [];
     queryRef.forEach((doc) => {
-      this.setState({
-        scrapbooks: [...this.state.scrapbooks, doc.data()],
-      });
+      scrapbooks.push(doc.data());
     });
+
+    // this makes it so that old scrapbooks never get added to state
+    this.setState({ scrapbooks: scrapbooks });
     return;
   }
 
@@ -68,6 +76,21 @@ export default class UserHome extends Component {
         show: !prevState.show,
       };
     });
+  }
+
+  editBook(title, id) {
+    this.setState({
+      selectedScrapbook: id,
+      currentScrapbookTitle: title,
+      showEdit: true,
+    });
+  }
+
+  async updateScrapbook(id) {
+    const scrapbookRef = firestore.collection('Scrapbooks').doc(id);
+
+    await scrapbookRef.update({ title: this.state.currentScrapbookTitle });
+    this.getScrapbooks(this.props.userId);
   }
 
   async addNewScrapbook() {
@@ -110,6 +133,11 @@ export default class UserHome extends Component {
       title: e.target.value,
     });
   }
+  handleEditChange(e) {
+    this.setState({
+      currentScrapbookTitle: e.target.value,
+    });
+  }
 
   async handleLogout() {
     await firebase.auth().signOut();
@@ -139,15 +167,36 @@ export default class UserHome extends Component {
               <Button label="add a new book" onClick={this.toggleModal} />
 
               <Heading level={3}>welcome {this.props.name}</Heading>
-              {this.state.scrapbooks.map((book) => {
+              {this.state.scrapbooks.map((book, i) => {
                 return (
-                  <BookCard
-                    {...book}
-                    email={this.props.email}
-                    name={this.props.name}
-                    selectedScrapbook={this.state.selectedScrapbook}
-                    onSelect={this.onSelect}
-                  />
+                  <div
+                    onMouseOver={() => {
+                      this.setState({ hoverTarget: book.title });
+                    }}
+                    style={{
+                      width: '75vw',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}
+                    key={i}
+                  >
+                    <BookCard
+                      {...book}
+                      email={this.props.email}
+                      name={this.props.name}
+                      selectedScrapbook={this.state.selectedScrapbook}
+                      onSelect={this.onSelect}
+                    />
+                    <Button
+                      // style={{ position: 'static', right: 100 }}
+                      alignSelf="center"
+                      label="edit book"
+                      onClick={() =>
+                        this.editBook(book.title, book.scrapbookId)
+                      }
+                    />
+                  </div>
                 );
               })}
 
@@ -175,6 +224,43 @@ export default class UserHome extends Component {
               <Button onClick={this.addNewScrapbook} label="add scrapbook" />
             </Form>
             <Button margin="small" onClick={this.toggleModal} label="close" />
+          </Modal>
+        </Box>
+        <Box>
+          <Modal
+            style={{ maxWidth: '100vw' }}
+            overflow={true}
+            backdrop={true}
+            show={this.state.showEdit}
+          >
+            <Form>
+              <FormField>
+                <TextInput
+                  placeholder="scrapbook title"
+                  name="title"
+                  onChange={(evt) => this.handleEditChange(evt)}
+                  value={this.state.currentScrapbookTitle}
+                  type="text"
+                ></TextInput>
+              </FormField>
+              <Button
+                onClick={() =>
+                  this.updateScrapbook(this.state.selectedScrapbook)
+                }
+                label="update scrapbook"
+              />
+            </Form>
+            <Button
+              margin="small"
+              onClick={() => {
+                this.setState({
+                  selectedScrapbook: '',
+                  currentScrapbookTitle: '',
+                  showEdit: false,
+                });
+              }}
+              label="close"
+            />
           </Modal>
         </Box>
       </Box>

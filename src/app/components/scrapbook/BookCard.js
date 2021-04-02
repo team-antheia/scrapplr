@@ -12,7 +12,6 @@ export default function BookCard({
   onSelect,
   mapLocations,
 }) {
-  console.log('mapLocations', mapLocations);
   return (
     <Link
       to={{
@@ -21,7 +20,7 @@ export default function BookCard({
           mapLocations: [...mapLocations],
         },
       }}
-      style={{ padding: '12px' }}
+      style={{ height: 'max-content', padding: '12px' }}
     >
       <Card
         elevation="medium"

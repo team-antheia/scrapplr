@@ -151,8 +151,6 @@ export default class routes extends Component {
               <CaptionBottom />
             </Box>
           </Route>
-
-          <Route path="/" component={LandingPage} />
         </Switch>
       </Box>
     );
