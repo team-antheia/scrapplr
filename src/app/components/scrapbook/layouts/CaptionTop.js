@@ -3,7 +3,8 @@ import { Grid, Card, Text, Image, Anchor } from 'grommet';
 import StreetView from '../../map/360/StreetView';
 
 export default function CaptionTop(props) {
-  const cards = props.page.cards;
+  const cards = props.cards;
+
   return (
     <Grid
       fill
@@ -17,9 +18,6 @@ export default function CaptionTop(props) {
       ]}
     >
       <div>
-        <Card background="brand" gridArea="header">
-          {props.page.pageTitle}
-        </Card>
         {cards.map((card) => {
           return (
             <div>
@@ -37,7 +35,12 @@ export default function CaptionTop(props) {
               )}
               <div>
                 {card.type === 'image' && (
-                  <Card gridArea="media2" background="brand">
+                  <Card
+                    gridArea="media2"
+                    background="brand"
+                    height="small"
+                    width="small"
+                  >
                     <Anchor href="#">
                       <Image fill src={card.body} />
                     </Anchor>
