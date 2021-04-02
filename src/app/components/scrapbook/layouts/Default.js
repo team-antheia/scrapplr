@@ -1,23 +1,73 @@
-import React from "react";
-import { Grid, Card } from "grommet";
+import React from 'react';
+import { Grid, Card, Text, Image } from 'grommet';
+import { Map } from '../..';
 
-export default function Default() {
+export default function Default(props) {
+  const { cards } = props;
+  console.log('grid cards', cards);
+
+  const makeCardElements = (cards) => {
+    // iterate over cards from props
+    return cards.map((card, i) => {
+      let cardBody;
+      // check card type
+      if (card.type === 'text') {
+        // create grommet element based on type
+        cardBody = <Text key={i}>{card.body}</Text>;
+      }
+
+      if (card.type === 'image') {
+        cardBody = <Image key={i} src={card.body} />;
+      }
+
+      if (card.type === 'panromanic') {
+        cardBody = <Map key={i} />;
+      }
+
+      // add gridArea prop based on card index
+      if (i === 0) {
+        return (
+          <Card gridArea="top" background="#92abb3">
+            {cardBody}
+          </Card>
+        );
+      }
+
+      if (i === 1) {
+        return (
+          <Card gridArea="midLeft" background="light-5">
+            {cardBody}
+          </Card>
+        );
+      }
+      if (i === 2) {
+        return (
+          <Card gridArea="midRight" background="light-2">
+            {cardBody}{' '}
+          </Card>
+        );
+      }
+
+      if (i === 3) {
+        return (
+          <Card gridArea="bot" background="light-2">
+            .{cardBody}
+          </Card>
+        );
+      }
+    });
+  };
+
   return (
     <Grid
-      rows={["small", "small", "small"]}
-      columns={["small", "small"]}
+      pad="medium"
+      fill
+      rows={['small', 'small', 'small']}
+      columns={['small', 'small']}
       gap="xsmall"
-      areas={[
-        { name: "card1", start: [0, 0], end: [1, 0] },
-        { name: "nav", start: [0, 1], end: [0, 1] },
-        { name: "main", start: [1, 1], end: [1, 1] },
-        { name: "sub", start: [0, 2], end: [1, 2] },
-      ]}
+      areas={props.layout}
     >
-      <Card gridArea="card1" background="#92abb3" />
-      <Card gridArea="nav" background="light-5" />
-      <Card gridArea="main" background="light-2" />
-      <Card gridArea="sub" background="light-2" />
+      {makeCardElements(cards)}
     </Grid>
   );
 }
