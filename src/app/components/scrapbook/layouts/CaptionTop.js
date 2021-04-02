@@ -30,17 +30,22 @@ export default function CaptionTop(props) {
                   </Card>
                 )}
               </div>
-              {card.type === 'panoramic' && (
+              {/* {card.type === 'panoramic' && (
                 <Card gridArea="media" background="brand" flex>
                   <StreetView lat={card.body._lat} long={card.body._long} />
                 </Card>
-              )}
+              )} */}
               <div>
                 {card.type === 'image' && (
-                  <Card gridArea="media2" background="brand">
-                    <Anchor href="#">
+                  <Card gridArea="media2" background="brand"
+                  width={"550px"}
+                  height="auto"
+                  alignSelf="center"
+
+                  >
+
                       <Image fill src={card.body} />
-                    </Anchor>
+
                   </Card>
                 )}
               </div>

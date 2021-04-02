@@ -9,6 +9,7 @@ export const GoogleMap = (props) => {
     width: '50%',
     height: '50%',
   };
+  console.log('map', props)
   return (
     <div>
       {props.allLocations.length && (

@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import FlipPage from 'react-flip-page';
+import React, { Component, useEffect, useState } from "react";
+import FlipPage from "react-flip-page";
 
 import {
   Box,
@@ -9,34 +9,35 @@ import {
   Card,
   Spinner,
   Text,
-} from 'grommet';
-import 'rsuite/dist/styles/rsuite-default.css';
-import { firestore } from '../../../index';
-import { Toolbar } from '..';
+} from "grommet";
+import "rsuite/dist/styles/rsuite-default.css";
+import { firestore } from "../../../index";
+import { Toolbar } from "..";
 
-import Default from './layouts/Default';
+import Default from "./layouts/Default";
 
-import CaptionTop from './layouts/CaptionTop';
-import CaptionBottom from './layouts/CaptionBottom';
-import { withRouter } from 'react-router-dom';
+import CaptionTop from "./layouts/CaptionTop";
+import CaptionBottom from "./layouts/CaptionBottom";
+import { withRouter } from "react-router-dom";
+import MapContainer from "../map/markerMap/MapContainer";
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
-  const [pageNum, setPageNum] = useState(1);
+  const [pageNum, setPageNum] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchPages() {
       if (props.params.scrapbookId) {
-        const pagesRef = firestore.collection('Pages');
+        const pagesRef = firestore.collection("Pages");
         const queryRef = await pagesRef
-          .where('scrapbookId', '==', props.params.scrapbookId)
-          .orderBy('pageNum', 'desc')
+          .where("scrapbookId", "==", props.params.scrapbookId)
+          .orderBy("pageNum", "desc")
           .get();
 
         if (queryRef.empty) {
-          console.log('No matching docs');
+          console.log("No matching docs");
           return;
         }
 
@@ -53,18 +54,18 @@ function ScrapbookView(props) {
   }, [props.params.scrapbookId]);
 
   const addPage = async (scrapbookId) => {
-    const pagesRef = firestore.collection('Pages');
+    const pagesRef = firestore.collection("Pages");
 
     const newPage = await pagesRef.add({
       cards: [],
       pageNum: pageNum + 1,
-      pageTitle: '',
+      pageTitle: "",
       scrapbookId: scrapbookId,
       layout: [
-        { name: 'top', start: [0, 0], end: [1, 0] },
-        { name: 'midLeft', start: [0, 1], end: [0, 1] },
-        { name: 'midRight', start: [1, 1], end: [1, 1] },
-        { name: 'bot', start: [0, 2], end: [1, 2] },
+        { name: "top", start: [0, 0], end: [1, 0] },
+        { name: "midLeft", start: [0, 1], end: [0, 1] },
+        { name: "midRight", start: [1, 1], end: [1, 1] },
+        { name: "bot", start: [0, 2], end: [1, 2] },
       ],
     });
 
@@ -75,7 +76,7 @@ function ScrapbookView(props) {
 
   const backHome = () => {
     const { history } = props;
-    if (history) history.push('/home');
+    if (history) history.push("/home");
   };
 
   const toggleEdit = () => {
@@ -83,13 +84,14 @@ function ScrapbookView(props) {
   };
 
   // const { pages, pageNum } = this.state;
-  // const mapLocations = [this.state.mapLocations];
+  console.log('the props', props.location.state.mapLocations)
+  const mapLocations = props.location.state.mapLocations;
   const bookStyle = {
-    position: 'relative',
-    alignItems: 'flex-end',
-    display: 'flex',
-    height: '100%',
-    width: '100%',
+    position: "relative",
+    alignItems: "flex-end",
+    display: "flex",
+    height: "100%",
+    width: "100%",
   };
 
   return pages.length ? (
@@ -103,48 +105,48 @@ function ScrapbookView(props) {
         margin="small"
       />
       <Box
-        width={{ min: '85vw' }}
-        height={{ min: '75vh' }}
+        width={{ min: "85vw" }}
+        height={{ min: "75vh" }}
         justify="center"
         align="center"
         background={{
-          color: 'neutral-1',
+          color: "neutral-1",
           opacity: true,
-          position: 'bottom',
-          repeat: 'no-repeat',
-          size: 'cover',
+          position: "bottom",
+          repeat: "no-repeat",
+          size: "cover",
         }}
         border={{
-          color: 'border',
-          size: 'large',
-          style: 'groove',
-          side: 'all',
+          color: "border",
+          size: "large",
+          style: "groove",
+          side: "all",
         }}
       >
         <ResponsiveContext.Consumer>
           {/* mobile view */}
           {(size) =>
-            size === 'small' ? (
+            size === "small" ? (
               <FlipPage
                 disableSwipe={true}
                 flipOnTouch={true}
                 responsive={true}
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: '24x',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "24x",
                 }}
               >
                 <Grid
-                  rows={['small', 'small', 'small']}
-                  columns={['small', 'small']}
+                  rows={["small", "small", "small"]}
+                  columns={["small", "small"]}
                   gap="xsmall"
                   areas={[
-                    { name: 'card1', start: [0, 0], end: [1, 0] },
-                    { name: 'nav', start: [0, 1], end: [0, 1] },
-                    { name: 'main', start: [1, 1], end: [1, 1] },
-                    { name: 'sub', start: [0, 2], end: [1, 2] },
+                    { name: "card1", start: [0, 0], end: [1, 0] },
+                    { name: "nav", start: [0, 1], end: [0, 1] },
+                    { name: "main", start: [1, 1], end: [1, 1] },
+                    { name: "sub", start: [0, 2], end: [1, 2] },
                   ]}
                 >
                   <Card gridArea="card1" background="brand" />
@@ -153,14 +155,14 @@ function ScrapbookView(props) {
                   <Card gridArea="sub" background="light-2" />
                 </Grid>
                 <Grid
-                  rows={['small', 'small', 'small']}
-                  columns={['small', 'small']}
+                  rows={["small", "small", "small"]}
+                  columns={["small", "small"]}
                   gap="xsmall"
                   areas={[
-                    { name: 'card1', start: [0, 0], end: [1, 0] },
-                    { name: 'nav', start: [0, 1], end: [0, 1] },
-                    { name: 'main', start: [1, 1], end: [1, 1] },
-                    { name: 'sub', start: [0, 2], end: [1, 2] },
+                    { name: "card1", start: [0, 0], end: [1, 0] },
+                    { name: "nav", start: [0, 1], end: [0, 1] },
+                    { name: "main", start: [1, 1], end: [1, 1] },
+                    { name: "sub", start: [0, 2], end: [1, 2] },
                   ]}
                 >
                   <Card gridArea="card1" background="brand" />
@@ -173,9 +175,9 @@ function ScrapbookView(props) {
               // Webpage
               <div
                 style={{
-                  display: 'flex',
-                  width: '100%',
-                  height: '100%',
+                  display: "flex",
+                  width: "100%",
+                  height: "100%",
                 }}
               >
                 <FlipPage
@@ -187,17 +189,24 @@ function ScrapbookView(props) {
                   orientation="horizontal"
                   // showSwipeHint={true}
                 >
-                  {pages.length >= 1 ? (
-                    pages.map((page) => {
-                      return (
-                        <div>
-                          {/* <CaptionTop page={pages[pageNum]} /> */}
 
-                          <Text>{page.pageNum}</Text>
-                        </div>
+                  {pages.length >= 1 ? (
+                    (pages.map((page) => {
+                      return (
+                        <article>
+                          <CaptionTop page={page} />
+
+                          {/* <Text>{page.pageNum}</Text> */}
+                        </article>
                       );
                     })
-                  ) : (
+                
+                    )
+
+                  )
+
+
+                  : (
                     <div>
                       <Box pad="xxsmall">
                         <Default />
@@ -209,8 +218,8 @@ function ScrapbookView(props) {
                       </Box>
                     </div>
                   )}
-                  <div></div>
-                  <div></div>
+                  {/* <div></div>
+                  <div></div> */}
                 </FlipPage>
               </div>
             )
@@ -235,23 +244,23 @@ export default withRouter(ScrapbookView);
 
 const styles = {
   twoPage: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-around',
-    padding: 'auto',
-    background: 'rgba(255,255,255, 0.1)',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "space-around",
+    padding: "auto",
+    background: "rgba(255,255,255, 0.1)",
   },
   container: {
     padding: 8,
     background:
-      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '75vh',
-    minWidth: '95vw',
-    borderRadius: '11px',
+      "linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "75vh",
+    minWidth: "95vw",
+    borderRadius: "11px",
   },
-  singlePage: { width: 390, height: '100%', minHeight: 500 },
+  singlePage: { width: 390, height: "100%", minHeight: 500 },
 };

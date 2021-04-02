@@ -17,6 +17,7 @@ export class MapContainer extends Component {
   }
 
   async componentDidMount() {
+    console.log('ml')
     if(!this.props.mapLocations){
     const getDocs = firestore
       .collection('Scrapbooks')
@@ -28,6 +29,7 @@ export class MapContainer extends Component {
       this.setState({ locations: data.mapLocations });
     }
   }else if(this.props.mapLocations){
+    console.log('in ml', this.props.mapLocations)
     this.setState({ locations: this.props.mapLocations });
   }
 }
