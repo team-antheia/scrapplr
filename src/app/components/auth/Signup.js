@@ -55,6 +55,7 @@ export function SignUp(props) {
       owner: userId,
       pages: [],
       scrapbookId: scrapbookRef.id,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
     await scrapbookRef.set(newScrapbook);
@@ -81,7 +82,7 @@ export function SignUp(props) {
         },
       ],
       layout: [],
-      pageNum: '2',
+      pageNum: 1,
       pageTitle: 'My Trip To Bora Bora',
       scrapbookId: scrapbookRef.id,
     });
