@@ -124,6 +124,7 @@ export function SignUp(props) {
           </FormField>
           <Text size="xsmall">password must be at least 6 characters.</Text>
           {error ? console.log(error) : ''}
+          {error && <Text>{error}</Text>}
           <div>
             <Button label="sign up" type="submit" />
           </div>

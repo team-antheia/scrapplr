@@ -14,6 +14,7 @@ export function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState({});
+  const [error, setErrorMessage] = useState('');
 
   const provider = new firebase.auth.GoogleAuthProvider();
   const signInWithGoogle = () => {
@@ -42,6 +43,7 @@ export function Login(props) {
       })
       .catch((error) => {
         console.log(error);
+        setErrorMessage(error);
       });
   };
 
@@ -53,7 +55,7 @@ export function Login(props) {
 
   return (
     <div>
-      <Box pad="small">
+      <Box pad="small" width="medium">
         <Form>
           <Heading level={3}>login</Heading>
           <FormField>
@@ -61,7 +63,10 @@ export function Login(props) {
               type="email"
               value={email}
               placeholder="email"
-              onChange={(evt) => setEmail(evt.target.value)}
+              onChange={(evt) => {
+                setEmail(evt.target.value);
+                setErrorMessage('');
+              }}
             />
           </FormField>
           <FormField>
@@ -69,7 +74,10 @@ export function Login(props) {
               type="password"
               value={password}
               placeholder="password"
-              onChange={(evt) => setPassword(evt.target.value)}
+              onChange={(evt) => {
+                setPassword(evt.target.value);
+                setErrorMessage('');
+              }}
             />
           </FormField>
           <Button
@@ -89,6 +97,7 @@ export function Login(props) {
             </Text>
           </Box>
         </Form>
+        {error.message && <Text>{error.message}</Text>}
       </Box>
     </div>
   );
