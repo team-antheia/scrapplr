@@ -56,26 +56,8 @@ function ScrapbookView(props) {
   }, [props.params.scrapbookId, pageNum, cards]);
 
   const useCardStatus = () => {
-    console.log('setting state...');
     setCards([...cards]);
-    console.log(cards);
   };
-
-  // useEffect(() => {
-  //   function setCardsOnState() {
-  //     // if (pages[pageNum - 1]) {
-  //     //   setCards(pages[pageNum - 1].cards);
-  //     // }
-  //     const cardData = [];
-  //     pages.forEach((page) => {
-  //       cardData.push(page.cards);
-  //     });
-  //     setCards(cardData);
-  //   }
-  //   // console.log('INFO', pageNum, cards);
-
-  //   setCardsOnState();
-  // }, [pages]);
 
   const addPage = async (scrapbookId) => {
     const pagesRef = firestore.collection('Pages');
