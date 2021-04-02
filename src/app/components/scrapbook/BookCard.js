@@ -20,6 +20,7 @@ export default function BookCard({
           mapLocations: [...mapLocations],
         },
       }}
+      style={{ height: 'max-content', padding: '12px' }}
     >
       <Card
         elevation="medium"

@@ -1,7 +1,15 @@
 import React, { Component, useEffect, useState } from 'react';
 import FlipPage from 'react-flip-page';
 
-import { Box, Button, ResponsiveContext, Grid, Card, Spinner } from 'grommet';
+import {
+  Box,
+  Button,
+  ResponsiveContext,
+  Grid,
+  Card,
+  Spinner,
+  Text,
+} from 'grommet';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
 import { Toolbar } from '..';
@@ -35,15 +43,34 @@ function ScrapbookView(props) {
         queryRef.forEach((doc) => {
           pageData.push(doc.data());
         });
-        console.log('data from db', pageData[0]);
         setPages(pageData);
-        // console.log('state', pages);
         // setPages([...pages, ...pageData]);
       }
     }
 
     fetchPages();
   }, [props.params.scrapbookId]);
+
+  const addPage = async (scrapbookId) => {
+    const pagesRef = firestore.collection('Pages');
+
+    const newPage = await pagesRef.add({
+      cards: [],
+      pageNum: pageNum + 1,
+      pageTitle: '',
+      scrapbookId: scrapbookId,
+      layout: [
+        { name: 'top', start: [0, 0], end: [1, 0] },
+        { name: 'midLeft', start: [0, 1], end: [0, 1] },
+        { name: 'midRight', start: [1, 1], end: [1, 1] },
+        { name: 'bot', start: [0, 2], end: [1, 2] },
+      ],
+    });
+
+    setPages([...pages, (await newPage.get()).data()]);
+    // can't figure out how to actually get this number to incremenet
+    setPageNum(pageNum + 1);
+  };
 
   const backHome = () => {
     const { history } = props;
@@ -98,6 +125,7 @@ function ScrapbookView(props) {
           {(size) =>
             size === 'small' ? (
               <FlipPage
+                disableSwipe={true}
                 flipOnTouch={true}
                 responsive={true}
                 style={{
@@ -150,16 +178,19 @@ function ScrapbookView(props) {
                 }}
               >
                 <FlipPage
-                  disableSwipe={isEditing}
+                  // trying to get the page to stop swiping but it won't.
+                  // if this stops anyone from swiping, change it to 'isEditing'
+                  disableSwipe={true}
                   height={320}
                   responsive={true}
                   orientation="horizontal"
-                  showSwipeHint={true}
+                  // showSwipeHint={true}
                 >
                   {pages.length >= 1 ? (
-                    <div>
-                      <CaptionTop page={pages[0]} />
-                    </div>
+                    // <div>
+                    //   <CaptionTop page={pages[0]} />
+                    // </div>
+                    pages.map((page) => <Text>{page.pageNum}</Text>)
                   ) : (
                     <div>
                       <Box pad="xxsmall">
@@ -180,7 +211,12 @@ function ScrapbookView(props) {
           }
         </ResponsiveContext.Consumer>
         <Box direction="row">
-          <Toolbar scrapbookId={props.params.scrapbookId} />
+          <Toolbar
+            setIsEditing={setIsEditing}
+            isEditing={isEditing}
+            addPage={addPage}
+            scrapbookId={props.params.scrapbookId}
+          />
         </Box>
       </Box>
     </Box>
