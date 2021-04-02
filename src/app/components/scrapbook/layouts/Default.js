@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid, Card, Text, Image } from 'grommet';
 import { Map } from '../..';
+import MapContainer from '../../map/markerMap/MapContainer';
+import StreetView from '../../map/360/StreetView';
 
 export default function Default(props) {
   const { cards } = props;
@@ -20,8 +22,8 @@ export default function Default(props) {
         cardBody = <Image key={i} src={card.body} />;
       }
 
-      if (card.type === 'panromanic') {
-        cardBody = <Map key={i} />;
+      if (card.type === 'panoramic') {
+        cardBody = <StreetView key={i} />;
       }
 
       // add gridArea prop based on card index
