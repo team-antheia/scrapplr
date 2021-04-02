@@ -56,7 +56,7 @@ export default class UserHome extends Component {
     const scrapbooksRef = firestore.collection('Scrapbooks');
     const queryRef = await scrapbooksRef
       .where('owner', '==', userId)
-      // .orderBy('timestamp', 'desc')
+      .orderBy('timestamp', 'desc')
       .get();
     if (queryRef.empty) {
       console.log('no matching documents');

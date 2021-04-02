@@ -8,6 +8,7 @@ function PhotoUpload(props) {
   const [imageAsFile, setImageAsFile] = useState('');
   const [isClicked, setIsClicked] = useState(false);
   const [isLoading, setIsLoading] = useState();
+  const [buttonMessage, setButtonMessage] = useState('uploaded!');
 
   //----- If image is need on page, use imageAsUrl to access from firebase storage --------
   const [imageAsUrl, setImageAsUrl] = useState('');
@@ -129,22 +130,25 @@ function PhotoUpload(props) {
     }
 
     singlePageRef.forEach(async (doc) => {
-      await firestore
-        .collection('Pages')
-        .doc(doc.id)
-        .update({
+      const queryRef = await firestore.collection('Pages').doc(doc.id);
+
+      if (doc.data().cards.length >= 4) {
+        setButtonMessage('upload failed');
+        window.alert('Too many cards on this page!');
+      } else {
+        queryRef.update({
           cards: firebase.firestore.FieldValue.arrayUnion({
             body: url,
             type: 'image',
             //layout: props.layout
           }),
         });
+      }
     });
     setIsLoading(false);
     setIsClicked(true);
   }
 
-  console.log('CURRENT CLICK', isClicked);
   return (
     <div className="photo-upload">
       <Heading level={4}>Upload a Photo</Heading>
@@ -154,7 +158,7 @@ function PhotoUpload(props) {
         // label="upload"
         onClick={handleFirebaseUpload}
       >
-        {isClicked ? 'uploaded!' : isLoading ? 'one moment...' : 'upload'}
+        {isClicked ? buttonMessage : isLoading ? 'one moment...' : 'upload'}
       </Button>
       <form>
         <FileInput

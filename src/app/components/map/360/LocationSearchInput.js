@@ -12,10 +12,11 @@ class LocationSearchInput extends React.Component {
     super(props);
     this.state = {
       address: '',
-      lat: '',
-      long: '',
+      lat: 46.9171876,
+      long: 17.8951832,
       searchBar: true,
       isClicked: false,
+      buttonMessage: 'added!',
     };
     this.addCard = this.addCard.bind(this);
   }
@@ -66,12 +67,14 @@ class LocationSearchInput extends React.Component {
     }
 
     singlePageRef.forEach(async (doc) => {
-      // Grab page:
       console.log('page id', doc.id);
-      await firestore
-        .collection('Pages')
-        .doc(doc.id)
-        .update({
+      const queryRef = await firestore.collection('Pages').doc(doc.id);
+
+      if (doc.data().cards.length >= 4) {
+        this.setState({ buttonMessage: 'try again' });
+        window.alert('Too many cards on this page!');
+      } else {
+        queryRef.update({
           cards: firebase.firestore.FieldValue.arrayUnion({
             body: new firebase.firestore.GeoPoint(
               this.state.lat,
@@ -81,6 +84,7 @@ class LocationSearchInput extends React.Component {
             //layout: props.layout
           }),
         });
+      }
     });
 
     this.setState({ isClicked: true });
@@ -91,7 +95,7 @@ class LocationSearchInput extends React.Component {
       <div>
         <Box direction="row">
           <Button style={{ width: '40%' }} primary onClick={this.addCard}>
-            {this.state.isClicked ? 'added!' : 'add'}
+            {this.state.isClicked ? this.state.buttonMessage : 'add'}
           </Button>
           <PlacesAutocomplete
             value={this.state.address}

@@ -32,7 +32,7 @@ function ScrapbookView(props) {
         const pagesRef = firestore.collection('Pages');
         const queryRef = await pagesRef
           .where('scrapbookId', '==', props.params.scrapbookId)
-          .orderBy('pageNum', 'desc')
+          .orderBy('pageNum')
           .get();
 
         if (queryRef.empty) {
@@ -191,7 +191,7 @@ function ScrapbookView(props) {
                     pages.map((page) => {
                       return (
                         <div>
-                          {/* <CaptionTop page={pages[pageNum]} /> */}
+                          <CaptionTop page={pages[pageNum - 1]} />
 
                           <Text>{page.pageNum}</Text>
                         </div>
