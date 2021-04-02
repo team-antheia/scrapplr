@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Card, CardFooter, CardBody, CardHeader, Image } from "grommet";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Card, CardFooter, CardBody, CardHeader, Image } from 'grommet';
 
 export default function BookCard({
   coverImageUrl,
@@ -10,9 +10,9 @@ export default function BookCard({
   type,
   scrapbookId,
   onSelect,
-  mapLocations
+  mapLocations,
 }) {
-  console.log("mapLocations", mapLocations);
+  console.log('mapLocations', mapLocations);
   return (
     <Link
       to={{
@@ -21,25 +21,25 @@ export default function BookCard({
           mapLocations: [...mapLocations],
         },
       }}
+      style={{ padding: '12px' }}
     >
-    <Card
-      elevation="medium"
-      height="small"
-      width="medium"
-      background="glass"
-      onClick={(event) => onSelect(event, scrapbookId)}
-    >
-      <CardHeader style={{ color: 'black' }} pad="small">
-        {title}
-      </CardHeader>
-      <CardBody background="glass" pad="small">
-        <Image fit="cover" src={coverImageUrl} />
-      </CardBody>
-      <CardFooter background="background-contrast" pad="small">
-        by {name}
-      </CardFooter>
-    </Card>
+      <Card
+        elevation="medium"
+        height="small"
+        width="medium"
+        background="glass"
+        onClick={(event) => onSelect(event, scrapbookId)}
+      >
+        <CardHeader style={{ color: 'black' }} pad="small">
+          {title}
+        </CardHeader>
+        <CardBody background="glass" pad="small">
+          <Image fit="cover" src={coverImageUrl} />
+        </CardBody>
+        <CardFooter background="background-contrast" pad="small">
+          by {name}
+        </CardFooter>
+      </Card>
     </Link>
-
   );
 }

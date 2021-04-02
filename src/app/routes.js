@@ -35,6 +35,11 @@ export default class routes extends Component {
         const user = await usersRef.where('email', 'in', [email]).get();
         if (!user) {
           console.log('No user found');
+          this.setState({
+            userId: '',
+            email: '',
+            name: '',
+          });
         } else {
           console.log('User found');
           this.setState({
@@ -46,13 +51,18 @@ export default class routes extends Component {
       } else {
         // No user is signed in.
         console.log('Not logged in');
+        this.setState({
+          userId: '',
+          email: '',
+          name: '',
+        });
       }
     });
   }
 
   render() {
     return (
-      <Box justify='center' align='center' height='100vh'>
+      <Box justify="center" align="center" height="100vh">
         {/* {auth.currentUser !== null && auth.currentUser.email && (
           <Route
             exact
@@ -67,12 +77,8 @@ export default class routes extends Component {
         )} */}
 
         <Switch>
-          <Route exact path='/'>
-            <LandingPage />
-          </Route>
-
           <Route
-            path='/scrapbooks/:scrapbookId'
+            path="/scrapbooks/:scrapbookId"
             render={(props) => (
               <ScrapbookView
                 userId={this.state.userId}
@@ -81,56 +87,72 @@ export default class routes extends Component {
               />
             )}
           ></Route>
-          <Route path='/demo'>
+          <Route path="/demo">
             <ScrapbookView user={'demo'} />
           </Route>
-          <Route path='/instructions'>
+          <Route path="/instructions">
             <ScrapbookInstructions user={'demo'} />
           </Route>
-          <Route path='/signup' component={SignUp} />
-          <Route path='/login' component={Login} />
-          <Route path='/bookshelf'>
+          <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Route path="/bookshelf">
             <BookShelfView />
           </Route>
-          <Route path='/test' component={LocationSearchInput} />
-          <Route path='/streetview' component={StreetView} />
+          <Route path="/test" component={LocationSearchInput} />
+          <Route path="/streetview" component={StreetView} />
           {/* <Route path="/map" component={MapContainer} /> */}
-          {auth.currentUser !== null && auth.currentUser.email && (
-            <Route
-              exact
-              path='/home'
-              component={() => (
-                <UserHome
-                  userId={auth.currentUser ? this.state.userId : false}
-                  email={this.state.email}
-                  name={this.state.name}
-                />
-              )}
-            />
+          {this.state.userId && (
+            <Switch>
+              <Route
+                exact
+                path="/home"
+                component={() => (
+                  <UserHome
+                    userId={auth.currentUser ? this.state.userId : false}
+                    email={this.state.email}
+                    name={this.state.name}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/"
+                component={() => (
+                  <UserHome
+                    userId={auth.currentUser ? this.state.userId : false}
+                    email={this.state.email}
+                    name={this.state.name}
+                  />
+                )}
+              />
+            </Switch>
           )}
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
 
-          <Route path='/grids'>
-            <Box width='100%' pad='medium'>
-              <Heading margin='small' level='4'>
+          <Route path="/grids">
+            <Box width="100%" pad="medium">
+              <Heading margin="small" level="4">
                 Default grid 👇🏽
               </Heading>
               <Default />
-              <Heading margin='medium' level='4'>
+              <Heading margin="medium" level="4">
                 Caption Top 👇🏽
               </Heading>
               {/* <CaptionTop /> */}
-              <Heading margin='medium' level='4'>
+              <Heading margin="medium" level="4">
                 Caption Middle 👇🏽
               </Heading>
               <CaptionMiddle />
-              <Heading margin='medium' level='4'>
+              <Heading margin="medium" level="4">
                 Caption Bottom 👇🏽
               </Heading>
               <CaptionBottom />
             </Box>
           </Route>
 
-          <Route path='/' component={LandingPage} />
+          <Route path="/" component={LandingPage} />
         </Switch>
       </Box>
     );

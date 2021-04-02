@@ -3,11 +3,10 @@ import { Grid, Card, Text, Image, Anchor } from 'grommet';
 import StreetView from '../../map/360/StreetView';
 
 export default function CaptionTop(props) {
-  console.log('the props ', props);
-
   const cards = props.page.cards;
   return (
     <Grid
+      fill
       rows={['flex', 'flex', 'flex']}
       columns={['flex', 'flex']}
       gap="xsmall"

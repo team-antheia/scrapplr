@@ -126,7 +126,7 @@ export default class UserHome extends Component {
     return !this.state.scrapbooks.length ? (
       <Spinner />
     ) : (
-      <Box>
+      <Box pad="small">
         <ResponsiveContext.Consumer>
           {(size) => (
             <Box
@@ -134,21 +134,20 @@ export default class UserHome extends Component {
               height="85vh"
               width={size === 'small' ? '80vw' : '75vw'}
               direction="column"
+              pad="small"
             >
               <Button label="add a new book" onClick={this.toggleModal} />
 
               <Heading level={3}>welcome {this.props.name}</Heading>
               {this.state.scrapbooks.map((book) => {
                 return (
-                  <div>
-                    <BookCard
-                      {...book}
-                      email={this.props.email}
-                      name={this.props.name}
-                      selectedScrapbook={this.state.selectedScrapbook}
-                      onSelect={this.onSelect}
-                    />
-                  </div>
+                  <BookCard
+                    {...book}
+                    email={this.props.email}
+                    name={this.props.name}
+                    selectedScrapbook={this.state.selectedScrapbook}
+                    onSelect={this.onSelect}
+                  />
                 );
               })}
 
@@ -175,7 +174,7 @@ export default class UserHome extends Component {
               </FormField>
               <Button onClick={this.addNewScrapbook} label="add scrapbook" />
             </Form>
-            <Button onClick={this.toggleModal} label="close" />
+            <Button margin="small" onClick={this.toggleModal} label="close" />
           </Modal>
         </Box>
       </Box>
