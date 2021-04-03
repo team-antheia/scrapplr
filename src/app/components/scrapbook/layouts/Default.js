@@ -75,7 +75,7 @@ export default function Default(props) {
   return (
     <Box pad={{ vertical: "xsmall", horizontal: "large" }}>
       <Grid
-        rows={["small", "small", "small"]}
+        rows={["31%", "31%", "31%"]}
         columns={["50%", "50%"]}
         gap="small"
         areas={props.layout}
