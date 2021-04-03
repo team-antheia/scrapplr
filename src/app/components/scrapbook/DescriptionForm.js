@@ -20,6 +20,12 @@ const CaptionForm = (props) => {
       return;
     }
 
+    const newCard = {
+      body: description,
+      type: 'description',
+      //layout: props.layout
+    };
+
     singlePageRef.forEach(async (doc) => {
       // Grab page: console.log('page id', doc.id);
       const queryRef = await firestore.collection('Pages').doc(doc.id);
@@ -29,17 +35,13 @@ const CaptionForm = (props) => {
         window.alert('Too many cards on this page!');
       } else {
         queryRef.update({
-          cards: firebase.firestore.FieldValue.arrayUnion({
-            body: description,
-            type: 'description',
-            //layout: props.layout
-          }),
+          cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
     });
     setDescription('');
     setIsClicked(true);
-    props.setCards();
+    props.setCards(newCard);
   };
 
   return (

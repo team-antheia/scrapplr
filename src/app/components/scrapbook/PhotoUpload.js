@@ -135,6 +135,12 @@ function PhotoUpload(props) {
       return;
     }
 
+    const newCard = {
+      body: url,
+      type: 'image',
+      //layout: props.layout
+    };
+
     singlePageRef.forEach(async (doc) => {
       const queryRef = await firestore.collection('Pages').doc(doc.id);
 
@@ -143,17 +149,13 @@ function PhotoUpload(props) {
         window.alert('Too many cards on this page!');
       } else {
         queryRef.update({
-          cards: firebase.firestore.FieldValue.arrayUnion({
-            body: url,
-            type: 'image',
-            //layout: props.layout
-          }),
+          cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
     });
     setIsLoading(false);
     setIsClicked(true);
-    props.setCards();
+    props.setCards(newCard);
   }
 
   return (

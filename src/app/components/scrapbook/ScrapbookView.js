@@ -28,6 +28,7 @@ function ScrapbookView(props) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
         const pagesRef = firestore.collection('Pages');
@@ -51,12 +52,13 @@ function ScrapbookView(props) {
         }
       }
     }
-
     fetchPages();
-  }, [props.params.scrapbookId, pageNum, cards]);
+  }, [props.params.scrapbookId, pageNum]);
 
-  const useCardStatus = () => {
-    setCards([...cards]);
+  const useCardStatus = (newCard) => {
+    if (!cards.includes(newCard)) {
+      setCards([...cards, newCard]);
+    }
   };
 
   const addPage = async (scrapbookId) => {

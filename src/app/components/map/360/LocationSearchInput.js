@@ -68,6 +68,12 @@ class LocationSearchInput extends React.Component {
       return;
     }
 
+    const newCard = {
+      body: new firebase.firestore.GeoPoint(this.state.lat, this.state.long),
+      type: 'panoramic',
+      //layout: props.layout
+    };
+
     singlePageRef.forEach(async (doc) => {
       console.log('page id', doc.id);
       const queryRef = await firestore.collection('Pages').doc(doc.id);
@@ -77,20 +83,13 @@ class LocationSearchInput extends React.Component {
         window.alert('Too many cards on this page!');
       } else {
         queryRef.update({
-          cards: firebase.firestore.FieldValue.arrayUnion({
-            body: new firebase.firestore.GeoPoint(
-              this.state.lat,
-              this.state.long
-            ),
-            type: 'panoramic',
-            //layout: props.layout
-          }),
+          cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
     });
 
     this.setState({ isClicked: true });
-    this.props.setCards();
+    this.props.setCards(newCard);
   }
 
   render() {
