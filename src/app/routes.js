@@ -130,27 +130,6 @@ export default class routes extends Component {
           <Route exact path="/">
             <LandingPage />
           </Route>
-
-          <Route path="/grids">
-            <Box width="100%" pad="medium">
-              <Heading margin="small" level="4">
-                Default grid 👇🏽
-              </Heading>
-              <Default />
-              <Heading margin="medium" level="4">
-                Caption Top 👇🏽
-              </Heading>
-              {/* <CaptionTop /> */}
-              <Heading margin="medium" level="4">
-                Caption Middle 👇🏽
-              </Heading>
-              <CaptionMiddle />
-              <Heading margin="medium" level="4">
-                Caption Bottom 👇🏽
-              </Heading>
-              <CaptionBottom />
-            </Box>
-          </Route>
         </Switch>
       </Box>
     );

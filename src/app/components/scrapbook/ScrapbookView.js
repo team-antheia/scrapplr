@@ -20,8 +20,10 @@ import Default from './layouts/Default';
 import CaptionTop from './layouts/CaptionTop';
 import CaptionBottom from './layouts/CaptionBottom';
 import { Route, withRouter } from 'react-router-dom';
+import { size } from 'polished';
 
 function ScrapbookView(props) {
+  console.log(props.scrapbookId);
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
   const [cards, setCards] = useState([]);
@@ -98,16 +100,6 @@ function ScrapbookView(props) {
     setIsEditing(!isEditing);
   };
 
-  // const { pages, pageNum } = this.state;
-  // const mapLocations = [this.state.mapLocations];
-  const bookStyle = {
-    position: 'relative',
-    alignItems: 'flex-end',
-    display: 'flex',
-    height: '100%',
-    width: '100%',
-  };
-
   return pages.length ? (
     <Box fill>
       <Button
@@ -117,14 +109,30 @@ function ScrapbookView(props) {
         onClick={backHome}
         primary
         margin="small"
-        style={{ maxWidth: '550px' }}
       />
-      <Box height="large" width="90vw" style={{ maxWidth: '864px' }}>
-        <Carousel fill>
-          {pages.map((page) => (
-            <Default {...page} />
-          ))}
-        </Carousel>
+      <Box
+        justify="center"
+        align="center"
+        height="large"
+        width="90vw"
+        style={{ maxWidth: '864px' }}
+        background="glass2"
+        round={true}
+      >
+        <ResponsiveContext.Consumer>
+          {(size) => (
+            <Carousel
+              controls={
+                size === 'small' && !isEditing ? 'selectors' : !isEditing
+              }
+              fill
+            >
+              {pages.map((page, idx) => (
+                <Default key={idx} {...page} />
+              ))}
+            </Carousel>
+          )}
+        </ResponsiveContext.Consumer>
         <Box direction="row">
           <Toolbar
             setCards={useCardStatus}

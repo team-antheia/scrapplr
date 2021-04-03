@@ -1,12 +1,20 @@
 import React from 'react';
-import { Grid, Card, Text, Image } from 'grommet';
+import {
+  Box,
+  Grid,
+  Card,
+  Text,
+  Image,
+  ResponsiveContext,
+  Spinner,
+} from 'grommet';
 import { Map } from '../..';
 import MapContainer from '../../map/markerMap/MapContainer';
 import StreetView from '../../map/360/StreetView';
+import { size } from 'polished';
 
 export default function Default(props) {
   const { cards } = props;
-  console.log('grid cards', cards);
 
   const makeCardElements = (cards) => {
     // iterate over cards from props
@@ -19,11 +27,15 @@ export default function Default(props) {
       }
 
       if (card.type === 'image') {
-        cardBody = <Image key={i} src={card.body} />;
+        cardBody = <Image fit="contain" key={i} src={card.body} />;
       }
 
       if (card.type === 'panoramic') {
-        cardBody = <StreetView key={i} />;
+        cardBody = (
+          <Box justify="center" align="center">
+            <StreetView key={i} />
+          </Box>
+        );
       }
 
       // add gridArea prop based on card index
@@ -61,15 +73,16 @@ export default function Default(props) {
   };
 
   return (
-    <Grid
-      pad="medium"
-      fill
-      rows={['small', 'small', 'small']}
-      columns={['small', 'small']}
-      gap="xsmall"
-      areas={props.layout}
-    >
-      {makeCardElements(cards)}
-    </Grid>
+    <Box pad="large">
+      <Grid
+        fill
+        rows={['small', 'small', 'small']}
+        columns={['50%', '50%']}
+        gap="small"
+        areas={props.layout}
+      >
+        {cards.length ? makeCardElements(cards) : <Spinner />}
+      </Grid>
+    </Box>
   );
 }
