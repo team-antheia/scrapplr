@@ -18,6 +18,7 @@ export class MapContainer extends Component {
 
   async componentDidMount() {
     if(!this.props.mapLocations){
+      console.log('in the wrong place')
     const getDocs = firestore
       .collection('Scrapbooks')
       .doc('XQkebrXC1teAOhImleg3')
@@ -28,6 +29,7 @@ export class MapContainer extends Component {
       this.setState({ locations: data.mapLocations });
     }
   }else if(this.props.mapLocations){
+    console.log('the right place')
     this.setState({ locations: this.props.mapLocations });
   }
 }

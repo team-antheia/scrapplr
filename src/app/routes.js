@@ -17,6 +17,7 @@ import CaptionBottom from './components/scrapbook/layouts/CaptionBottom';
 import CaptionMiddle from './components/scrapbook/layouts/CaptionMiddle';
 import { ScrapbookInstructions } from './components/demo/ScrapbookInstructions';
 
+
 export default class routes extends Component {
   constructor() {
     super();
@@ -100,7 +101,7 @@ export default class routes extends Component {
           </Route>
           <Route path="/test" component={LocationSearchInput} />
           <Route path="/streetview" component={StreetView} />
-          {/* <Route path="/map" component={MapContainer} /> */}
+          <Route path="/map" component={MapContainer} />
           {this.state.userId && (
             <Switch>
               <Route

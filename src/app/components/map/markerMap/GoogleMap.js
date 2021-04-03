@@ -9,6 +9,8 @@ export const GoogleMap = (props) => {
     width: '50%',
     height: '50%',
   };
+  // console.log('in map', props)
+  // console.log('what is going in here', props.allLocations)
   return (
     <div>
       {props.allLocations.length && (
