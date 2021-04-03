@@ -23,7 +23,6 @@ import { Route, withRouter } from 'react-router-dom';
 import { size } from 'polished';
 
 function ScrapbookView(props) {
-  console.log(props.scrapbookId);
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
   const [cards, setCards] = useState([]);
@@ -73,7 +72,7 @@ function ScrapbookView(props) {
           body: 'https://static.thenounproject.com/png/558475-200.png',
         },
         { type: 'text', body: 'or text' },
-        { type: 'text', body: 'or even a map' },
+        { type: 'text', body: 'or even a street view' },
       ],
       pageNum: pageNum + 1,
       pageTitle: '',
@@ -127,9 +126,13 @@ function ScrapbookView(props) {
               }
               fill
             >
-              {pages.map((page, idx) => (
-                <Default key={idx} {...page} />
-              ))}
+              {pages.map((page, idx) =>
+                page.pageTitle === 'firstPage' ? (
+                  <CaptionBottom key={idx} {...page} />
+                ) : (
+                  <Default key={idx} {...page} />
+                )
+              )}
             </Carousel>
           )}
         </ResponsiveContext.Consumer>

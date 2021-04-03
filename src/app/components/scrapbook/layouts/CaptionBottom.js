@@ -1,19 +1,26 @@
-import React from "react";
-import { Grid, Card } from "grommet";
+import React from 'react';
+import { Grid, Card, Text, Box } from 'grommet';
+import MapContainer from '../../map/markerMap/MapContainer';
+import { Map } from '../..';
 
-export default function CaptionBottom() {
+export default function CaptionBottom({ cards, layout }) {
+  const title = cards.filter((card) => card.type === 'title').shift().body;
   return (
-    <Grid
-      rows={["small", "small", "small"]}
-      columns={["small", "small"]}
-      gap="xsmall"
-      areas={[
-        { name: "media", start: [0, 0], end: [1, 1] },
-        { name: "caption", start: [0, 2], end: [1, 2] },
-      ]}
-    >
-      <Card gridArea="caption" background="brand" />
-      <Card gridArea="media" background="light-5" />
-    </Grid>
+    <Box pad="large">
+      <Grid
+        fill
+        rows={['small', 'small', 'small']}
+        columns={['50%', '50%']}
+        gap="xsmall"
+        areas={layout}
+      >
+        <Card gridArea="caption" background="brand">
+          <Text>{title}</Text>
+        </Card>
+        <Card gridArea="media" background="light-5" align="center">
+          <Map />
+        </Card>
+      </Grid>
+    </Box>
   );
 }
