@@ -32,7 +32,7 @@ export default function Default(props) {
 
       if (card.type === "panoramic") {
         cardBody = (
-          <Box justify="center" align="center">
+          <Box justify="end" align="center">
             <StreetView key={i} />
           </Box>
         );
