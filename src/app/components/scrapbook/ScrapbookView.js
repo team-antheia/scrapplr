@@ -53,7 +53,7 @@ function ScrapbookView(props) {
     }
 
     fetchPages();
-  }, [props.params.scrapbookId, pageNum, cards]);
+  }, [props.params.scrapbookId, pageNum]);
 
   const useCardStatus = () => {
     setCards([...cards]);
