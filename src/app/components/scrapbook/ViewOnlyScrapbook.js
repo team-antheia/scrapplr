@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FlipPage from 'react-flip-page';
 
 import {
@@ -12,8 +12,6 @@ import {
 } from 'grommet';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
-import { Toolbar } from '..';
-import { Modal } from 'rsuite';
 
 import Default from './layouts/Default';
 
@@ -22,16 +20,11 @@ import CaptionBottom from './layouts/CaptionBottom';
 import { withRouter } from 'react-router-dom';
 
 function ScrapbookView(props) {
-  const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
   const [cards, setCards] = useState([]);
   const [pageNum, setPageNum] = useState(1);
-  const [isModalShowing, setIsModalShowing] = useState(false);
-  const [copyButtonClicked, setCopyButtonClicked] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
         const pagesRef = firestore.collection('Pages');
@@ -58,56 +51,11 @@ function ScrapbookView(props) {
     fetchPages();
   }, [props.params.scrapbookId, pageNum]);
 
-  const useCardStatus = (newCard) => {
-    if (!cards.includes(newCard)) {
-      setCards([...cards, newCard]);
-    }
-  };
-
-  const addPage = async (scrapbookId) => {
-    const pagesRef = firestore.collection('Pages');
-
-    const newPage = await pagesRef.add({
-      cards: [],
-      pageNum: pageNum + 1,
-      pageTitle: '',
-      scrapbookId: scrapbookId,
-      layout: [
-        { name: 'top', start: [0, 0], end: [1, 0] },
-        { name: 'midLeft', start: [0, 1], end: [0, 1] },
-        { name: 'midRight', start: [1, 1], end: [1, 1] },
-        { name: 'bot', start: [0, 2], end: [1, 2] },
-      ],
-    });
-
-    setPages([...pages, (await newPage.get()).data()]);
-    // can't figure out how to actually get this number to incremenet
-    setPageNum(pageNum + 1);
-  };
-
-  const backHome = () => {
+  const backToSignUp = () => {
     const { history } = props;
-    if (history) history.push('/home');
+    if (history) history.push('/signup');
   };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const toggleModal = () => {
-    setIsModalShowing(!isModalShowing);
-    setCopyButtonClicked(false);
-  };
-
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(
-      `scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`
-    );
-    setCopyButtonClicked(true);
-  };
-
-  // const { pages, pageNum } = this.state;
-  // const mapLocations = [this.state.mapLocations];
   const bookStyle = {
     position: 'relative',
     alignItems: 'flex-end',
@@ -118,23 +66,6 @@ function ScrapbookView(props) {
 
   return pages.length ? (
     <Box>
-      <Box direction="row" max="500px">
-        <Button
-          type="button"
-          className="backHome"
-          label="back to home"
-          onClick={backHome}
-          primary
-          margin="small"
-        />
-        <Button
-          type="button"
-          label="share with friends"
-          onClick={toggleModal}
-          primary
-          margin="small"
-        />
-      </Box>
       <Box
         width={{ min: '85vw' }}
         height={{ min: '75vh' }}
@@ -253,30 +184,14 @@ function ScrapbookView(props) {
             )
           }
         </ResponsiveContext.Consumer>
-        <Box direction="row">
-          <Toolbar
-            setCards={useCardStatus}
-            setIsEditing={setIsEditing}
-            isEditing={isEditing}
-            addPage={addPage}
-            scrapbookId={props.params.scrapbookId}
-          />
-        </Box>
-        <Modal
-          style={{ maxWidth: '100vw' }}
-          overflow={true}
-          backdrop={true}
-          show={isModalShowing}
-        >
-          <Text>Share this link:</Text>
-          <p id="link">{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
-          <Button
-            onClick={copyToClipboard}
-            label={copyButtonClicked ? 'copied!' : 'copy'}
-          />
-          <Button onClick={toggleModal} label="close" />
-        </Modal>
       </Box>
+      <Button
+        type="button"
+        label="join scrapplr"
+        onClick={backToSignUp}
+        primary
+        margin="small"
+      />
     </Box>
   ) : (
     <Spinner />
