@@ -25,9 +25,9 @@ import { size } from "polished";
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
-  const [cards, setCards] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentPage, setCurrentPage] = useState({});
 
   useEffect(() => {
     async function fetchPages() {
@@ -45,21 +45,15 @@ function ScrapbookView(props) {
 
         const pageData = [];
         await queryRef.forEach((doc) => {
-          pageData.push(doc.data());
+          const pageId = doc.id;
+          pageData.push({ ...doc.data(), pageId });
         });
         setPages(pageData);
-        if (pageData[pageNum - 1]) {
-          setCards(pageData[pageNum - 1].cards);
-        }
       }
     }
 
     fetchPages();
   }, [props.params.scrapbookId]);
-
-  const useCardStatus = () => {
-    setCards([...cards]);
-  };
 
   const addPage = async (scrapbookId) => {
     const pagesRef = firestore.collection("Pages");
@@ -95,8 +89,9 @@ function ScrapbookView(props) {
     if (history) history.push("/home");
   };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
+  const handleCurrentPage = (activeIdx) => {
+    setCurrentPage(pages[activeIdx].pageId);
+    console.log(currentPage);
   };
 
   return pages.length ? (
@@ -121,6 +116,7 @@ function ScrapbookView(props) {
         <ResponsiveContext.Consumer>
           {(size) => (
             <Carousel
+              onChild={handleCurrentPage}
               controls={
                 size === "small" && !isEditing ? "selectors" : !isEditing
               }
@@ -137,13 +133,19 @@ function ScrapbookView(props) {
           )}
         </ResponsiveContext.Consumer>
         <Box direction="row">
-          <Toolbar
-            setCards={useCardStatus}
-            setIsEditing={setIsEditing}
-            isEditing={isEditing}
-            addPage={addPage}
-            scrapbookId={props.params.scrapbookId}
-          />
+          {pages.indexOf(currentPage) !== 0 && (
+            <Toolbar
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              addPage={
+                pages.indexOf(currentPage) === pages.length - 1
+                  ? addPage
+                  : false
+              }
+              scrapbookId={props.params.scrapbookId}
+              currentPage={currentPage}
+            />
+          )}
         </Box>
       </Box>
     </Box>

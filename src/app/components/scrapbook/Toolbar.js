@@ -10,7 +10,7 @@ import { Box, Button } from "grommet";
 
 const Toolbar = (props) => {
   const [tool, setTool] = useState("");
-  const { isEditing, setIsEditing } = props;
+  const { isEditing, setIsEditing, currentPage } = props;
 
   const addPage = async (scrapbookId) => {
     await props.addPage(props.scrapbookId);
@@ -21,14 +21,18 @@ const Toolbar = (props) => {
         onClick={() => setIsEditing(!isEditing)}
         label={isEditing ? "done" : "edit page"}
       />
-      <Button
-        style={{
-          marginInline: "8px",
-          visibility: isEditing ? "hidden" : "visible",
-        }}
-        label="add new page"
-        onClick={() => addPage(props.scrapbookId)}
-      />
+
+      {props.addPage && (
+        <Button
+          style={{
+            marginInline: "8px",
+            visibility: isEditing ? "hidden" : "visible",
+          }}
+          label="add new page"
+          onClick={() => addPage(props.scrapbookId)}
+        />
+      )}
+
       {isEditing ? (
         <Box direction="row">
           <Box direction="column">
@@ -45,8 +49,8 @@ const Toolbar = (props) => {
               }}
             >
               <PhotoUpload
-                setCards={props.setCards}
                 scrapbookId={props.scrapbookId} /*layout={props.layout}*/
+                currentPage={currentPage}
               />
             </Box>
           </Box>
