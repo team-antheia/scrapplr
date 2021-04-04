@@ -124,11 +124,7 @@ function PhotoUpload(props) {
 
   async function updateDatabase(url) {
     const pagesRef = firestore.collection('Pages');
-    const singlePageRef = await pagesRef
-      .where('scrapbookId', '==', props.scrapbookId)
-      .get();
-    //^^^ When we know what page the user is on, insert query here ^^^
-    // .where('pageNum', '==', props.pageNum)
+    const singlePageRef = await pagesRef.doc(props.currentPage).get();
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
@@ -152,6 +148,19 @@ function PhotoUpload(props) {
           cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
+
+      // if (doc.data().cards.length >= 4) {
+      //   setButtonMessage("upload failed");
+      //   window.alert("Too many cards on this page!");
+      // } else {
+      //   queryRef.update({
+      //     cards: firebase.firestore.FieldValue.arrayUnion({
+      //       body: url,
+      //       type: "image",
+      //       //layout: props.layout
+      //     }),
+      //   });
+      // }
     });
     setIsLoading(false);
     setIsClicked(true);

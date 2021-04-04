@@ -10,7 +10,7 @@ export const GoogleMap = (props) => {
     height: '50%',
   };
   return (
-    <div>
+    <div style={mapStyles}>
       {props.allLocations.length && (
         <Map
           google={props.google}
