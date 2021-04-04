@@ -28,6 +28,7 @@ function ScrapbookView(props) {
   const [pageNum, setPageNum] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
+  const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
     // let mounted = true;
@@ -128,13 +129,17 @@ function ScrapbookView(props) {
               }
               fill
             >
-              {pages.map((page, idx) =>
-                page.pageTitle === 'firstPage' ? (
-                  <CaptionBottom key={idx} {...page} />
-                ) : (
-                  <Default key={idx} {...page} />
-                )
-              )}
+              {pages.map((page, idx) => {
+                if (page.pageTitle === 'firstPage') {
+                  return <CaptionBottom key={idx} {...page} />;
+                }
+
+                if (idx === pages.length - 1) {
+                  setLastPage(page);
+                }
+
+                return <Default key={idx} {...page} />;
+              })}
             </Carousel>
           )}
         </ResponsiveContext.Consumer>
@@ -143,11 +148,7 @@ function ScrapbookView(props) {
             <Toolbar
               setIsEditing={setIsEditing}
               isEditing={isEditing}
-              addPage={
-                pages.indexOf(currentPage) === pages.length - 1
-                  ? addPage
-                  : false
-              }
+              addPage={lastPage.pageId === currentPage ? addPage : false}
               scrapbookId={props.params.scrapbookId}
               currentPage={currentPage}
             />
