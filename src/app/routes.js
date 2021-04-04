@@ -16,6 +16,7 @@ import Default from './components/scrapbook/layouts/Default';
 import CaptionBottom from './components/scrapbook/layouts/CaptionBottom';
 import CaptionMiddle from './components/scrapbook/layouts/CaptionMiddle';
 import { ScrapbookInstructions } from './components/demo/ScrapbookInstructions';
+import Sharing from './components/scrapbook/Sharing';
 
 export default class routes extends Component {
   constructor() {
@@ -62,7 +63,7 @@ export default class routes extends Component {
 
   render() {
     return (
-      <Box justify="center" align="center" height="100vh">
+      <Box justify='center' align='center' height='100vh'>
         {/* {auth.currentUser !== null && auth.currentUser.email && (
           <Route
             exact
@@ -77,8 +78,9 @@ export default class routes extends Component {
         )} */}
 
         <Switch>
+          <Route path='/sharing' component={Sharing} />
           <Route
-            path="/scrapbooks/:scrapbookId"
+            path='/scrapbooks/:scrapbookId'
             render={(props) => (
               <ScrapbookView
                 userId={this.state.userId}
@@ -87,25 +89,25 @@ export default class routes extends Component {
               />
             )}
           ></Route>
-          <Route path="/demo">
+          <Route path='/demo'>
             <ScrapbookView user={'demo'} />
           </Route>
-          <Route path="/instructions">
+          <Route path='/instructions'>
             <ScrapbookInstructions user={'demo'} />
           </Route>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/bookshelf">
+          <Route path='/signup' component={SignUp} />
+          <Route path='/login' component={Login} />
+          <Route path='/bookshelf'>
             <BookShelfView />
           </Route>
-          <Route path="/test" component={LocationSearchInput} />
-          <Route path="/streetview" component={StreetView} />
+          <Route path='/test' component={LocationSearchInput} />
+          <Route path='/streetview' component={StreetView} />
           {/* <Route path="/map" component={MapContainer} /> */}
           {this.state.userId && (
             <Switch>
               <Route
                 exact
-                path="/home"
+                path='/home'
                 component={() => (
                   <UserHome
                     userId={auth.currentUser ? this.state.userId : false}
@@ -116,7 +118,7 @@ export default class routes extends Component {
               />
               <Route
                 exact
-                path="/"
+                path='/'
                 component={() => (
                   <UserHome
                     userId={auth.currentUser ? this.state.userId : false}
@@ -127,25 +129,25 @@ export default class routes extends Component {
               />
             </Switch>
           )}
-          <Route exact path="/">
+          <Route exact path='/'>
             <LandingPage />
           </Route>
 
-          <Route path="/grids">
-            <Box width="100%" pad="medium">
-              <Heading margin="small" level="4">
+          <Route path='/grids'>
+            <Box width='100%' pad='medium'>
+              <Heading margin='small' level='4'>
                 Default grid 👇🏽
               </Heading>
               <Default />
-              <Heading margin="medium" level="4">
+              <Heading margin='medium' level='4'>
                 Caption Top 👇🏽
               </Heading>
               {/* <CaptionTop /> */}
-              <Heading margin="medium" level="4">
+              <Heading margin='medium' level='4'>
                 Caption Middle 👇🏽
               </Heading>
               <CaptionMiddle />
-              <Heading margin="medium" level="4">
+              <Heading margin='medium' level='4'>
                 Caption Bottom 👇🏽
               </Heading>
               <CaptionBottom />
