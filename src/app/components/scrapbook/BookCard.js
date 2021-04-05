@@ -12,12 +12,14 @@ export default function BookCard({
   onSelect,
   mapLocations,
 }) {
+  
   return (
     <Link
       to={{
         pathname: `/scrapbooks/${scrapbookId}`,
         state: {
           mapLocations: [...mapLocations],
+          title:title
         },
       }}
       style={{ height: 'max-content', padding: '12px' }}
