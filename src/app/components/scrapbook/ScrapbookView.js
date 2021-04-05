@@ -11,18 +11,11 @@ import {
   Text,
   Carousel,
 } from 'grommet';
-<<<<<<< HEAD
-import 'rsuite/dist/styles/rsuite-default.css';
-import { firestore } from '../../../index';
-import { Toolbar } from '..';
-=======
 
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
 import { Toolbar } from '..';
 import { Modal } from 'rsuite';
-
->>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
 
 import Default from './layouts/Default';
 
@@ -30,7 +23,6 @@ import CaptionTop from './layouts/CaptionTop';
 import CaptionBottom from './layouts/CaptionBottom';
 import { Route, withRouter } from 'react-router-dom';
 import { size } from 'polished';
-
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -68,14 +60,11 @@ function ScrapbookView(props) {
     fetchPages();
   }, [props.params.scrapbookId, pageNum]);
 
-<<<<<<< HEAD
   // const useCardStatus = (newCard) => {
   //   if (!cards.includes(newCard)) {
   //     setCards([...cards, newCard]);
   //   }
   // };
-=======
->>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
 
   const addPage = async (scrapbookId) => {
     const pagesRef = firestore.collection('Pages');
@@ -133,7 +122,7 @@ function ScrapbookView(props) {
     setCopyButtonClicked(true);
   };
 
- const handleCurrentPage = (activeIdx) => {
+  const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
     console.log(currentPage);
   };
@@ -175,23 +164,15 @@ function ScrapbookView(props) {
               }
               fill
             >
-<<<<<<< HEAD
-              {pages.map((page, idx) => {
-                if (page.pageTitle === 'firstPage') {
-                  return <CaptionBottom key={idx} {...page} />;
-                }
-=======
->>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
-
               {pages.map((page, idx) => {
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
-                return(
+                return (
                   <div>
-                   <Default key={idx} {...page} />)
+                    <Default key={idx} {...page} />)
                   </div>
-                )
+                );
               })}
             </Carousel>
           )}
