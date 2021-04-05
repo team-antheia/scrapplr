@@ -123,8 +123,15 @@ function PhotoUpload(props) {
   }
 
   async function updateDatabase(url) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef.doc(props.currentPage).get();
+    // .where('scrapbookId', '==', props.scrapbookId)
+    // .where('pageNum', '==', props.currentPage)
+
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
@@ -161,6 +168,10 @@ function PhotoUpload(props) {
       //     }),
       //   });
       // }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
     });
     setIsLoading(false);
     setIsClicked(true);

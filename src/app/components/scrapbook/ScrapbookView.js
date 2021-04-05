@@ -11,9 +11,18 @@ import {
   Text,
   Carousel,
 } from 'grommet';
+<<<<<<< HEAD
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
 import { Toolbar } from '..';
+=======
+
+import 'rsuite/dist/styles/rsuite-default.css';
+import { firestore } from '../../../index';
+import { Toolbar } from '..';
+import { Modal } from 'rsuite';
+
+>>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
 
 import Default from './layouts/Default';
 
@@ -22,10 +31,13 @@ import CaptionBottom from './layouts/CaptionBottom';
 import { Route, withRouter } from 'react-router-dom';
 import { size } from 'polished';
 
+
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
   const [lastPage, setLastPage] = useState('');
@@ -56,11 +68,14 @@ function ScrapbookView(props) {
     fetchPages();
   }, [props.params.scrapbookId, pageNum]);
 
+<<<<<<< HEAD
   // const useCardStatus = (newCard) => {
   //   if (!cards.includes(newCard)) {
   //     setCards([...cards, newCard]);
   //   }
   // };
+=======
+>>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
 
   const addPage = async (scrapbookId) => {
     const pagesRef = firestore.collection('Pages');
@@ -91,26 +106,57 @@ function ScrapbookView(props) {
     setPageNum(pageNum + 1);
   };
 
+  // const useCardStatus = (newCard) => {
+  //   if (!cards.includes(newCard)) {
+  //     setCards([...cards, newCard]);
+  //   }
+  // };
+
   const backHome = () => {
     const { history } = props;
     if (history) history.push('/home');
   };
 
-  const handleCurrentPage = (activeIdx) => {
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const toggleModal = () => {
+    setIsModalShowing(!isModalShowing);
+    setCopyButtonClicked(false);
+  };
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(
+      `scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`
+    );
+    setCopyButtonClicked(true);
+  };
+
+ const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
     console.log(currentPage);
   };
 
   return pages.length ? (
     <Box>
-      <Button
-        type="button"
-        clasName="backHome"
-        label="back to home"
-        onClick={backHome}
-        primary
-        margin="small"
-      />
+      <Box direction="row" max="500px">
+        <Button
+          type="button"
+          className="backHome"
+          label="back to home"
+          onClick={backHome}
+          primary
+          margin="small"
+        />
+        <Button
+          type="button"
+          label="share with friends"
+          onClick={toggleModal}
+          primary
+          margin="small"
+        />
+      </Box>
       <Box
         justify="center"
         align="center"
@@ -129,16 +175,23 @@ function ScrapbookView(props) {
               }
               fill
             >
+<<<<<<< HEAD
               {pages.map((page, idx) => {
                 if (page.pageTitle === 'firstPage') {
                   return <CaptionBottom key={idx} {...page} />;
                 }
+=======
+>>>>>>> 845e320f2b46658730178083f690ee20d61e6cae
 
+              {pages.map((page, idx) => {
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
-
-                return <Default key={idx} {...page} />;
+                return(
+                  <div>
+                   <Default key={idx} {...page} />)
+                  </div>
+                )
               })}
             </Carousel>
           )}
@@ -154,6 +207,20 @@ function ScrapbookView(props) {
             />
           )}
         </Box>
+        <Modal
+          style={{ maxWidth: '100vw' }}
+          overflow={true}
+          backdrop={true}
+          show={isModalShowing}
+        >
+          <Text>Share this link:</Text>
+          <p id="link">{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
+          <Button
+            onClick={copyToClipboard}
+            label={copyButtonClicked ? 'copied!' : 'copy'}
+          />
+          <Button onClick={toggleModal} label="close" />
+        </Modal>
       </Box>
     </Box>
   ) : (
