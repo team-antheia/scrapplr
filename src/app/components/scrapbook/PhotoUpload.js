@@ -123,16 +123,35 @@ function PhotoUpload(props) {
   }
 
   async function updateDatabase(url) {
-    const pagesRef = firestore.collection("Pages");
+
+    const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef.doc(props.currentPage).get();
+    // .where('scrapbookId', '==', props.scrapbookId)
+    // .where('pageNum', '==', props.currentPage)
+
 
     if (singlePageRef.empty) {
       console.log("no matching documents");
       return;
     }
 
+    const newCard = {
+      body: url,
+      type: 'image',
+      //layout: props.layout
+    };
+
     singlePageRef.forEach(async (doc) => {
-      const queryRef = await firestore.collection("Pages").doc(doc.id);
+      const queryRef = await firestore.collection('Pages').doc(doc.id);
+
+      if (doc.data().cards.length >= 4) {
+        setButtonMessage('upload failed');
+        window.alert('Too many cards on this page!');
+      } else {
+        queryRef.update({
+          cards: firebase.firestore.FieldValue.arrayUnion(newCard),
+        });
+      }
 
       // if (doc.data().cards.length >= 4) {
       //   setButtonMessage("upload failed");
@@ -146,10 +165,11 @@ function PhotoUpload(props) {
       //     }),
       //   });
       // }
+
     });
     setIsLoading(false);
     setIsClicked(true);
-    props.setCards();
+    props.setCards(newCard);
   }
 
   return (
