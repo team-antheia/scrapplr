@@ -1,4 +1,4 @@
-//src/App.js
+//CODE TO RENDER FORM FOR SHARING...USING HONEYPOT TO CHECK IF SENDER IS A ROBOT...WE DONT NEED IT NOW BUT NICE TO HAVE
 
 //import `useState` hook
 import { useState } from 'react';
