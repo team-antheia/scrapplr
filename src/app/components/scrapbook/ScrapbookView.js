@@ -25,6 +25,7 @@ import CaptionBottom from "./layouts/CaptionBottom";
 import { Route, withRouter } from "react-router-dom";
 import { size } from "polished";
 
+
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
@@ -160,16 +161,16 @@ function ScrapbookView(props) {
               }
               fill
             >
-              {pages.map((page, idx) => {
-                if (page.pageTitle === "firstPage") {
-                  return <CaptionBottom key={idx} {...page} />;
-                }
 
+              {pages.map((page, idx) => {
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
-
-                return <Default key={idx} {...page} />;
+                return(
+                  <div>
+                   <Default key={idx} {...page} />)
+                  </div>
+                )
               })}
             </Carousel>
           )}
