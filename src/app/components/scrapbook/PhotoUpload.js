@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import firebase, { storage, firestore } from '../../../index';
-import { EXIF } from 'exif-js';
-import { Button, FileInput, Heading } from 'grommet';
+import React, { useState } from "react";
+import firebase, { storage, firestore } from "../../../index";
+import { EXIF } from "exif-js";
+import { Button, FileInput, Heading } from "grommet";
 
 function PhotoUpload(props) {
   //declares names in state, set to empty string
-  const [imageAsFile, setImageAsFile] = useState('');
+  const [imageAsFile, setImageAsFile] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [isLoading, setIsLoading] = useState();
-  const [buttonMessage, setButtonMessage] = useState('uploaded!');
+  const [buttonMessage, setButtonMessage] = useState("uploaded!");
 
   //----- If image is need on page, use imageAsUrl to access from firebase storage --------
-  const [imageAsUrl, setImageAsUrl] = useState('');
+  const [imageAsUrl, setImageAsUrl] = useState("");
 
-  const [latitude, setLat] = useState('');
-  const [longitude, setLon] = useState('');
+  const [latitude, setLat] = useState("");
+  const [longitude, setLon] = useState("");
 
   const handleImageAsFile = (e) => {
     //When photo is uploaded, grab data and set to state
@@ -24,7 +24,7 @@ function PhotoUpload(props) {
   const handleFirebaseUpload = async (e) => {
     e.preventDefault();
     if (!imageAsFile) {
-      alert('Error: No image selected');
+      alert("Error: No image selected");
       return;
     }
 
@@ -37,7 +37,7 @@ function PhotoUpload(props) {
 
     //initiates the firebase side uploading
     await uploadTask.on(
-      'state_changed',
+      "state_changed",
       null,
       (err) => {
         //catches the errors
@@ -48,7 +48,7 @@ function PhotoUpload(props) {
         // gets the download url from firebase file path
         // sets the image from firebase as a URL onto local state
         await storage
-          .ref('images')
+          .ref("images")
           .child(imageAsFile.name)
           .getDownloadURL()
           .then((firebaseUrl) => {
@@ -63,7 +63,7 @@ function PhotoUpload(props) {
     function ConvertDMSToDD(degrees, minutes, seconds, direction) {
       var dd = degrees + minutes / 60 + seconds / 3600;
 
-      if (direction === 'S' || direction === 'W') {
+      if (direction === "S" || direction === "W") {
         dd = dd * -1;
       }
 
@@ -110,26 +110,28 @@ function PhotoUpload(props) {
   async function updateCoordinates(lat, lon) {
     //Reference to scrapbook -- will need to update with current scrapbook doc
     let scrapbookRef = await firestore
-      .collection('Scrapbooks')
+      .collection("Scrapbooks")
       .doc(props.scrapbookId);
 
     //Updates scrapbook map locations array with new geopoint
     await scrapbookRef.update({
       mapLocations: firebase.firestore.FieldValue.arrayUnion({
         coordinates: new firebase.firestore.GeoPoint(lat, lon),
-        name: 'Location from Photo Upload',
+        name: "Location from Photo Upload",
       }),
     });
   }
 
   async function updateDatabase(url) {
+
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef.doc(props.currentPage).get();
     // .where('scrapbookId', '==', props.scrapbookId)
     // .where('pageNum', '==', props.currentPage)
 
+
     if (singlePageRef.empty) {
-      console.log('no matching documents');
+      console.log("no matching documents");
       return;
     }
 
@@ -150,6 +152,20 @@ function PhotoUpload(props) {
           cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
+
+      // if (doc.data().cards.length >= 4) {
+      //   setButtonMessage("upload failed");
+      //   window.alert("Too many cards on this page!");
+      // } else {
+      //   queryRef.update({
+      //     cards: firebase.firestore.FieldValue.arrayUnion({
+      //       body: url,
+      //       type: "image",
+      //       //layout: props.layout
+      //     }),
+      //   });
+      // }
+
     });
     setIsLoading(false);
     setIsClicked(true);
@@ -160,12 +176,12 @@ function PhotoUpload(props) {
     <div className="photo-upload">
       <Heading level={4}>Upload a Photo</Heading>
       <Button
-        style={{ width: '30%' }}
+        style={{ width: "30%" }}
         primary
         // label="upload"
         onClick={handleFirebaseUpload}
       >
-        {isClicked ? buttonMessage : isLoading ? 'one moment...' : 'upload'}
+        {isClicked ? buttonMessage : isLoading ? "one moment..." : "upload"}
       </Button>
       <form>
         <FileInput

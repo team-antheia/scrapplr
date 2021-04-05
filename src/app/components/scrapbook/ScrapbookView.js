@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import FlipPage from 'react-flip-page';
+import React, { Component, useEffect, useState } from "react";
+import FlipPage from "react-flip-page";
 
 import {
   Box,
@@ -11,17 +11,19 @@ import {
   Text,
   Carousel,
 } from 'grommet';
+
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
 import { Toolbar } from '..';
 import { Modal } from 'rsuite';
 
-import Default from './layouts/Default';
 
-import CaptionTop from './layouts/CaptionTop';
-import CaptionBottom from './layouts/CaptionBottom';
-import { Route, withRouter } from 'react-router-dom';
-import { size } from 'polished';
+import Default from "./layouts/Default";
+
+import CaptionTop from "./layouts/CaptionTop";
+import CaptionBottom from "./layouts/CaptionBottom";
+import { Route, withRouter } from "react-router-dom";
+import { size } from "polished";
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -31,20 +33,20 @@ function ScrapbookView(props) {
   const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
-  const [lastPage, setLastPage] = useState('');
+  const [lastPage, setLastPage] = useState("");
 
   useEffect(() => {
     // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
-        const pagesRef = firestore.collection('Pages');
+        const pagesRef = firestore.collection("Pages");
         const queryRef = await pagesRef
-          .where('scrapbookId', '==', props.params.scrapbookId)
-          .orderBy('pageNum')
+          .where("scrapbookId", "==", props.params.scrapbookId)
+          .orderBy("pageNum")
           .get();
 
         if (queryRef.empty) {
-          console.log('No matching docs');
+          console.log("No matching docs");
           return;
         }
 
@@ -59,27 +61,28 @@ function ScrapbookView(props) {
     fetchPages();
   }, [props.params.scrapbookId, pageNum]);
 
+
   const addPage = async (scrapbookId) => {
-    const pagesRef = firestore.collection('Pages');
+    const pagesRef = firestore.collection("Pages");
 
     const newPage = await pagesRef.add({
       cards: [
-        { type: 'text', body: 'new page' },
+        { type: "text", body: "new page" },
         {
-          type: 'image',
-          body: 'https://static.thenounproject.com/png/558475-200.png',
+          type: "image",
+          body: "https://static.thenounproject.com/png/558475-200.png",
         },
-        { type: 'text', body: 'or text' },
-        { type: 'text', body: 'or even a street view' },
+        { type: "text", body: "or text" },
+        { type: "text", body: "or even a street view" },
       ],
       pageNum: pageNum + 1,
-      pageTitle: '',
+      pageTitle: "",
       scrapbookId: scrapbookId,
       layout: [
-        { name: 'top', start: [0, 0], end: [1, 0] },
-        { name: 'midLeft', start: [0, 1], end: [0, 1] },
-        { name: 'midRight', start: [1, 1], end: [1, 1] },
-        { name: 'bot', start: [0, 2], end: [1, 2] },
+        { name: "top", start: [0, 0], end: [1, 0] },
+        { name: "midLeft", start: [0, 1], end: [0, 1] },
+        { name: "midRight", start: [1, 1], end: [1, 1] },
+        { name: "bot", start: [0, 2], end: [1, 2] },
       ],
     });
 
@@ -96,7 +99,7 @@ function ScrapbookView(props) {
 
   const backHome = () => {
     const { history } = props;
-    if (history) history.push('/home');
+    if (history) history.push("/home");
   };
 
   const toggleEdit = () => {
@@ -115,9 +118,9 @@ function ScrapbookView(props) {
     setCopyButtonClicked(true);
   };
 
-  const handleCurrentPage = (activeIdx) => {
-    setCurrentPage(activeIdx + 1);
-    console.log(activeIdx);
+ const handleCurrentPage = (activeIdx) => {
+    setCurrentPage(pages[activeIdx].pageId);
+    console.log(currentPage);
   };
 
   return pages.length ? (
@@ -144,7 +147,7 @@ function ScrapbookView(props) {
         align="center"
         height="large"
         width="90vw"
-        style={{ maxWidth: '864px' }}
+        style={{ maxWidth: "864px" }}
         background="glass2"
         round={true}
       >
@@ -153,12 +156,12 @@ function ScrapbookView(props) {
             <Carousel
               onChild={handleCurrentPage}
               controls={
-                size === 'small' && !isEditing ? 'selectors' : !isEditing
+                size === "small" && !isEditing ? "selectors" : !isEditing
               }
               fill
             >
               {pages.map((page, idx) => {
-                if (page.pageTitle === 'firstPage') {
+                if (page.pageTitle === "firstPage") {
                   return <CaptionBottom key={idx} {...page} />;
                 }
 

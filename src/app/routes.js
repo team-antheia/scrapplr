@@ -103,7 +103,6 @@ export default class routes extends Component {
                 />
               )}
             />
-
             {/* <Route component={() => <NotFound isLoggedIn={true} />} /> */}
           </Switch>
         </Box>

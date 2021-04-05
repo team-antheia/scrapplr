@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   PhotoUpload,
   LocationSearchInput,
   DescriptionForm,
-} from '../../components';
-import { Box, Button } from 'grommet';
+} from "../../components";
+import { Box, Button } from "grommet";
 
 //Each component (or toolbar?) must make post request to db with new card info
 
 const Toolbar = (props) => {
-  const [tool, setTool] = useState('');
+  const [tool, setTool] = useState("");
   const { isEditing, setIsEditing, currentPage } = props;
 
   const addPage = async (scrapbookId) => {
@@ -19,14 +19,14 @@ const Toolbar = (props) => {
     <Box style={{ zIndex: 1 }} height="xxsmall" direction="row" pad="xsmall">
       <Button
         onClick={() => setIsEditing(!isEditing)}
-        label={isEditing ? 'done' : 'edit page'}
+        label={isEditing ? "done" : "edit page"}
       />
 
       {props.addPage && (
         <Button
           style={{
-            marginInline: '8px',
-            visibility: isEditing ? 'hidden' : 'visible',
+            marginInline: "8px",
+            visibility: isEditing ? "hidden" : "visible",
           }}
           label="add new page"
           onClick={() => addPage(props.scrapbookId)}
@@ -39,13 +39,13 @@ const Toolbar = (props) => {
             <Button
               label="photo"
               onClick={() =>
-                tool !== 'photo' ? setTool('photo') : setTool('')
+                tool !== "photo" ? setTool("photo") : setTool("")
               }
             />
             <Box
               style={{
-                width: '100vw',
-                visibility: tool === 'photo' ? 'visible' : 'hidden',
+                width: "100vw",
+                visibility: tool === "photo" ? "visible" : "hidden",
               }}
             >
               <PhotoUpload
@@ -57,13 +57,13 @@ const Toolbar = (props) => {
 
           <Box direction="column">
             <Button
-              onClick={() => (tool !== 'map' ? setTool('map') : setTool(''))}
+              onClick={() => (tool !== "map" ? setTool("map") : setTool(""))}
               label="map"
             />
             <Box
               style={{
-                width: '100vw',
-                visibility: tool === 'map' ? 'visible' : 'hidden',
+                width: "100vw",
+                visibility: tool === "map" ? "visible" : "hidden",
               }}
             >
               <LocationSearchInput
@@ -75,15 +75,15 @@ const Toolbar = (props) => {
           <Box direction="column">
             <Button
               onClick={() =>
-                tool !== 'description' ? setTool('description') : setTool('')
+                tool !== "description" ? setTool("description") : setTool("")
               }
               label="description"
             />
             <Box
               style={{
-                width: '100vw',
-                alignItems: 'center',
-                visibility: tool === 'description' ? 'visible' : 'hidden',
+                width: "100vw",
+                alignItems: "center",
+                visibility: tool === "description" ? "visible" : "hidden",
               }}
             >
               <DescriptionForm
@@ -94,7 +94,7 @@ const Toolbar = (props) => {
           </Box>
         </Box>
       ) : (
-        ''
+        ""
       )}
     </Box>
   );
