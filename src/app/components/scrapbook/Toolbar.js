@@ -110,7 +110,6 @@ const Toolbar = (props) => {
               direction="row"
               align="center"
               justify="center"
-              // margin={{ top: 'large', bottom: 'small' }}
               pad={{ top: 'small', bottom: 'small' }}
             >
               <Button label="Close" onClick={() => setShow(false)} color="dark-3" />
@@ -119,9 +118,6 @@ const Toolbar = (props) => {
 
           <MapContainer scrapbookId={props.scrapbookId}/>
           </Box>
-
-          {/* <Button label="close" onClick={() => setShow(false)} /> */}
-          {/* </Box> */}
         </Layer>
       )}
     </Box>
