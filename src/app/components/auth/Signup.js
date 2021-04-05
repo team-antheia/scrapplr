@@ -53,32 +53,50 @@ export function SignUp(props) {
         },
       ],
       owner: userId,
-      pages: [],
       scrapbookId: scrapbookRef.id,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
     await scrapbookRef.set(newScrapbook);
 
+    const firstPage = {
+      cards: [
+        { type: 'static-map', body: 'mapContainer' },
+        { type: 'title', body: 'My First Scrapbook' },
+      ],
+      layout: [
+        { name: 'media', start: [0, 0], end: [1, 1] },
+        { name: 'caption', start: [0, 2], end: [1, 2] },
+      ],
+      pageNum: 1,
+      pageTitle: `firstPage`,
+      scrapbookId: scrapbookRef.id,
+    };
+
     //  New scrapbook page needs to be added with new scrapbook
+    const firstPageRef = await firestore
+      .collection('Pages')
+      .doc()
+      .set(firstPage);
+
     const pagesRef = firestore.collection('Pages').add({
       cards: [
+        {
+          body: 'Add descriptions to caption your pictures',
+          type: 'description',
+        },
         {
           body:
             'https://specials-images.forbesimg.com/imageserve/930322352/960x0.jpg?fit=scale',
           type: 'image',
         },
         {
-          body: 'Add descriptions to caption your pictures',
+          body: 'Upload panoramics to make your experiences come to life',
           type: 'description',
         },
         {
           body: new firebase.firestore.GeoPoint(-16.5004, -151.7415),
           type: 'panoramic',
-        },
-        {
-          body: 'Upload panoramics to make your experiences come to life',
-          type: 'description',
         },
       ],
       layout: [
@@ -87,7 +105,7 @@ export function SignUp(props) {
         { name: 'midRight', start: [1, 1], end: [1, 1] },
         { name: 'bot', start: [0, 2], end: [1, 2] },
       ],
-      pageNum: 1,
+      pageNum: 2,
       pageTitle: 'My Trip To Bora Bora',
       scrapbookId: scrapbookRef.id,
     });

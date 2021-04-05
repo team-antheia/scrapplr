@@ -124,11 +124,9 @@ function PhotoUpload(props) {
 
   async function updateDatabase(url) {
     const pagesRef = firestore.collection('Pages');
-    const singlePageRef = await pagesRef
-      .where('scrapbookId', '==', props.scrapbookId)
-      .get();
-    //^^^ When we know what page the user is on, insert query here ^^^
-    // .where('pageNum', '==', props.pageNum)
+    const singlePageRef = await pagesRef.doc(props.currentPage).get();
+    // .where('scrapbookId', '==', props.scrapbookId)
+    // .where('pageNum', '==', props.currentPage)
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
