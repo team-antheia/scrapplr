@@ -21,6 +21,7 @@ export default function Default(props) {
     return cards.map((card, i) => {
       let cardBody;
       // check card type
+
       if (card.type === "text" || card.type === "description") {
         // create grommet element based on type
         cardBody = <Text key={i}>{card.body}</Text>;

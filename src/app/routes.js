@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
-
-import { Route, Switch } from 'react-router-dom';
-import { LandingPage } from './components';
-import { Login } from './components/auth/Login';
-import { SignUp } from './components/auth/Signup';
-import { ScrapbookView, BookShelfView, UserHome } from './components';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import {
+  Login,
+  SignUp,
+  LandingPage,
+  NotFound,
+  ScrapbookView,
+  BookShelfView,
+  UserHome,
+  LocationSearchInput,
+  StreetView,
+  Map,
+  ScrapbookInstructions,
+  ViewOnlyScrapbook,
+} from './components';
 import { Box, Heading } from 'grommet';
 import firebase, { auth, firestore } from '../index';
 import SinglePage from './components/scrapbook/SinglePage';
-import LocationSearchInput from './components/map/360/LocationSearchInput';
-import StreetView from './components/map/360/StreetView';
-import MapContainer from './components/map/markerMap/MapContainer';
 import Default from './components/scrapbook/layouts/Default';
 // import CaptionTop from "./components/scrapbook/layouts/CaptionTop";
 import CaptionBottom from './components/scrapbook/layouts/CaptionBottom';
 import CaptionMiddle from './components/scrapbook/layouts/CaptionMiddle';
-import { ScrapbookInstructions } from './components/demo/ScrapbookInstructions';
 
 export default class routes extends Component {
   constructor() {
@@ -61,77 +66,78 @@ export default class routes extends Component {
   }
 
   render() {
-    return (
-      <Box justify="center" align="center" height="100vh">
-        {/* {auth.currentUser !== null && auth.currentUser.email && (
-          <Route
-            exact
-            path="/home"
-            component={() => (
-              <UserHome
-                userId={auth.currentUser ? this.state.userId : false}
-                email={this.state.email}
-              />
-            )}
-          />
-        )} */}
+    if (auth.currentUser) {
+      return (
+        <Box justify="center" align="center" height="100vh">
+          <Switch>
+            <Route
+              exact
+              path="/home"
+              component={() => (
+                <UserHome
+                  userId={auth.currentUser ? this.state.userId : false}
+                  email={this.state.email}
+                  name={this.state.name}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/"
+              component={() => (
+                <UserHome
+                  userId={auth.currentUser ? this.state.userId : false}
+                  email={this.state.email}
+                  name={this.state.name}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/scrapbooks/:scrapbookId"
+              render={(props) => (
+                <ScrapbookView
+                  userId={this.state.userId}
+                  params={props.match.params}
+                  location={props.location}
+                />
+              )}
+            />
+            {/* <Route component={() => <NotFound isLoggedIn={true} />} /> */}
+          </Switch>
+        </Box>
+      );
+    } else {
+      return (
+        <Box justify="center" align="center" height="100vh">
+          <Switch>
+            <Route path="/demo">
+              <ScrapbookView user={'demo'} />
+            </Route>
+            <Route path="/instructions">
+              <ScrapbookInstructions user={'demo'} />
+            </Route>
+            <Route path="/signup" component={SignUp} />
+            <Route path="/login" component={Login} />
+            <Route
+              path="/scrapbooks/:scrapbookId/share"
+              render={(props) => (
+                <ViewOnlyScrapbook
+                  params={props.match.params}
+                  location={props.location}
+                />
+              )}
+            />
+            <Route path="/bookshelf" component={BookShelfView} />
+            <Route path="/test" component={LocationSearchInput} />
+            <Route path="/streetview" component={StreetView} />
+            {/* <Route path="/map" component={Map} /> */}
+            <Route exact path="/" component={LandingPage} />
 
-        <Switch>
-          <Route
-            path="/scrapbooks/:scrapbookId"
-            render={(props) => (
-              <ScrapbookView
-                userId={this.state.userId}
-                params={props.match.params}
-                location={props.location}
-              />
-            )}
-          ></Route>
-          <Route path="/demo">
-            <ScrapbookView user={'demo'} />
-          </Route>
-          <Route path="/instructions">
-            <ScrapbookInstructions user={'demo'} />
-          </Route>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/bookshelf">
-            <BookShelfView />
-          </Route>
-          <Route path="/test" component={LocationSearchInput} />
-          <Route path="/streetview" component={StreetView} />
-          {/* <Route path="/map" component={MapContainer} /> */}
-          {this.state.userId && (
-            <Switch>
-              <Route
-                exact
-                path="/home"
-                component={() => (
-                  <UserHome
-                    userId={auth.currentUser ? this.state.userId : false}
-                    email={this.state.email}
-                    name={this.state.name}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/"
-                component={() => (
-                  <UserHome
-                    userId={auth.currentUser ? this.state.userId : false}
-                    email={this.state.email}
-                    name={this.state.name}
-                  />
-                )}
-              />
-            </Switch>
-          )}
-          <Route exact path="/">
-            <LandingPage />
-          </Route>
-        </Switch>
-      </Box>
-    );
+            {/* <Route component={() => <NotFound isLoggedIn={false} />} /> */}
+          </Switch>
+        </Box>
+      );
+    }
   }
 }
