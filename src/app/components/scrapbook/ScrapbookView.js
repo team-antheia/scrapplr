@@ -10,10 +10,13 @@ import {
   Spinner,
   Text,
   Carousel,
-} from "grommet";
-import "rsuite/dist/styles/rsuite-default.css";
-import { firestore } from "../../../index";
-import { Toolbar } from "..";
+} from 'grommet';
+
+import 'rsuite/dist/styles/rsuite-default.css';
+import { firestore } from '../../../index';
+import { Toolbar } from '..';
+import { Modal } from 'rsuite';
+
 
 import Default from "./layouts/Default";
 
@@ -26,11 +29,14 @@ function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
   const [lastPage, setLastPage] = useState("");
 
   useEffect(() => {
+    // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
         const pagesRef = firestore.collection("Pages");
@@ -52,9 +58,9 @@ function ScrapbookView(props) {
         setPages(pageData);
       }
     }
-
     fetchPages();
-  }, [props.params.scrapbookId]);
+  }, [props.params.scrapbookId, pageNum]);
+
 
   const addPage = async (scrapbookId) => {
     const pagesRef = firestore.collection("Pages");
@@ -85,26 +91,57 @@ function ScrapbookView(props) {
     setPageNum(pageNum + 1);
   };
 
+  // const useCardStatus = (newCard) => {
+  //   if (!cards.includes(newCard)) {
+  //     setCards([...cards, newCard]);
+  //   }
+  // };
+
   const backHome = () => {
     const { history } = props;
     if (history) history.push("/home");
   };
 
-  const handleCurrentPage = (activeIdx) => {
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const toggleModal = () => {
+    setIsModalShowing(!isModalShowing);
+    setCopyButtonClicked(false);
+  };
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(
+      `scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`
+    );
+    setCopyButtonClicked(true);
+  };
+
+ const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
     console.log(currentPage);
   };
 
   return pages.length ? (
     <Box>
-      <Button
-        type="button"
-        clasName="backHome"
-        label="back to home"
-        onClick={backHome}
-        primary
-        margin="small"
-      />
+      <Box direction="row" max="500px">
+        <Button
+          type="button"
+          className="backHome"
+          label="back to home"
+          onClick={backHome}
+          primary
+          margin="small"
+        />
+        <Button
+          type="button"
+          label="share with friends"
+          onClick={toggleModal}
+          primary
+          margin="small"
+        />
+      </Box>
       <Box
         justify="center"
         align="center"
@@ -148,6 +185,20 @@ function ScrapbookView(props) {
             />
           )}
         </Box>
+        <Modal
+          style={{ maxWidth: '100vw' }}
+          overflow={true}
+          backdrop={true}
+          show={isModalShowing}
+        >
+          <Text>Share this link:</Text>
+          <p id="link">{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
+          <Button
+            onClick={copyToClipboard}
+            label={copyButtonClicked ? 'copied!' : 'copy'}
+          />
+          <Button onClick={toggleModal} label="close" />
+        </Modal>
       </Box>
     </Box>
   ) : (
