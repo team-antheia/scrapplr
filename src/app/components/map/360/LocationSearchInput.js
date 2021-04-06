@@ -59,9 +59,8 @@ class LocationSearchInput extends React.Component {
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', this.props.scrapbookId)
+      .where('pageNum', '==', this.props.currentPage)
       .get();
-    //^^^ When we know what page the user is on, insert query here ^^^
-    // .where('pageNum', '==', props.pageNum)
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
