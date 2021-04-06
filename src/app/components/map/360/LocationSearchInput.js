@@ -39,7 +39,7 @@ class LocationSearchInput extends React.Component {
         // adds location and name to mapLocations
         let scrapbookRef = firestore
           .collection('Scrapbooks')
-          .doc('XQkebrXC1teAOhImleg3');
+          .doc(this.props.scrapbookId);
         await scrapbookRef.update({
           mapLocations: firebase.firestore.FieldValue.arrayUnion({
             coordinates: new firebase.firestore.GeoPoint(

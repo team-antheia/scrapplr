@@ -10,7 +10,6 @@ export const GoogleMap = (props) => {
     width: '95%',
     height: '70%',
   };
-  console.log('the props', props.allLocations[0])
   return (
     <Box style={mapStyles}>
       {props.allLocations.length && (
@@ -23,8 +22,7 @@ export const GoogleMap = (props) => {
             lng: props.allLocations[0].coordinates._long,
           }}
         >
-          {props.allLocations.length &&
-            props.allLocations.map(
+          {props.allLocations.map(
               (location) => {
                 return <LocationMarker location={location} />;
 
