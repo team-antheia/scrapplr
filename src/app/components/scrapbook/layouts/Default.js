@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -7,11 +7,11 @@ import {
   Image,
   ResponsiveContext,
   Spinner,
-} from 'grommet';
-import { Map } from '../..';
-import MapContainer from '../../map/markerMap/MapContainer';
-import StreetView from '../../map/360/StreetView';
-import { size } from 'polished';
+} from "grommet";
+import { Map } from "../..";
+import MapContainer from "../../map/markerMap/MapContainer";
+import StreetView from "../../map/360/StreetView";
+import { size } from "polished";
 
 export default function Default(props) {
   const [cards, setCards] = useState(props.cards);
@@ -19,7 +19,7 @@ export default function Default(props) {
   useEffect(() => {
     setCards(props.cards);
     return () => {
-      console.log('cleaned up in default');
+      console.log("cleaned up in default");
     };
   }, [props.cards]);
 
@@ -29,16 +29,16 @@ export default function Default(props) {
       let cardBody;
       // check card type
 
-      if (card.type === 'text' || card.type === 'description') {
+      if (card.type === "text" || card.type === "description") {
         // create grommet element based on type
         cardBody = <Text key={i}>{card.body}</Text>;
       }
 
-      if (card.type === 'image') {
+      if (card.type === "image") {
         cardBody = <Image fit="contain" key={i} src={card.body} />;
       }
 
-      if (card.type === 'panoramic') {
+      if (card.type === "panoramic") {
         cardBody = (
           <Box justify="end" align="center">
             <StreetView lat={card.body._lat} long={card.body._long} key={i} />
@@ -49,7 +49,7 @@ export default function Default(props) {
       // add gridArea prop based on card index
       if (i === 0) {
         return (
-          <Card height={{ min: '112%' }} gridArea="top" background="#92abb3">
+          <Card gridArea="top" background="#92abb3">
             {cardBody}
           </Card>
         );
@@ -57,30 +57,22 @@ export default function Default(props) {
 
       if (i === 1) {
         return (
-          <Card
-            height={{ min: '112%' }}
-            gridArea="midLeft"
-            background="light-5"
-          >
+          <Card gridArea="midLeft" background="light-5">
             {cardBody}
           </Card>
         );
       }
       if (i === 2) {
         return (
-          <Card
-            height={{ min: '112%' }}
-            gridArea="midRight"
-            background="light-2"
-          >
-            {cardBody}{' '}
+          <Card gridArea="midRight" background="light-2">
+            {cardBody}{" "}
           </Card>
         );
       }
 
       if (i === 3) {
         return (
-          <Card height={{ min: '112%' }} gridArea="bot" background="light-2">
+          <Card gridArea="bot" background="light-2">
             {cardBody}
           </Card>
         );
@@ -88,25 +80,24 @@ export default function Default(props) {
     });
   };
 
-  console.log('the props', props);
+  console.log("the props", props);
   return (
-    // <Box pad={{ vertical: 'xsmall', horizontal: 'large' }}>
-    <Grid
-      rows={['31%', '31%', '31%']}
-      columns={['50%', '50%']}
-      gap="small"
-      areas={props.layout}
-      border="all"
-      style={{ minHeight: '100%' }}
-    >
-      {
-        cards.length ? (
-          makeCardElements(cards)
-        ) : (
-          <Text>No cards yet!</Text>
-        ) /*<Spinner />*/
-      }
-    </Grid>
-    // </Box>
+    <Box fill pad={{ vertical: "xsmall", horizontal: "large" }}>
+      <Grid
+        rows={["31%", "31%", "31%"]}
+        columns={["50%", "50%"]}
+        gap="small"
+        areas={props.layout}
+        style={{ minHeight: "100%" }}
+      >
+        {
+          cards.length ? (
+            makeCardElements(cards)
+          ) : (
+            <Text>No cards yet!</Text>
+          ) /*<Spinner />*/
+        }
+      </Grid>
+    </Box>
   );
 }
