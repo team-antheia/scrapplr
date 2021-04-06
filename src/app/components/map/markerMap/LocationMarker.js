@@ -17,11 +17,10 @@ class LocationMarker extends Component {
 
 
   render() {
- 
+
     const { name, coordinates } = this.props.location;
     const { _lat, _long } = coordinates;
-
-
+    
     return (
       <div>
       <Marker

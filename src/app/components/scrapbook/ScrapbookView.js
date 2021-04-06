@@ -168,7 +168,7 @@ function ScrapbookView(props) {
                 }
                 return(
                   <div>
-                   <Default key={idx} {...page} />)
+                   <Default key={idx} {...page} />
                   </div>
                 )
               })}
