@@ -7,8 +7,6 @@ export { default as NotFound } from './auth/NotFound';
 export { default as Map } from './map/markerMap/MapContainer';
 export { default as LocationSearchInput } from './map/360/LocationSearchInput';
 export { default as StreetView } from './map/360/StreetView';
-export { default as DemoScrapbook } from './demo/DemoScrapbook';
-export { default as BookShelfView } from './demo/BookShelfView';
 export { ScrapbookInstructions } from './demo/ScrapbookInstructions';
 export { default as BookCard } from './scrapbook/BookCard';
 export { default as SinglePage } from './scrapbook/SinglePage';

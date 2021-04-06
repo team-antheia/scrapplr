@@ -27,7 +27,7 @@ export default function NavBar() {
         <Text color="white">sign up</Text>
       </Link>
 
-      <Link style={{ textDecoration: 'none' }} to="/bookshelf">
+      <Link style={{ textDecoration: 'none' }} to="/demo">
         <Text color="white">demo</Text>
       </Link>
     </Nav>
