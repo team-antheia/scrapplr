@@ -40,7 +40,7 @@ export default function Default(props) {
 
       if (card.type === 'panoramic') {
         cardBody = (
-          <Box justify="end" align="center" >
+          <Box justify="end" align="center">
             <StreetView lat={card.body._lat} long={card.body._long} key={i} />
           </Box>
         );
@@ -49,7 +49,7 @@ export default function Default(props) {
       // add gridArea prop based on card index
       if (i === 0) {
         return (
-          <Card gridArea="top" background="#92abb3">
+          <Card height={{ min: '112%' }} gridArea="top" background="#92abb3">
             {cardBody}
           </Card>
         );
@@ -57,14 +57,22 @@ export default function Default(props) {
 
       if (i === 1) {
         return (
-          <Card gridArea="midLeft" background="light-5">
+          <Card
+            height={{ min: '112%' }}
+            gridArea="midLeft"
+            background="light-5"
+          >
             {cardBody}
           </Card>
         );
       }
       if (i === 2) {
         return (
-          <Card gridArea="midRight" background="light-2">
+          <Card
+            height={{ min: '112%' }}
+            gridArea="midRight"
+            background="light-2"
+          >
             {cardBody}{' '}
           </Card>
         );
@@ -72,7 +80,7 @@ export default function Default(props) {
 
       if (i === 3) {
         return (
-          <Card gridArea="bot" background="light-2">
+          <Card height={{ min: '112%' }} gridArea="bot" background="light-2">
             {cardBody}
           </Card>
         );
@@ -80,23 +88,25 @@ export default function Default(props) {
     });
   };
 
-  console.log('the cards', cards)
+  console.log('the props', props);
   return (
-    <Box pad={{ vertical: 'xsmall', horizontal: 'large' }}>
-      <Grid
-        rows={['31%', '31%', '31%']}
-        columns={['50%', '50%']}
-        gap="small"
-        areas={props.layout}
-      >
-        {
-          cards.length ? (
-            makeCardElements(cards)
-          ) : (
-            <Text>No cards yet!</Text>
-          ) /*<Spinner />*/
-        }
-      </Grid>
-    </Box>
+    // <Box pad={{ vertical: 'xsmall', horizontal: 'large' }}>
+    <Grid
+      rows={['31%', '31%', '31%']}
+      columns={['50%', '50%']}
+      gap="small"
+      areas={props.layout}
+      border="all"
+      style={{ minHeight: '100%' }}
+    >
+      {
+        cards.length ? (
+          makeCardElements(cards)
+        ) : (
+          <Text>No cards yet!</Text>
+        ) /*<Spinner />*/
+      }
+    </Grid>
+    // </Box>
   );
 }

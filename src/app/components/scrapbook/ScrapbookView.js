@@ -165,6 +165,7 @@ function ScrapbookView(props) {
         style={{ maxWidth: '864px' }}
         background="glass2"
         round={true}
+        border="7px solid black"
       >
         <ResponsiveContext.Consumer>
           {(size) => (
@@ -182,11 +183,7 @@ function ScrapbookView(props) {
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
-                return (
-                  <div>
-                    <Default key={idx} {...page} />
-                  </div>
-                );
+                return <Default key={idx} {...page} />;
               })}
             </Carousel>
           )}
