@@ -32,12 +32,9 @@ function ScrapbookView(props) {
   const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  const [cards, setCards] = useState([]);
-  const [addedCard, setAddedCard] = useState(false);
   const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
-    // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
         const pagesRef = firestore.collection('Pages');
@@ -58,15 +55,14 @@ function ScrapbookView(props) {
         });
         setPages(pageData);
         setPageNum(pageData.length);
-        // if (currentPageIdx) {
-        //   setCards([...pageData[currentPageIdx - 1].cards]);
-        // }
       }
     }
     fetchPages();
-    setAddedCard(false);
-    // console.log('pages on state', pages);
-  }, [props.params.scrapbookId, currentPageIdx, addedCard]);
+
+    return () => {
+      console.log('cleaned up');
+    };
+  }, [props.params.scrapbookId, currentPageIdx]);
 
   const addPage = async (scrapbookId) => {
     const newPageNum = pageNum + 1;
@@ -106,16 +102,17 @@ function ScrapbookView(props) {
     //   // console.log('cards after click', cards);
     // }
 
-    let updatedPage = pages[currentPageIdx - 1];
-    updatedPage.cards = [...updatedPage.cards, newCard];
+    pages[currentPageIdx - 1].cards = [
+      ...pages[currentPageIdx - 1].cards,
+      newCard,
+    ];
     const newPages = [...pages];
 
-    if (currentPageIdx) {
-      setPages(newPages);
-      setAddedCard(true);
-    }
+    setPages(newPages);
 
-    console.log('updated page', pages);
+    return () => {
+      console.log('updated page', pages);
+    };
   };
 
   const backHome = () => {
@@ -182,7 +179,6 @@ function ScrapbookView(props) {
                 // if (page.pageTitle === 'firstPage') {
                 //   return <CaptionBottom key={idx} {...page} />;
                 // }
-                console.log('mapping pages...');
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }

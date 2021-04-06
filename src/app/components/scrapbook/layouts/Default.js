@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -14,7 +14,14 @@ import StreetView from '../../map/360/StreetView';
 import { size } from 'polished';
 
 export default function Default(props) {
-  const [cards] = useState(props.cards);
+  const [cards, setCards] = useState(props.cards);
+
+  useEffect(() => {
+    setCards(props.cards);
+    return () => {
+      console.log('cleaned up in default');
+    };
+  }, [props.cards]);
 
   const makeCardElements = (cards) => {
     // iterate over cards from props
