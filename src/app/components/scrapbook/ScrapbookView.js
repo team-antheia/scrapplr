@@ -32,6 +32,8 @@ function ScrapbookView(props) {
   const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
+  const [currentPageIdx, setCurrentPageIdx] = useState(0);
+  const [cards, setCards] = useState([]);
   const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
@@ -55,31 +57,32 @@ function ScrapbookView(props) {
           pageData.push({ ...doc.data(), pageId });
         });
         setPages(pageData);
+        setPageNum(pageData.length);
+        if (pageData[0]) {
+          setCards(pageData[0].cards);
+        }
       }
     }
     fetchPages();
-  }, [props.params.scrapbookId, pageNum]);
-
-  // const useCardStatus = (newCard) => {
-  //   if (!cards.includes(newCard)) {
-  //     setCards([...cards, newCard]);
-  //   }
-  // };
+  }, [props.params.scrapbookId]);
 
   const addPage = async (scrapbookId) => {
+    const newPageNum = pageNum + 1;
+    console.log(pageNum, newPageNum);
+
     const pagesRef = firestore.collection('Pages');
 
     const newPage = await pagesRef.add({
       cards: [
-        { type: 'text', body: 'new page' },
-        {
-          type: 'image',
-          body: 'https://static.thenounproject.com/png/558475-200.png',
-        },
-        { type: 'text', body: 'or text' },
-        { type: 'text', body: 'or even a street view' },
+        // { type: 'text', body: 'new page' },
+        // {
+        //   type: 'image',
+        //   body: 'https://static.thenounproject.com/png/558475-200.png',
+        // },
+        // { type: 'text', body: 'or text' },
+        // { type: 'text', body: 'or even a street view' },
       ],
-      pageNum: pageNum + 1,
+      pageNum: newPageNum,
       pageTitle: '',
       scrapbookId: scrapbookId,
       layout: [
@@ -91,23 +94,19 @@ function ScrapbookView(props) {
     });
 
     setPages([...pages, (await newPage.get()).data()]);
-    // can't figure out how to actually get this number to incremenet
-    setPageNum(pageNum + 1);
+    setPageNum(newPageNum);
   };
 
-  // const useCardStatus = (newCard) => {
-  //   if (!cards.includes(newCard)) {
-  //     setCards([...cards, newCard]);
-  //   }
-  // };
+  const useCardStatus = (newCard) => {
+    // console.log('prev', cards, 'new', newCard);
+    if (!cards.includes(newCard)) {
+      setCards([...cards, newCard]);
+    }
+  };
 
   const backHome = () => {
     const { history } = props;
     if (history) history.push('/home');
-  };
-
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
   };
 
   const toggleModal = () => {
@@ -124,7 +123,8 @@ function ScrapbookView(props) {
 
   const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
-    console.log(currentPage);
+    setCards(pages[activeIdx].cards);
+    setCurrentPageIdx(activeIdx + 1);
   };
 
   return pages.length ? (
@@ -165,12 +165,15 @@ function ScrapbookView(props) {
               fill
             >
               {pages.map((page, idx) => {
+                // if (page.pageTitle === 'firstPage') {
+                //   return <CaptionBottom key={idx} {...page} />;
+                // }
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
                 return (
                   <div>
-                    <Default key={idx} {...page} />)
+                    <Default key={idx} {...page} />
                   </div>
                 );
               })}
@@ -184,7 +187,8 @@ function ScrapbookView(props) {
               isEditing={isEditing}
               addPage={lastPage.pageId === currentPage ? addPage : false}
               scrapbookId={props.params.scrapbookId}
-              currentPage={currentPage}
+              currentPage={currentPageIdx}
+              setCards={useCardStatus}
             />
           )}
         </Box>

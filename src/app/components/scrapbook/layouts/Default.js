@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
@@ -7,11 +7,11 @@ import {
   Image,
   ResponsiveContext,
   Spinner,
-} from "grommet";
-import { Map } from "../..";
-import MapContainer from "../../map/markerMap/MapContainer";
-import StreetView from "../../map/360/StreetView";
-import { size } from "polished";
+} from 'grommet';
+import { Map } from '../..';
+import MapContainer from '../../map/markerMap/MapContainer';
+import StreetView from '../../map/360/StreetView';
+import { size } from 'polished';
 
 export default function Default(props) {
   const [cards, setCards] = useState(props.cards);
@@ -22,16 +22,16 @@ export default function Default(props) {
       let cardBody;
       // check card type
 
-      if (card.type === "text" || card.type === "description") {
+      if (card.type === 'text' || card.type === 'description') {
         // create grommet element based on type
         cardBody = <Text key={i}>{card.body}</Text>;
       }
 
-      if (card.type === "image") {
+      if (card.type === 'image') {
         cardBody = <Image fit="contain" key={i} src={card.body} />;
       }
 
-      if (card.type === "panoramic") {
+      if (card.type === 'panoramic') {
         cardBody = (
           <Box justify="end" align="center">
             <StreetView key={i} />
@@ -58,7 +58,7 @@ export default function Default(props) {
       if (i === 2) {
         return (
           <Card gridArea="midRight" background="light-2">
-            {cardBody}{" "}
+            {cardBody}{' '}
           </Card>
         );
       }
@@ -66,7 +66,7 @@ export default function Default(props) {
       if (i === 3) {
         return (
           <Card gridArea="bot" background="light-2">
-            .{cardBody}
+            {cardBody}
           </Card>
         );
       }
@@ -74,14 +74,20 @@ export default function Default(props) {
   };
 
   return (
-    <Box pad={{ vertical: "xsmall", horizontal: "large" }}>
+    <Box pad={{ vertical: 'xsmall', horizontal: 'large' }}>
       <Grid
-        rows={["31%", "31%", "31%"]}
-        columns={["50%", "50%"]}
+        rows={['31%', '31%', '31%']}
+        columns={['50%', '50%']}
         gap="small"
         areas={props.layout}
       >
-        {cards.length ? makeCardElements(cards) : <Spinner />}
+        {
+          cards.length ? (
+            makeCardElements(cards)
+          ) : (
+            <Text>No cards yet!</Text>
+          ) /*<Spinner />*/
+        }
       </Grid>
     </Box>
   );
