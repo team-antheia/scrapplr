@@ -1,16 +1,18 @@
 import React from 'react';
 import { Map, GoogleApiWrapper } from 'google-maps-react';
+ import {Box} from 'grommet';
 
 import LocationMarker from './LocationMarker';
 
 const key = process.env.REACT_APP_GOOGLE_API_KEY;
 export const GoogleMap = (props) => {
   const mapStyles = {
-    width: '50%',
-    height: '50%',
+    width: '95%',
+    height: '70%',
   };
+  console.log('the props', props.allLocations[0])
   return (
-    <div>
+    <Box style={mapStyles}>
       {props.allLocations.length && (
         <Map
           google={props.google}
@@ -41,7 +43,7 @@ export const GoogleMap = (props) => {
             )}
         </Map>
       )}
-    </div>
+    </Box>
   );
 };
 export default GoogleApiWrapper({

@@ -56,7 +56,7 @@ export default class UserHome extends Component {
     const scrapbooksRef = firestore.collection('Scrapbooks');
     const queryRef = await scrapbooksRef
       .where('owner', '==', userId)
-      // .orderBy('timestamp', 'desc')
+      .orderBy('timestamp')
       .get();
     if (queryRef.empty) {
       console.log('no matching documents');
@@ -111,6 +111,7 @@ export default class UserHome extends Component {
 
     await scrapbookRef.update({ title: this.state.currentScrapbookTitle });
     this.getScrapbooks(this.props.userId);
+    this.setState({ showEdit: false });
   }
 
   async addNewScrapbook() {
@@ -124,24 +125,55 @@ export default class UserHome extends Component {
         'https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg',
       mapLocations: [
         {
-          coordinates: new firebase.firestore.GeoPoint(40.7128, 74.006),
-          name: 'New York, NY',
+          coordinates: new firebase.firestore.GeoPoint(40.7812, 73.9665),
+          name: 'Central Park, NY',
         },
       ],
       owner: user,
-      pages: [],
       scrapbookId: scrapbookRef.id,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
     await scrapbookRef.set(newScrapbook);
 
+    // const firstPage = {
+    //   cards: [
+    //     { type: 'static-map', body: 'mapContainer' },
+    //     { type: 'title', body: this.state.title },
+    //   ],
+    //   layout: [
+    //     { name: 'media', start: [0, 0], end: [1, 1] },
+    //     { name: 'caption', start: [0, 2], end: [1, 2] },
+    //   ],
+    //   pageNum: 1,
+    //   pageTitle: `firstPage`,
+    //   scrapbookId: scrapbookRef.id,
+    // };
+
     //  New scrapbook page needs to be added with new scrapbook
-    const pagesRef = firestore.collection('Pages').add({
-      cards: [],
-      layout: [],
+    // const firstPageRef = await firestore
+    //   .collection('Pages')
+    //   .doc()
+    //   .set(firstPage);
+
+    const pagesRef = await firestore.collection('Pages').add({
+      cards: [
+        // { type: 'text', body: 'new page' },
+        // {
+        //   type: 'image',
+        //   body: 'https://static.thenounproject.com/png/558475-200.png',
+        // },
+        // { type: 'text', body: 'or text' },
+        // { type: 'text', body: 'or even a street view' },
+      ],
+      layout: [
+        { name: 'top', start: [0, 0], end: [1, 0] },
+        { name: 'midLeft', start: [0, 1], end: [0, 1] },
+        { name: 'midRight', start: [1, 1], end: [1, 1] },
+        { name: 'bot', start: [0, 2], end: [1, 2] },
+      ],
       pageNum: 1,
-      pageTitle: '',
+      pageTitle: 'edit page to add content',
       scrapbookId: scrapbookRef.id,
     });
 
@@ -201,8 +233,9 @@ export default class UserHome extends Component {
                     style={{
                       width: '75vw',
                       display: 'flex',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                     key={i}
                   >
@@ -213,40 +246,46 @@ export default class UserHome extends Component {
                       selectedScrapbook={this.state.selectedScrapbook}
                       onSelect={this.onSelect}
                     />
-                    <Button
-                      // style={{ position: 'static', right: 100 }}
-                      alignSelf='center'
-                      style={{
-                        visibility:
-                          this.state.hoverTarget === book.scrapbookId
-                            ? 'visible'
-                            : 'hidden',
-                      }}
-                      label='edit book'
-                      onClick={() =>
-                        this.editBook(book.title, book.scrapbookId)
-                      }
-                    />
-                    <Button
-                      // style={{ position: 'static', right: 100 }}
-                      alignSelf='center'
-                      color='status-critical'
-                      primary
-                      margin='small'
-                      style={{
-                        visibility:
-                          this.state.hoverTarget === book.scrapbookId
-                            ? 'visible'
-                            : 'hidden',
-                      }}
-                      label='DELETE book'
-                      onClick={() => this.handleDelete(book.scrapbookId)}
-                    />
+                    <Box justify='center' align='center' direction='row'>
+                      <Button
+                        // style={{ position: 'static', right: 100 }}
+                        alignSelf='center'
+                        style={{
+                          visibility:
+                            this.state.hoverTarget === book.scrapbookId
+                              ? 'visible'
+                              : size === 'small'
+                              ? 'visibile'
+                              : 'hidden',
+                        }}
+                        label='edit book'
+                        onClick={() =>
+                          this.editBook(book.title, book.scrapbookId)
+                        }
+                      />
+                      <Button
+                        // style={{ position: 'static', right: 100 }}
+                        alignSelf='center'
+                        color='status-critical'
+                        primary
+                        margin='small'
+                        style={{
+                          visibility:
+                            this.state.hoverTarget === book.scrapbookId
+                              ? 'visible'
+                              : size === 'small'
+                              ? 'visibile'
+                              : 'hidden',
+                        }}
+                        label='DELETE book'
+                        onClick={() => this.handleDelete(book.scrapbookId)}
+                      />
+                    </Box>
                   </div>
                 );
               })}
 
-              <Button label='logout' onClick={this.handleLogout} />
+              <Button primary label='logout' onClick={this.handleLogout} />
             </Box>
           )}
         </ResponsiveContext.Consumer>

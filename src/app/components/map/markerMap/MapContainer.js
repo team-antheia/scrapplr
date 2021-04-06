@@ -1,10 +1,11 @@
+import { Box } from 'grommet';
 import React, { Component } from 'react';
 import { firestore } from '../../../../index';
 import Map from './GoogleMap';
 
 export class MapContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       locations: [],
       location: '',
@@ -17,20 +18,18 @@ export class MapContainer extends Component {
   }
 
   async componentDidMount() {
-    if(!this.props.mapLocations){
-    const getDocs = firestore
-      .collection('Scrapbooks')
-      .doc('XQkebrXC1teAOhImleg3')
-      .get();
-    const doc = await getDocs;
-    if (doc) {
-      const data = doc.data();
-      this.setState({ locations: data.mapLocations });
+    if (this.props.scrapbookId) {
+      const getDocs = firestore
+        .collection('Scrapbooks')
+        .doc(this.props.scrapbookId)
+        .get();
+      const doc = await getDocs;
+      if (doc) {
+        const data = doc.data();
+        this.setState({ locations: data.mapLocations });
+      }
     }
-  }else if(this.props.mapLocations){
-    this.setState({ locations: this.props.mapLocations });
   }
-}
 
   onMarkerClick(props, marker, e) {
     this.setState({
@@ -64,31 +63,34 @@ export class MapContainer extends Component {
     });
   }
   render() {
+
     const allLocations = this.state.locations;
     return (
-      <div>
-        <div className='form'>
+      <Box width="large">
+        <div className="form">
           <form>
-            <label htmlFor='location'>Add Location </label>
+            <label htmlFor="location">Add Location </label>
             <input
-              type='text'
-              name='location'
+              type="text"
+              name="location"
               value={this.state.location}
               onChange={this.handleChange}
             />
-            <button onClick={this.onSubmit} type='submit'>
+            <button onClick={this.onSubmit} type="submit">
               Submit
             </button>
           </form>
         </div>
-        <Map
-          allLocations={allLocations}
-          onMarkerClick={this.onMarkerClick}
-          visible={this.state.showingInfoWindow}
-          onClose={this.onClose}
-          selectedPlace={this.state.selectedPlace}
-        />
-      </div>
+
+          <Map
+            allLocations={allLocations}
+            onMarkerClick={this.onMarkerClick}
+            visible={this.state.showingInfoWindow}
+            onClose={this.onClose}
+            selectedPlace={this.state.selectedPlace}
+          />
+
+      </Box>
     );
   }
 }

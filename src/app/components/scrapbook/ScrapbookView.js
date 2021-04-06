@@ -9,32 +9,42 @@ import {
   Card,
   Spinner,
   Text,
+  Carousel,
 } from 'grommet';
+
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
 import { Toolbar } from '..';
+import { Modal } from 'rsuite';
 
 import Default from './layouts/Default';
 
 import CaptionTop from './layouts/CaptionTop';
 import CaptionBottom from './layouts/CaptionBottom';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
+import { size } from 'polished';
 import { Link } from 'react-router-dom';
-//import Form from '../Form';
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentPage, setCurrentPage] = useState({});
+  const [currentPageIdx, setCurrentPageIdx] = useState(0);
+  const [cards, setCards] = useState([]);
+  const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
+    // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
         const pagesRef = firestore.collection('Pages');
         const queryRef = await pagesRef
           .where('scrapbookId', '==', props.params.scrapbookId)
-          .orderBy('pageNum', 'desc')
+          .orderBy('pageNum')
           .get();
 
         if (queryRef.empty) {
@@ -43,23 +53,37 @@ function ScrapbookView(props) {
         }
 
         const pageData = [];
-        queryRef.forEach((doc) => {
-          pageData.push(doc.data());
+        await queryRef.forEach((doc) => {
+          const pageId = doc.id;
+          pageData.push({ ...doc.data(), pageId });
         });
         setPages(pageData);
-        // setPages([...pages, ...pageData]);
+        setPageNum(pageData.length);
+        if (pageData[0]) {
+          setCards(pageData[0].cards);
+        }
       }
     }
-
     fetchPages();
   }, [props.params.scrapbookId]);
 
   const addPage = async (scrapbookId) => {
+    const newPageNum = pageNum + 1;
+    console.log(pageNum, newPageNum);
+
     const pagesRef = firestore.collection('Pages');
 
     const newPage = await pagesRef.add({
-      cards: [],
-      pageNum: pageNum + 1,
+      cards: [
+        // { type: 'text', body: 'new page' },
+        // {
+        //   type: 'image',
+        //   body: 'https://static.thenounproject.com/png/558475-200.png',
+        // },
+        // { type: 'text', body: 'or text' },
+        // { type: 'text', body: 'or even a street view' },
+      ],
+      pageNum: newPageNum,
       pageTitle: '',
       scrapbookId: scrapbookId,
       layout: [
@@ -71,8 +95,14 @@ function ScrapbookView(props) {
     });
 
     setPages([...pages, (await newPage.get()).data()]);
-    // can't figure out how to actually get this number to incremenet
-    setPageNum(pageNum + 1);
+    setPageNum(newPageNum);
+  };
+
+  const useCardStatus = (newCard) => {
+    // console.log('prev', cards, 'new', newCard);
+    if (!cards.includes(newCard)) {
+      setCards([...cards, newCard]);
+    }
   };
 
   const backHome = () => {
@@ -80,154 +110,105 @@ function ScrapbookView(props) {
     if (history) history.push('/home');
   };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
+  const toggleModal = () => {
+    setIsModalShowing(!isModalShowing);
+    setCopyButtonClicked(false);
   };
 
-  // const { pages, pageNum } = this.state;
-  // const mapLocations = [this.state.mapLocations];
-  const bookStyle = {
-    position: 'relative',
-    alignItems: 'flex-end',
-    display: 'flex',
-    height: '100%',
-    width: '100%',
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(
+      `scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`
+    );
+    setCopyButtonClicked(true);
+  };
+
+  const handleCurrentPage = (activeIdx) => {
+    setCurrentPage(pages[activeIdx].pageId);
+    setCards(pages[activeIdx].cards);
+    setCurrentPageIdx(activeIdx + 1);
   };
 
   return pages.length ? (
     <Box>
-      <Button
-        type='button'
-        clasName='backHome'
-        label='back to home'
-        onClick={backHome}
-        primary
-        margin='small'
-      />
+      <Box direction='row' max='500px'>
+        <Button
+          type='button'
+          className='backHome'
+          label='back to home'
+          onClick={backHome}
+          primary
+          margin='small'
+        />
+        <Button
+          type='button'
+          label='share with friends'
+          onClick={toggleModal}
+          primary
+          margin='small'
+        />
+      </Box>
       <Box
-        width={{ min: '85vw' }}
-        height={{ min: '75vh' }}
         justify='center'
         align='center'
-        background={{
-          color: 'neutral-1',
-          opacity: true,
-          position: 'bottom',
-          repeat: 'no-repeat',
-          size: 'cover',
-        }}
-        border={{
-          color: 'border',
-          size: 'large',
-          style: 'groove',
-          side: 'all',
-        }}
+        height='large'
+        width='90vw'
+        style={{ maxWidth: '864px' }}
+        background='glass2'
+        round={true}
       >
         <ResponsiveContext.Consumer>
-          {/* mobile view */}
-          {(size) =>
-            size === 'small' ? (
-              <FlipPage
-                disableSwipe={true}
-                flipOnTouch={true}
-                responsive={true}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: '24x',
-                }}
-              >
-                <Grid
-                  rows={['small', 'small', 'small']}
-                  columns={['small', 'small']}
-                  gap='xsmall'
-                  areas={[
-                    { name: 'card1', start: [0, 0], end: [1, 0] },
-                    { name: 'nav', start: [0, 1], end: [0, 1] },
-                    { name: 'main', start: [1, 1], end: [1, 1] },
-                    { name: 'sub', start: [0, 2], end: [1, 2] },
-                  ]}
-                >
-                  <Card gridArea='card1' background='brand' />
-                  <Card gridArea='nav' background='light-5' />
-                  <Card gridArea='main' background='light-2' />
-                  <Card gridArea='sub' background='light-2' />
-                </Grid>
-                <Grid
-                  rows={['small', 'small', 'small']}
-                  columns={['small', 'small']}
-                  gap='xsmall'
-                  areas={[
-                    { name: 'card1', start: [0, 0], end: [1, 0] },
-                    { name: 'nav', start: [0, 1], end: [0, 1] },
-                    { name: 'main', start: [1, 1], end: [1, 1] },
-                    { name: 'sub', start: [0, 2], end: [1, 2] },
-                  ]}
-                >
-                  <Card gridArea='card1' background='brand' />
-                  <Card gridArea='nav' background='light-5' />
-                  <Card gridArea='main' background='light-2' />
-                  <Card gridArea='sub' background='light-2' />
-                </Grid>
-              </FlipPage>
-            ) : (
-              // Webpage
-              <div
-                style={{
-                  display: 'flex',
-                  width: '100%',
-                  height: '100%',
-                }}
-              >
-                <FlipPage
-                  // trying to get the page to stop swiping but it won't.
-                  // if this stops anyone from swiping, change it to 'isEditing'
-                  disableSwipe={true}
-                  height={320}
-                  responsive={true}
-                  orientation='horizontal'
-                  // showSwipeHint={true}
-                >
-                  {pages.length >= 1 ? (
-                    pages.map((page) => {
-                      return (
-                        <div>
-                          {/* <CaptionTop page={pages[pageNum]} /> */}
-
-                          <Text>{page.pageNum}</Text>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div>
-                      <Box pad='xxsmall'>
-                        <Default />
-                      </Box>
-                      <Box>{/* <CaptionMiddle /> */}</Box>
-                      <Box>{/* <CaptionTop /> */}</Box>
-                      <Box>
-                        <CaptionBottom />
-                      </Box>
-                    </div>
-                  )}
-                  <div></div>
-                  <div></div>
-                </FlipPage>
-                <Link to='/form'>Share with friends</Link>
-              </div>
-            )
-          }
+          {(size) => (
+            <Carousel
+              onChild={handleCurrentPage}
+              controls={
+                size === 'small' && !isEditing ? 'selectors' : !isEditing
+              }
+              fill
+            >
+              {pages.map((page, idx) => {
+                // if (page.pageTitle === 'firstPage') {
+                //   return <CaptionBottom key={idx} {...page} />;
+                // }
+                if (idx === pages.length - 1) {
+                  setLastPage(page);
+                }
+                return (
+                  <div>
+                    <Default key={idx} {...page} />
+                  </div>
+                );
+              })}
+            </Carousel>
+          )}
         </ResponsiveContext.Consumer>
         <Box direction='row'>
-          <Toolbar
-            setIsEditing={setIsEditing}
-            isEditing={isEditing}
-            addPage={addPage}
-            scrapbookId={props.params.scrapbookId}
-          />
+          {pages.indexOf(currentPage) !== 0 && (
+            <Toolbar
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              addPage={lastPage.pageId === currentPage ? addPage : false}
+              scrapbookId={props.params.scrapbookId}
+              currentPage={currentPageIdx}
+              setCards={useCardStatus}
+            />
+          )}
         </Box>
+        <Modal
+          style={{ maxWidth: '100vw' }}
+          overflow={true}
+          backdrop={true}
+          show={isModalShowing}
+        >
+          <Text>Share this link:</Text>
+          <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
+          <Button
+            onClick={copyToClipboard}
+            label={copyButtonClicked ? 'copied!' : 'copy'}
+          />
+          <Button onClick={toggleModal} label='close' />
+        </Modal>
       </Box>
+      <Link to='/form'>Share with friends</Link>
     </Box>
   ) : (
     <Spinner />
@@ -235,26 +216,3 @@ function ScrapbookView(props) {
 }
 
 export default withRouter(ScrapbookView);
-
-const styles = {
-  twoPage: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-around',
-    padding: 'auto',
-    background: 'rgba(255,255,255, 0.1)',
-  },
-  container: {
-    padding: 8,
-    background:
-      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '75vh',
-    minWidth: '95vw',
-    borderRadius: '11px',
-  },
-  singlePage: { width: 390, height: '100%', minHeight: 500 },
-};

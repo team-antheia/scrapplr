@@ -12,10 +12,11 @@ class LocationSearchInput extends React.Component {
     super(props);
     this.state = {
       address: '',
-      lat: '',
-      long: '',
+      lat: 46.9171876,
+      long: 17.8951832,
       searchBar: true,
       isClicked: false,
+      buttonMessage: 'added!',
     };
     this.addCard = this.addCard.bind(this);
   }
@@ -58,6 +59,7 @@ class LocationSearchInput extends React.Component {
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', this.props.scrapbookId)
+      .where('pageNum', '==', this.props.currentPage)
       .get();
 
     if (singlePageRef.empty) {
@@ -65,25 +67,28 @@ class LocationSearchInput extends React.Component {
       return;
     }
 
+    const newCard = {
+      body: new firebase.firestore.GeoPoint(this.state.lat, this.state.long),
+      type: 'panoramic',
+      //layout: props.layout
+    };
+
     singlePageRef.forEach(async (doc) => {
-      // Grab page:
       console.log('page id', doc.id);
-      await firestore
-        .collection('Pages')
-        .doc(doc.id)
-        .update({
-          cards: firebase.firestore.FieldValue.arrayUnion({
-            body: new firebase.firestore.GeoPoint(
-              this.state.lat,
-              this.state.long
-            ),
-            type: 'panoramic',
-            //layout: props.layout
-          }),
+      const queryRef = await firestore.collection('Pages').doc(doc.id);
+
+      if (doc.data().cards.length >= 4) {
+        this.setState({ buttonMessage: 'try again' });
+        window.alert('Too many cards on this page!');
+      } else {
+        queryRef.update({
+          cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
+      }
     });
 
     this.setState({ isClicked: true });
+    this.props.setCards(newCard);
   }
 
   render() {
@@ -91,7 +96,7 @@ class LocationSearchInput extends React.Component {
       <div>
         <Box direction="row">
           <Button style={{ width: '40%' }} primary onClick={this.addCard}>
-            {this.state.isClicked ? 'added!' : 'add'}
+            {this.state.isClicked ? this.state.buttonMessage : 'add'}
           </Button>
           <PlacesAutocomplete
             value={this.state.address}

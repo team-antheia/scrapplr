@@ -8,6 +8,7 @@ function PhotoUpload(props) {
   const [imageAsFile, setImageAsFile] = useState('');
   const [isClicked, setIsClicked] = useState(false);
   const [isLoading, setIsLoading] = useState();
+  const [buttonMessage, setButtonMessage] = useState('uploaded!');
 
   //----- If image is need on page, use imageAsUrl to access from firebase storage --------
   const [imageAsUrl, setImageAsUrl] = useState('');
@@ -22,8 +23,13 @@ function PhotoUpload(props) {
 
   const handleFirebaseUpload = async (e) => {
     e.preventDefault();
+    if (!imageAsFile) {
+      alert('Error: No image selected');
+      return;
+    }
 
     setIsLoading(true);
+
     //upload file to firebase storage
     const uploadTask = storage
       .ref(`/images/${imageAsFile.name}`)
@@ -116,11 +122,11 @@ function PhotoUpload(props) {
     });
   }
 
-  //new func to find correct page with scrapbookid and add a card
   async function updateDatabase(url) {
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', props.scrapbookId)
+      .where('pageNum', '==', props.currentPage)
       .get();
 
     if (singlePageRef.empty) {
@@ -128,23 +134,42 @@ function PhotoUpload(props) {
       return;
     }
 
+    const newCard = {
+      body: url,
+      type: 'image',
+      //layout: props.layout
+    };
+
     singlePageRef.forEach(async (doc) => {
-      await firestore
-        .collection('Pages')
-        .doc(doc.id)
-        .update({
-          cards: firebase.firestore.FieldValue.arrayUnion({
-            body: url,
-            type: 'image',
-            //layout: props.layout
-          }),
+      const queryRef = await firestore.collection('Pages').doc(doc.id);
+
+      if (doc.data().cards.length >= 4) {
+        setButtonMessage('upload failed');
+        window.alert('Too many cards on this page!');
+      } else {
+        queryRef.update({
+          cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
+      }
+
+      // if (doc.data().cards.length >= 4) {
+      //   setButtonMessage("upload failed");
+      //   window.alert("Too many cards on this page!");
+      // } else {
+      //   queryRef.update({
+      //     cards: firebase.firestore.FieldValue.arrayUnion({
+      //       body: url,
+      //       type: "image",
+      //       //layout: props.layout
+      //     }),
+      //   });
+      // }
     });
     setIsLoading(false);
     setIsClicked(true);
+    props.setCards(newCard);
   }
 
-  console.log('CURRENT CLICK', isClicked);
   return (
     <div className="photo-upload">
       <Heading level={4}>Upload a Photo</Heading>
@@ -154,7 +179,7 @@ function PhotoUpload(props) {
         // label="upload"
         onClick={handleFirebaseUpload}
       >
-        {isClicked ? 'uploaded!' : isLoading ? 'one moment...' : 'upload'}
+        {isClicked ? buttonMessage : isLoading ? 'one moment...' : 'upload'}
       </Button>
       <form>
         <FileInput
