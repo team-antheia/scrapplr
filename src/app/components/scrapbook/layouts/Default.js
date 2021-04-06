@@ -14,7 +14,7 @@ import StreetView from '../../map/360/StreetView';
 import { size } from 'polished';
 
 export default function Default(props) {
-  const [cards, setCards] = useState(props.cards);
+  const [cards] = useState(props.cards);
 
   const makeCardElements = (cards) => {
     // iterate over cards from props

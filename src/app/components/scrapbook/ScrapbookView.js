@@ -30,10 +30,10 @@ function ScrapbookView(props) {
   const [pageNum, setPageNum] = useState(1);
   const [isModalShowing, setIsModalShowing] = useState(false);
   const [copyButtonClicked, setCopyButtonClicked] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [cards, setCards] = useState([]);
+  const [addedCard, setAddedCard] = useState(false);
   const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
@@ -58,13 +58,15 @@ function ScrapbookView(props) {
         });
         setPages(pageData);
         setPageNum(pageData.length);
-        if (pageData[0]) {
-          setCards(pageData[0].cards);
-        }
+        // if (currentPageIdx) {
+        //   setCards([...pageData[currentPageIdx - 1].cards]);
+        // }
       }
     }
     fetchPages();
-  }, [props.params.scrapbookId]);
+    setAddedCard(false);
+    // console.log('pages on state', pages);
+  }, [props.params.scrapbookId, currentPageIdx, addedCard]);
 
   const addPage = async (scrapbookId) => {
     const newPageNum = pageNum + 1;
@@ -99,9 +101,21 @@ function ScrapbookView(props) {
 
   const useCardStatus = (newCard) => {
     // console.log('prev', cards, 'new', newCard);
-    if (!cards.includes(newCard)) {
-      setCards([...cards, newCard]);
+    // if (!cards.includes(newCard)) {
+    //   setCards([...cards, newCard]);
+    //   // console.log('cards after click', cards);
+    // }
+
+    let updatedPage = pages[currentPageIdx - 1];
+    updatedPage.cards = [...updatedPage.cards, newCard];
+    const newPages = [...pages];
+
+    if (currentPageIdx) {
+      setPages(newPages);
+      setAddedCard(true);
     }
+
+    console.log('updated page', pages);
   };
 
   const backHome = () => {
@@ -123,7 +137,7 @@ function ScrapbookView(props) {
 
   const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
-    setCards(pages[activeIdx].cards);
+    // setCards(pages[activeIdx].cards);
     setCurrentPageIdx(activeIdx + 1);
   };
 
@@ -168,6 +182,7 @@ function ScrapbookView(props) {
                 // if (page.pageTitle === 'firstPage') {
                 //   return <CaptionBottom key={idx} {...page} />;
                 // }
+                console.log('mapping pages...');
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
