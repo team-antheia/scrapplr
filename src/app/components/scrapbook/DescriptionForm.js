@@ -11,6 +11,7 @@ const CaptionForm = (props) => {
     const pagesRef = firestore.collection('Pages');
     const singlePageRef = await pagesRef
       .where('scrapbookId', '==', props.scrapbookId)
+      .where('pageNum', '==', props.currentPage)
       .get();
     //^^^ When we know what page the user is on, insert query here ^^^
     // .where('pageNum', '==', props.pageNum)

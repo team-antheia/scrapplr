@@ -125,8 +125,8 @@ export default class UserHome extends Component {
         'https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg',
       mapLocations: [
         {
-          coordinates: new firebase.firestore.GeoPoint(40.7128, 74.006),
-          name: 'New York, NY',
+          coordinates: new firebase.firestore.GeoPoint(40.7812, 73.9665),
+          name: 'Central Park, NY',
         },
       ],
       owner: user,
@@ -136,35 +136,35 @@ export default class UserHome extends Component {
 
     await scrapbookRef.set(newScrapbook);
 
-    const firstPage = {
-      cards: [
-        { type: 'static-map', body: 'mapContainer' },
-        { type: 'title', body: this.state.title },
-      ],
-      layout: [
-        { name: 'media', start: [0, 0], end: [1, 1] },
-        { name: 'caption', start: [0, 2], end: [1, 2] },
-      ],
-      pageNum: 1,
-      pageTitle: `firstPage`,
-      scrapbookId: scrapbookRef.id,
-    };
+    // const firstPage = {
+    //   cards: [
+    //     { type: 'static-map', body: 'mapContainer' },
+    //     { type: 'title', body: this.state.title },
+    //   ],
+    //   layout: [
+    //     { name: 'media', start: [0, 0], end: [1, 1] },
+    //     { name: 'caption', start: [0, 2], end: [1, 2] },
+    //   ],
+    //   pageNum: 1,
+    //   pageTitle: `firstPage`,
+    //   scrapbookId: scrapbookRef.id,
+    // };
 
     //  New scrapbook page needs to be added with new scrapbook
-    const firstPageRef = await firestore
-      .collection('Pages')
-      .doc()
-      .set(firstPage);
+    // const firstPageRef = await firestore
+    //   .collection('Pages')
+    //   .doc()
+    //   .set(firstPage);
 
     const pagesRef = await firestore.collection('Pages').add({
       cards: [
-        { type: 'text', body: 'new page' },
-        {
-          type: 'image',
-          body: 'https://static.thenounproject.com/png/558475-200.png',
-        },
-        { type: 'text', body: 'or text' },
-        { type: 'text', body: 'or even a street view' },
+        // { type: 'text', body: 'new page' },
+        // {
+        //   type: 'image',
+        //   body: 'https://static.thenounproject.com/png/558475-200.png',
+        // },
+        // { type: 'text', body: 'or text' },
+        // { type: 'text', body: 'or even a street view' },
       ],
       layout: [
         { name: 'top', start: [0, 0], end: [1, 0] },
@@ -172,7 +172,7 @@ export default class UserHome extends Component {
         { name: 'midRight', start: [1, 1], end: [1, 1] },
         { name: 'bot', start: [0, 2], end: [1, 2] },
       ],
-      pageNum: 2,
+      pageNum: 1,
       pageTitle: 'edit page to add content',
       scrapbookId: scrapbookRef.id,
     });

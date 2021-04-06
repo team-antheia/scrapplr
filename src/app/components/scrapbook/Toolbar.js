@@ -4,12 +4,14 @@ import {
   LocationSearchInput,
   DescriptionForm,
 } from '../../components';
-import { Box, Button } from 'grommet';
+import { Box, Button, Layer } from 'grommet';
+import MapContainer from '../map/markerMap/MapContainer';
 
 //Each component (or toolbar?) must make post request to db with new card info
 
 const Toolbar = (props) => {
   const [tool, setTool] = useState('');
+  const [show, setShow] = React.useState();
   const { isEditing, setIsEditing, currentPage } = props;
 
   const addPage = async (scrapbookId) => {
@@ -69,6 +71,7 @@ const Toolbar = (props) => {
             >
               <LocationSearchInput
                 setCards={props.setCards}
+                currentPage={currentPage}
                 scrapbookId={props.scrapbookId} /*layout={props.layout}*/
               />
             </Box>
@@ -96,7 +99,33 @@ const Toolbar = (props) => {
           </Box>
         </Box>
       ) : (
-        ''
+        <Box>
+          <Button label="Map" onClick={() => setShow(true)} />
+          {show && (
+            <Layer
+              onEsc={() => setShow(false)}
+              onClickOutside={() => setShow(false)}
+            >
+              <Box
+                as="header"
+                gap="small"
+                direction="row"
+                align="center"
+                justify="center"
+                pad={{ top: 'small', bottom: 'small' }}
+              >
+                <Button
+                  label="Close"
+                  onClick={() => setShow(false)}
+                  color="dark-3"
+                />
+              </Box>
+              <Box pad="small" width="large" height="large" align="center">
+                <MapContainer scrapbookId={props.scrapbookId} />
+              </Box>
+            </Layer>
+          )}
+        </Box>
       )}
     </Box>
   );

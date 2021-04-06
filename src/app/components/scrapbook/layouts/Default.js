@@ -21,6 +21,7 @@ export default function Default(props) {
     return cards.map((card, i) => {
       let cardBody;
       // check card type
+
       if (card.type === 'text' || card.type === 'description') {
         // create grommet element based on type
         cardBody = <Text key={i}>{card.body}</Text>;
@@ -65,7 +66,7 @@ export default function Default(props) {
       if (i === 3) {
         return (
           <Card gridArea="bot" background="light-2">
-            .{cardBody}
+            {cardBody}
           </Card>
         );
       }
@@ -80,7 +81,13 @@ export default function Default(props) {
         gap="small"
         areas={props.layout}
       >
-        {cards.length ? makeCardElements(cards) : <Spinner />}
+        {
+          cards.length ? (
+            makeCardElements(cards)
+          ) : (
+            <Text>No cards yet!</Text>
+          ) /*<Spinner />*/
+        }
       </Grid>
     </Box>
   );

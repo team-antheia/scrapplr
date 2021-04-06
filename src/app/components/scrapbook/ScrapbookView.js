@@ -11,6 +11,7 @@ import {
   Text,
   Carousel,
 } from 'grommet';
+
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
 import { Toolbar } from '..';
@@ -56,25 +57,32 @@ function ScrapbookView(props) {
           pageData.push({ ...doc.data(), pageId });
         });
         setPages(pageData);
+        setPageNum(pageData.length);
+        if (pageData[0]) {
+          setCards(pageData[0].cards);
+        }
       }
     }
     fetchPages();
-  }, [props.params.scrapbookId, pageNum]);
+  }, [props.params.scrapbookId]);
 
   const addPage = async (scrapbookId) => {
+    const newPageNum = pageNum + 1;
+    console.log(pageNum, newPageNum);
+
     const pagesRef = firestore.collection('Pages');
 
     const newPage = await pagesRef.add({
       cards: [
-        { type: 'text', body: 'new page' },
-        {
-          type: 'image',
-          body: 'https://static.thenounproject.com/png/558475-200.png',
-        },
-        { type: 'text', body: 'or text' },
-        { type: 'text', body: 'or even a street view' },
+        // { type: 'text', body: 'new page' },
+        // {
+        //   type: 'image',
+        //   body: 'https://static.thenounproject.com/png/558475-200.png',
+        // },
+        // { type: 'text', body: 'or text' },
+        // { type: 'text', body: 'or even a street view' },
       ],
-      pageNum: pageNum + 1,
+      pageNum: newPageNum,
       pageTitle: '',
       scrapbookId: scrapbookId,
       layout: [
@@ -86,11 +94,11 @@ function ScrapbookView(props) {
     });
 
     setPages([...pages, (await newPage.get()).data()]);
-    // can't figure out how to actually get this number to incremenet
-    setPageNum(pageNum + 1);
+    setPageNum(newPageNum);
   };
 
   const useCardStatus = (newCard) => {
+    // console.log('prev', cards, 'new', newCard);
     if (!cards.includes(newCard)) {
       setCards([...cards, newCard]);
     }
@@ -99,10 +107,6 @@ function ScrapbookView(props) {
   const backHome = () => {
     const { history } = props;
     if (history) history.push('/home');
-  };
-
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
   };
 
   const toggleModal = () => {
@@ -119,8 +123,8 @@ function ScrapbookView(props) {
 
   const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
+    setCards(pages[activeIdx].cards);
     setCurrentPageIdx(activeIdx + 1);
-    console.log(activeIdx);
   };
 
   return pages.length ? (
@@ -164,12 +168,14 @@ function ScrapbookView(props) {
                 // if (page.pageTitle === 'firstPage') {
                 //   return <CaptionBottom key={idx} {...page} />;
                 // }
-
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
-
-                return <Default key={idx} {...page} />;
+                return (
+                  <div>
+                    <Default key={idx} {...page} />
+                  </div>
+                );
               })}
             </Carousel>
           )}

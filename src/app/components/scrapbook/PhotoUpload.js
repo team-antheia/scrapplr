@@ -151,6 +151,19 @@ function PhotoUpload(props) {
           cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
+
+      // if (doc.data().cards.length >= 4) {
+      //   setButtonMessage("upload failed");
+      //   window.alert("Too many cards on this page!");
+      // } else {
+      //   queryRef.update({
+      //     cards: firebase.firestore.FieldValue.arrayUnion({
+      //       body: url,
+      //       type: "image",
+      //       //layout: props.layout
+      //     }),
+      //   });
+      // }
     });
     setIsLoading(false);
     setIsClicked(true);
