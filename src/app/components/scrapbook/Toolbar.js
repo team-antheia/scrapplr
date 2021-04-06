@@ -51,6 +51,7 @@ const Toolbar = (props) => {
               <PhotoUpload
                 scrapbookId={props.scrapbookId} /*layout={props.layout}*/
                 currentPage={currentPage}
+                setCards={props.setCards}
               />
             </Box>
           </Box>
@@ -89,6 +90,7 @@ const Toolbar = (props) => {
               <DescriptionForm
                 setCards={props.setCards}
                 scrapbookId={props.scrapbookId} /*layout={props.layout}*/
+                currentPage={props.currentPage}
               />
             </Box>
           </Box>

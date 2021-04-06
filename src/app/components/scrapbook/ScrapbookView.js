@@ -31,6 +31,8 @@ function ScrapbookView(props) {
   const [copyButtonClicked, setCopyButtonClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
+  const [currentPageIdx, setCurrentPageIdx] = useState(0);
+  const [cards, setCards] = useState([]);
   const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
@@ -88,11 +90,11 @@ function ScrapbookView(props) {
     setPageNum(pageNum + 1);
   };
 
-  // const useCardStatus = (newCard) => {
-  //   if (!cards.includes(newCard)) {
-  //     setCards([...cards, newCard]);
-  //   }
-  // };
+  const useCardStatus = (newCard) => {
+    if (!cards.includes(newCard)) {
+      setCards([...cards, newCard]);
+    }
+  };
 
   const backHome = () => {
     const { history } = props;
@@ -116,7 +118,8 @@ function ScrapbookView(props) {
   };
 
   const handleCurrentPage = (activeIdx) => {
-    setCurrentPage(activeIdx + 1);
+    setCurrentPage(pages[activeIdx].pageId);
+    setCurrentPageIdx(activeIdx + 1);
     console.log(activeIdx);
   };
 
@@ -158,9 +161,9 @@ function ScrapbookView(props) {
               fill
             >
               {pages.map((page, idx) => {
-                if (page.pageTitle === 'firstPage') {
-                  return <CaptionBottom key={idx} {...page} />;
-                }
+                // if (page.pageTitle === 'firstPage') {
+                //   return <CaptionBottom key={idx} {...page} />;
+                // }
 
                 if (idx === pages.length - 1) {
                   setLastPage(page);
@@ -178,7 +181,8 @@ function ScrapbookView(props) {
               isEditing={isEditing}
               addPage={lastPage.pageId === currentPage ? addPage : false}
               scrapbookId={props.params.scrapbookId}
-              currentPage={currentPage}
+              currentPage={currentPageIdx}
+              setCards={useCardStatus}
             />
           )}
         </Box>
