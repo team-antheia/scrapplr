@@ -40,8 +40,8 @@ export default function Default(props) {
 
       if (card.type === 'panoramic') {
         cardBody = (
-          <Box justify="end" align="center">
-            <StreetView key={i} />
+          <Box justify="end" align="center" >
+            <StreetView lat={card.body._lat} long={card.body._long} key={i} />
           </Box>
         );
       }
@@ -80,6 +80,7 @@ export default function Default(props) {
     });
   };
 
+  console.log('the cards', cards)
   return (
     <Box pad={{ vertical: 'xsmall', horizontal: 'large' }}>
       <Grid
