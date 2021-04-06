@@ -19,6 +19,8 @@ import Default from './layouts/Default';
 import CaptionTop from './layouts/CaptionTop';
 import CaptionBottom from './layouts/CaptionBottom';
 import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+//import Form from '../Form';
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -95,18 +97,18 @@ function ScrapbookView(props) {
   return pages.length ? (
     <Box>
       <Button
-        type="button"
-        clasName="backHome"
-        label="back to home"
+        type='button'
+        clasName='backHome'
+        label='back to home'
         onClick={backHome}
         primary
-        margin="small"
+        margin='small'
       />
       <Box
         width={{ min: '85vw' }}
         height={{ min: '75vh' }}
-        justify="center"
-        align="center"
+        justify='center'
+        align='center'
         background={{
           color: 'neutral-1',
           opacity: true,
@@ -139,7 +141,7 @@ function ScrapbookView(props) {
                 <Grid
                   rows={['small', 'small', 'small']}
                   columns={['small', 'small']}
-                  gap="xsmall"
+                  gap='xsmall'
                   areas={[
                     { name: 'card1', start: [0, 0], end: [1, 0] },
                     { name: 'nav', start: [0, 1], end: [0, 1] },
@@ -147,15 +149,15 @@ function ScrapbookView(props) {
                     { name: 'sub', start: [0, 2], end: [1, 2] },
                   ]}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
+                  <Card gridArea='card1' background='brand' />
+                  <Card gridArea='nav' background='light-5' />
+                  <Card gridArea='main' background='light-2' />
+                  <Card gridArea='sub' background='light-2' />
                 </Grid>
                 <Grid
                   rows={['small', 'small', 'small']}
                   columns={['small', 'small']}
-                  gap="xsmall"
+                  gap='xsmall'
                   areas={[
                     { name: 'card1', start: [0, 0], end: [1, 0] },
                     { name: 'nav', start: [0, 1], end: [0, 1] },
@@ -163,10 +165,10 @@ function ScrapbookView(props) {
                     { name: 'sub', start: [0, 2], end: [1, 2] },
                   ]}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
+                  <Card gridArea='card1' background='brand' />
+                  <Card gridArea='nav' background='light-5' />
+                  <Card gridArea='main' background='light-2' />
+                  <Card gridArea='sub' background='light-2' />
                 </Grid>
               </FlipPage>
             ) : (
@@ -184,7 +186,7 @@ function ScrapbookView(props) {
                   disableSwipe={true}
                   height={320}
                   responsive={true}
-                  orientation="horizontal"
+                  orientation='horizontal'
                   // showSwipeHint={true}
                 >
                   {pages.length >= 1 ? (
@@ -199,7 +201,7 @@ function ScrapbookView(props) {
                     })
                   ) : (
                     <div>
-                      <Box pad="xxsmall">
+                      <Box pad='xxsmall'>
                         <Default />
                       </Box>
                       <Box>{/* <CaptionMiddle /> */}</Box>
@@ -212,11 +214,12 @@ function ScrapbookView(props) {
                   <div></div>
                   <div></div>
                 </FlipPage>
+                <Link to='/form'>Share with friends</Link>
               </div>
             )
           }
         </ResponsiveContext.Consumer>
-        <Box direction="row">
+        <Box direction='row'>
           <Toolbar
             setIsEditing={setIsEditing}
             isEditing={isEditing}

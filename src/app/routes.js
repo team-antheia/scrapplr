@@ -16,10 +16,8 @@ import Default from './components/scrapbook/layouts/Default';
 import CaptionBottom from './components/scrapbook/layouts/CaptionBottom';
 import CaptionMiddle from './components/scrapbook/layouts/CaptionMiddle';
 import { ScrapbookInstructions } from './components/demo/ScrapbookInstructions';
-import Sharing from './components/scrapbook/Sharing';
+
 import Form from './components/Form';
-import { init } from 'emailjs-com';
-init('user_Vnt5CGWFKgRtdRwXKCs6v');
 
 export default class routes extends Component {
   constructor() {
@@ -81,8 +79,16 @@ export default class routes extends Component {
         )} */}
 
         <Switch>
-          <Route path='/sharing' component={Sharing} />
-          <Route path='/form' component={Form} />
+          <Route
+            path='/form'
+            render={(props) => (
+              <Form
+                user={this.state}
+                scrapbookId={this.state.scrapbookId}
+                params={props.match.params}
+              />
+            )}
+          />
           <Route
             path='/scrapbooks/:scrapbookId'
             render={(props) => (
