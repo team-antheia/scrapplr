@@ -82,20 +82,20 @@ export default function Default(props) {
 
   console.log("the props", props);
   return (
-
     <ResponsiveContext.Consumer>
       {(size) => {
         const rows =
-          size === 'large'
-            ? ['31%', '31%', '31%']
-            : ['small', 'small', 'small'];
+          size === "large"
+            ? ["31%", "31%", "31%"]
+            : ["small", "small", "small"];
         return (
-          <Box pad={{ vertical: 'xsmall', horizontal: 'large' }}>
+          <Box fill pad={{ vertical: "xsmall", horizontal: "large" }}>
             <Grid
               rows={rows}
-              columns={['50%', '50%']}
+              columns={["50%", "50%"]}
               gap="small"
               areas={props.layout}
+              style={{ minHeight: "100%" }}
             >
               {
                 cards.length ? (
