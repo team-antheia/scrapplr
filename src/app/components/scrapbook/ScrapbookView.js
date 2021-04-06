@@ -199,6 +199,7 @@ function ScrapbookView(props) {
           backdrop={true}
           show={isModalShowing}
         >
+          <Link to='/form'>Share with friends</Link>
           <Text>Share this link:</Text>
           <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
           <Button
