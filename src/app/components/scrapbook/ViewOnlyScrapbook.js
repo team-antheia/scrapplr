@@ -143,13 +143,10 @@ function ScrapbookView(props) {
                 }}
               >
                 <FlipPage
-                  // trying to get the page to stop swiping but it won't.
-                  // if this stops anyone from swiping, change it to 'isEditing'
                   disableSwipe={true}
                   height={320}
                   responsive={true}
                   orientation="horizontal"
-                  // showSwipeHint={true}
                 >
                   {pages.length >= 1 ? (
                     pages.map((page) => {

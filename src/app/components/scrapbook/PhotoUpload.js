@@ -137,7 +137,6 @@ function PhotoUpload(props) {
     const newCard = {
       body: url,
       type: 'image',
-      //layout: props.layout
     };
 
     singlePageRef.forEach(async (doc) => {
@@ -151,19 +150,6 @@ function PhotoUpload(props) {
           cards: firebase.firestore.FieldValue.arrayUnion(newCard),
         });
       }
-
-      // if (doc.data().cards.length >= 4) {
-      //   setButtonMessage("upload failed");
-      //   window.alert("Too many cards on this page!");
-      // } else {
-      //   queryRef.update({
-      //     cards: firebase.firestore.FieldValue.arrayUnion({
-      //       body: url,
-      //       type: "image",
-      //       //layout: props.layout
-      //     }),
-      //   });
-      // }
     });
     setIsLoading(false);
     setIsClicked(true);
@@ -173,12 +159,7 @@ function PhotoUpload(props) {
   return (
     <div className="photo-upload">
       <Heading level={4}>Upload a Photo</Heading>
-      <Button
-        style={{ width: '30%' }}
-        primary
-        // label="upload"
-        onClick={handleFirebaseUpload}
-      >
+      <Button style={{ width: '30%' }} primary onClick={handleFirebaseUpload}>
         {isClicked ? buttonMessage : isLoading ? 'one moment...' : 'upload'}
       </Button>
       <form>

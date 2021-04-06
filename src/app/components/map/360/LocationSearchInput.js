@@ -70,11 +70,9 @@ class LocationSearchInput extends React.Component {
     const newCard = {
       body: new firebase.firestore.GeoPoint(this.state.lat, this.state.long),
       type: 'panoramic',
-      //layout: props.layout
     };
 
     singlePageRef.forEach(async (doc) => {
-      console.log('page id', doc.id);
       const queryRef = await firestore.collection('Pages').doc(doc.id);
 
       if (doc.data().cards.length >= 4) {

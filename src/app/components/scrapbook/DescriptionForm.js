@@ -13,8 +13,6 @@ const CaptionForm = (props) => {
       .where('scrapbookId', '==', props.scrapbookId)
       .where('pageNum', '==', props.currentPage)
       .get();
-    //^^^ When we know what page the user is on, insert query here ^^^
-    // .where('pageNum', '==', props.pageNum)
 
     if (singlePageRef.empty) {
       console.log('no matching documents');
@@ -24,11 +22,9 @@ const CaptionForm = (props) => {
     const newCard = {
       body: description,
       type: 'description',
-      //layout: props.layout
     };
 
     singlePageRef.forEach(async (doc) => {
-      // Grab page: console.log('page id', doc.id);
       const queryRef = await firestore.collection('Pages').doc(doc.id);
 
       if (doc.data().cards.length >= 4) {
