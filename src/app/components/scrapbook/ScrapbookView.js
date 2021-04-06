@@ -30,14 +30,11 @@ function ScrapbookView(props) {
   const [pageNum, setPageNum] = useState(1);
   const [isModalShowing, setIsModalShowing] = useState(false);
   const [copyButtonClicked, setCopyButtonClicked] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState({});
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  const [cards, setCards] = useState([]);
   const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
-    // let mounted = true;
     async function fetchPages() {
       if (props.params.scrapbookId) {
         const pagesRef = firestore.collection('Pages');
@@ -58,13 +55,14 @@ function ScrapbookView(props) {
         });
         setPages(pageData);
         setPageNum(pageData.length);
-        if (pageData[0]) {
-          setCards(pageData[0].cards);
-        }
       }
     }
     fetchPages();
-  }, [props.params.scrapbookId]);
+
+    return () => {
+      console.log('cleaned up');
+    };
+  }, [props.params.scrapbookId, currentPageIdx]);
 
   const addPage = async (scrapbookId) => {
     const newPageNum = pageNum + 1;
@@ -99,9 +97,22 @@ function ScrapbookView(props) {
 
   const useCardStatus = (newCard) => {
     // console.log('prev', cards, 'new', newCard);
-    if (!cards.includes(newCard)) {
-      setCards([...cards, newCard]);
-    }
+    // if (!cards.includes(newCard)) {
+    //   setCards([...cards, newCard]);
+    //   // console.log('cards after click', cards);
+    // }
+
+    pages[currentPageIdx - 1].cards = [
+      ...pages[currentPageIdx - 1].cards,
+      newCard,
+    ];
+    const newPages = [...pages];
+
+    setPages(newPages);
+
+    return () => {
+      console.log('updated page', pages);
+    };
   };
 
   const backHome = () => {
@@ -123,7 +134,7 @@ function ScrapbookView(props) {
 
   const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
-    setCards(pages[activeIdx].cards);
+    // setCards(pages[activeIdx].cards);
     setCurrentPageIdx(activeIdx + 1);
   };
 
