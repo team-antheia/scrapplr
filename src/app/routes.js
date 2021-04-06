@@ -10,7 +10,7 @@ import {
   UserHome,
   LocationSearchInput,
   StreetView,
-  Map,
+  // Map,
   ScrapbookInstructions,
   ViewOnlyScrapbook,
 } from './components';
