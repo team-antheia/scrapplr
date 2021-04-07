@@ -1,12 +1,9 @@
-import React, { Component, useEffect, useState } from 'react';
-import FlipPage from 'react-flip-page';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
   Button,
   ResponsiveContext,
-  Grid,
-  Card,
   Spinner,
   Text,
   Carousel,
@@ -24,6 +21,7 @@ import CaptionBottom from './layouts/CaptionBottom';
 import { Route, withRouter } from 'react-router-dom';
 import { size } from 'polished';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -67,20 +65,11 @@ function ScrapbookView(props) {
 
   const addPage = async (scrapbookId) => {
     const newPageNum = pageNum + 1;
-    console.log(pageNum, newPageNum);
 
     const pagesRef = firestore.collection('Pages');
 
     const newPage = await pagesRef.add({
-      cards: [
-        // { type: 'text', body: 'new page' },
-        // {
-        //   type: 'image',
-        //   body: 'https://static.thenounproject.com/png/558475-200.png',
-        // },
-        // { type: 'text', body: 'or text' },
-        // { type: 'text', body: 'or even a street view' },
-      ],
+      cards: [],
       pageNum: newPageNum,
       pageTitle: '',
       scrapbookId: scrapbookId,
@@ -97,12 +86,6 @@ function ScrapbookView(props) {
   };
 
   const useCardStatus = (newCard) => {
-    // console.log('prev', cards, 'new', newCard);
-    // if (!cards.includes(newCard)) {
-    //   setCards([...cards, newCard]);
-    //   // console.log('cards after click', cards);
-    // }
-
     pages[currentPageIdx - 1].cards = [
       ...pages[currentPageIdx - 1].cards,
       newCard,
@@ -135,20 +118,20 @@ function ScrapbookView(props) {
 
   const handleCurrentPage = (activeIdx) => {
     setCurrentPage(pages[activeIdx].pageId);
-    // setCards(pages[activeIdx].cards);
+
     setCurrentPageIdx(activeIdx + 1);
   };
 
   return pages.length ? (
     <Box>
-      <Box margin={{ bottom: 'medium' }} direction='row' max='500px'>
+      <Box margin={{ bottom: 'medium' }} direction="row" max="500px">
         <Button
           type='button'
           className='backHome'
           label='back to home'
           onClick={backHome}
           primary
-          margin='small'
+          margin="small"
           style={{ height: '100%' }}
         />
         <Button
@@ -156,17 +139,17 @@ function ScrapbookView(props) {
           label='share with friends'
           onClick={toggleModal}
           primary
-          margin='small'
+          margin="small"
           style={{ height: '100%' }}
         />
       </Box>
       <Box
-        justify='center'
-        align='center'
-        height='large'
-        width='90vw'
+        justify="center"
+        align="center"
+        height="large"
+        width="90vw"
         style={{ maxWidth: '864px' }}
-        background='glass2'
+        background="glass2"
         round={true}
         border='7px solid black'
       >
@@ -180,9 +163,6 @@ function ScrapbookView(props) {
               fill
             >
               {pages.map((page, idx) => {
-                // if (page.pageTitle === 'firstPage') {
-                //   return <CaptionBottom key={idx} {...page} />;
-                // }
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }
