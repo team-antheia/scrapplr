@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import {
   Login,
   SignUp,
   LandingPage,
   NotFound,
   ScrapbookView,
-  BookShelfView,
   UserHome,
   LocationSearchInput,
   StreetView,
-  // Map,
   ScrapbookInstructions,
   ViewOnlyScrapbook,
 } from './components';
-import { Box, Heading } from 'grommet';
+import { Box, Text } from 'grommet';
 import firebase, { auth, firestore } from '../index';
-import SinglePage from './components/scrapbook/SinglePage';
-import Default from './components/scrapbook/layouts/Default';
-// import CaptionTop from "./components/scrapbook/layouts/CaptionTop";
-import CaptionBottom from './components/scrapbook/layouts/CaptionBottom';
-import CaptionMiddle from './components/scrapbook/layouts/CaptionMiddle';
 
 export default class routes extends Component {
   constructor() {
@@ -103,6 +96,11 @@ export default class routes extends Component {
                 />
               )}
             />
+            <Route path="/demo">
+              <Text>Demo video here</Text>
+              <> </>
+              <ScrapbookInstructions />
+            </Route>
             {/* <Route component={() => <NotFound isLoggedIn={true} />} /> */}
           </Switch>
         </Box>
@@ -112,7 +110,7 @@ export default class routes extends Component {
         <Box justify="center" align="center" height="100vh">
           <Switch>
             <Route path="/demo">
-              <ScrapbookView user={'demo'} />
+              <Text>Demo video here</Text>
             </Route>
             <Route path="/instructions">
               <ScrapbookInstructions user={'demo'} />
@@ -128,10 +126,8 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path="/bookshelf" component={BookShelfView} />
             <Route path="/test" component={LocationSearchInput} />
             <Route path="/streetview" component={StreetView} />
-            {/* <Route path="/map" component={Map} /> */}
             <Route exact path="/" component={LandingPage} />
 
             {/* <Route component={() => <NotFound isLoggedIn={false} />} /> */}

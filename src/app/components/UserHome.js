@@ -136,36 +136,8 @@ export default class UserHome extends Component {
 
     await scrapbookRef.set(newScrapbook);
 
-    // const firstPage = {
-    //   cards: [
-    //     { type: 'static-map', body: 'mapContainer' },
-    //     { type: 'title', body: this.state.title },
-    //   ],
-    //   layout: [
-    //     { name: 'media', start: [0, 0], end: [1, 1] },
-    //     { name: 'caption', start: [0, 2], end: [1, 2] },
-    //   ],
-    //   pageNum: 1,
-    //   pageTitle: `firstPage`,
-    //   scrapbookId: scrapbookRef.id,
-    // };
-
-    //  New scrapbook page needs to be added with new scrapbook
-    // const firstPageRef = await firestore
-    //   .collection('Pages')
-    //   .doc()
-    //   .set(firstPage);
-
     const pagesRef = await firestore.collection('Pages').add({
-      cards: [
-        // { type: 'text', body: 'new page' },
-        // {
-        //   type: 'image',
-        //   body: 'https://static.thenounproject.com/png/558475-200.png',
-        // },
-        // { type: 'text', body: 'or text' },
-        // { type: 'text', body: 'or even a street view' },
-      ],
+      cards: [],
       layout: [
         { name: 'top', start: [0, 0], end: [1, 0] },
         { name: 'midLeft', start: [0, 1], end: [0, 1] },
@@ -248,7 +220,6 @@ export default class UserHome extends Component {
                     />
                     <Box justify='center' align='center' direction='row'>
                       <Button
-                        // style={{ position: 'static', right: 100 }}
                         alignSelf='center'
                         style={{
                           visibility:
@@ -264,7 +235,6 @@ export default class UserHome extends Component {
                         }
                       />
                       <Button
-                        // style={{ position: 'static', right: 100 }}
                         alignSelf='center'
                         color='status-critical'
                         primary
