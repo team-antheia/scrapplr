@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FlipPage from 'react-flip-page';
+//import FlipPage from 'react-flip-page';
 
 import {
   Box,
@@ -69,8 +69,8 @@ function ScrapbookView(props) {
       <Box
         width={{ min: '85vw' }}
         height={{ min: '75vh' }}
-        justify="center"
-        align="center"
+        justify='center'
+        align='center'
         background={{
           color: 'neutral-1',
           opacity: true,
@@ -103,7 +103,7 @@ function ScrapbookView(props) {
                 <Grid
                   rows={['small', 'small', 'small']}
                   columns={['small', 'small']}
-                  gap="xsmall"
+                  gap='xsmall'
                   areas={[
                     { name: 'card1', start: [0, 0], end: [1, 0] },
                     { name: 'nav', start: [0, 1], end: [0, 1] },
@@ -111,15 +111,15 @@ function ScrapbookView(props) {
                     { name: 'sub', start: [0, 2], end: [1, 2] },
                   ]}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
+                  <Card gridArea='card1' background='brand' />
+                  <Card gridArea='nav' background='light-5' />
+                  <Card gridArea='main' background='light-2' />
+                  <Card gridArea='sub' background='light-2' />
                 </Grid>
                 <Grid
                   rows={['small', 'small', 'small']}
                   columns={['small', 'small']}
-                  gap="xsmall"
+                  gap='xsmall'
                   areas={[
                     { name: 'card1', start: [0, 0], end: [1, 0] },
                     { name: 'nav', start: [0, 1], end: [0, 1] },
@@ -127,10 +127,10 @@ function ScrapbookView(props) {
                     { name: 'sub', start: [0, 2], end: [1, 2] },
                   ]}
                 >
-                  <Card gridArea="card1" background="brand" />
-                  <Card gridArea="nav" background="light-5" />
-                  <Card gridArea="main" background="light-2" />
-                  <Card gridArea="sub" background="light-2" />
+                  <Card gridArea='card1' background='brand' />
+                  <Card gridArea='nav' background='light-5' />
+                  <Card gridArea='main' background='light-2' />
+                  <Card gridArea='sub' background='light-2' />
                 </Grid>
               </FlipPage>
             ) : (
@@ -146,7 +146,7 @@ function ScrapbookView(props) {
                   disableSwipe={true}
                   height={320}
                   responsive={true}
-                  orientation="horizontal"
+                  orientation='horizontal'
                 >
                   {pages.length >= 1 ? (
                     pages.map((page) => {
@@ -155,7 +155,7 @@ function ScrapbookView(props) {
                           {/* <CaptionTop page={pages[pageNum - 1]} /> */}
 
                           <Text>{page.pageNum}</Text>
-                          <Card background="brand" gridArea="header">
+                          <Card background='brand' gridArea='header'>
                             {page.pageTitle}
                           </Card>
                           <CaptionTop cards={cards} />
@@ -164,7 +164,7 @@ function ScrapbookView(props) {
                     })
                   ) : (
                     <div>
-                      <Box pad="xxsmall">
+                      <Box pad='xxsmall'>
                         <Default />
                       </Box>
                       <Box>{/* <CaptionMiddle /> */}</Box>
@@ -183,11 +183,11 @@ function ScrapbookView(props) {
         </ResponsiveContext.Consumer>
       </Box>
       <Button
-        type="button"
-        label="join scrapplr"
+        type='button'
+        label='join scrapplr'
         onClick={backToSignUp}
         primary
-        margin="small"
+        margin='small'
       />
     </Box>
   ) : (

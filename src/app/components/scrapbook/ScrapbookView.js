@@ -19,9 +19,8 @@ import Default from './layouts/Default';
 import CaptionTop from './layouts/CaptionTop';
 import CaptionBottom from './layouts/CaptionBottom';
 import { Route, withRouter } from 'react-router-dom';
-import { size } from 'polished';
+// import { size } from 'polished';
 import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -124,14 +123,14 @@ function ScrapbookView(props) {
 
   return pages.length ? (
     <Box>
-      <Box margin={{ bottom: 'medium' }} direction="row" max="500px">
+      <Box margin={{ bottom: 'medium' }} direction='row' max='500px'>
         <Button
           type='button'
           className='backHome'
           label='back to home'
           onClick={backHome}
           primary
-          margin="small"
+          margin='small'
           style={{ height: '100%' }}
         />
         <Button
@@ -139,17 +138,17 @@ function ScrapbookView(props) {
           label='share with friends'
           onClick={toggleModal}
           primary
-          margin="small"
+          margin='small'
           style={{ height: '100%' }}
         />
       </Box>
       <Box
-        justify="center"
-        align="center"
-        height="large"
-        width="90vw"
+        justify='center'
+        align='center'
+        height='large'
+        width='90vw'
         style={{ maxWidth: '864px' }}
-        background="glass2"
+        background='glass2'
         round={true}
         border='7px solid black'
       >
