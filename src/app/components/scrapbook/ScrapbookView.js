@@ -219,7 +219,17 @@ function ScrapbookView(props) {
           <Button onClick={toggleModal} label='close' />
         </Modal>
       </Box>
-      <Link to='/form'>Share with friends</Link>
+
+      <Link
+        to={{
+          pathname: `/form`,
+          state: {
+            scrapbookId: props.params.scrapbookId,
+          },
+        }}
+      >
+        share with friends
+      </Link>
     </Box>
   ) : (
     <Spinner />

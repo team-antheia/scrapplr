@@ -108,11 +108,7 @@ export default class routes extends Component {
             <Route
               path='/form'
               render={(props) => (
-                <Form
-                  user={this.state}
-                  scrapbookId={this.state.scrapbookId}
-                  params={props.match.params}
-                />
+                <Form user={this.state} location={props.location} />
               )}
             />
             {/* <Route component={() => <NotFound isLoggedIn={true} />} /> */}
