@@ -40,6 +40,11 @@ class Form extends React.Component {
       message: this.state.feedback,
       name: this.state.name,
       email: this.state.email,
+      // link: (
+      //   <Link>
+      //     <p id='link'>{`scrapplr.web.app/scrapbooks/${scrapbookId}/share`}</p>
+      //   </Link>
+      // ),
     });
   };
 
@@ -76,6 +81,7 @@ class Form extends React.Component {
 
   render() {
     console.log('props', this.props.location.state.scrapbookId);
+    const scrapbookId = this.props.location.state.scrapbookId;
     console.log('id');
     console.log('idcrap', this.props.params);
     return (
@@ -119,10 +125,7 @@ class Form extends React.Component {
               className='email-text-area form-control'
               rows='15'
               cols='20'
-            />
-            <Link>
-              <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
-            </Link>
+            ></textarea>
           </div>
         </div>
 

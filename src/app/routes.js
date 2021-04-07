@@ -87,6 +87,7 @@ export default class routes extends Component {
                 />
               )}
             />
+            <Route path='/form' component={Form} />
             <Route
               exact
               path='/scrapbooks/:scrapbookId'
@@ -98,7 +99,7 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path="/demo">
+            <Route path='/demo'>
               <Text>Demo video here</Text>
               <> </>
               <ScrapbookInstructions />
@@ -111,7 +112,7 @@ export default class routes extends Component {
       return (
         <Box justify='center' align='center' height='100vh'>
           <Switch>
-            <Route path="/demo">
+            <Route path='/demo'>
               <Text>Demo video here</Text>
             </Route>
             <Route path='/instructions'>
@@ -128,9 +129,9 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path="/test" component={LocationSearchInput} />
-            <Route path="/streetview" component={StreetView} />
-            <Route exact path="/" component={LandingPage} />
+            <Route path='/test' component={LocationSearchInput} />
+            <Route path='/streetview' component={StreetView} />
+            <Route exact path='/' component={LandingPage} />
 
             {/* <Route component={() => <NotFound isLoggedIn={false} />} /> */}
           </Switch>
