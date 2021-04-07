@@ -5,10 +5,6 @@ class LocationMarker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // open: false, visible: false}
-      // showingInfoWindow: false,
-      // activeMarker: {},
-      // selectedPlace: {},
       selectedCenter:'',
       setSelectedCenter:false
 
@@ -20,7 +16,7 @@ class LocationMarker extends Component {
 
     const { name, coordinates } = this.props.location;
     const { _lat, _long } = coordinates;
-    
+
     return (
       <div>
       <Marker

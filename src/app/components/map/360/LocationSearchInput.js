@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase, { firestore } from '../../../../index';
-import { Button, Box } from 'grommet';
+import { Button, Box, Heading } from 'grommet';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -94,10 +94,10 @@ class LocationSearchInput extends React.Component {
   render() {
     return (
       <div>
+         <Heading margin="10px" level={4}>
+          Add a Panoramic View
+        </Heading>
         <Box direction="row">
-          <Button style={{ width: '40%' }} primary onClick={this.addCard}>
-            {this.state.isClicked ? this.state.buttonMessage : 'add'}
-          </Button>
           <PlacesAutocomplete
             value={this.state.address}
             onChange={this.handleChange}
@@ -141,6 +141,11 @@ class LocationSearchInput extends React.Component {
               </div>
             )}
           </PlacesAutocomplete>
+          <Button
+          label="add"
+          style={{ width: '100%' }} primary onClick={this.addCard}>
+            {/* {this.state.isClicked ? this.state.buttonMessage : 'add'} */}
+          </Button>
         </Box>
         <StreetView lat={this.state.lat} long={this.state.long} />
       </div>

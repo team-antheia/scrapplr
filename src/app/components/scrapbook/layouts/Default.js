@@ -6,12 +6,11 @@ import {
   Text,
   Image,
   ResponsiveContext,
+  Heading,
   Spinner,
 } from "grommet";
-import { Map } from "../..";
-import MapContainer from "../../map/markerMap/MapContainer";
+import { Modal } from "rsuite";
 import StreetView from "../../map/360/StreetView";
-import { size } from "polished";
 
 export default function Default(props) {
   const [cards, setCards] = useState(props.cards);
@@ -80,8 +79,8 @@ export default function Default(props) {
     });
   };
 
-  console.log("the props", props);
-  return (
+  // console.log("the props", props);
+  return cards.length ? (
     <ResponsiveContext.Consumer>
       {(size) => {
         const rows =
@@ -101,7 +100,9 @@ export default function Default(props) {
                 cards.length ? (
                   makeCardElements(cards)
                 ) : (
-                  <Text>No cards yet!</Text>
+                  <Text textAlign="center" size="xlarge">
+                    No cards yet!
+                  </Text>
                 ) /*<Spinner />*/
               }
             </Grid>
@@ -109,5 +110,9 @@ export default function Default(props) {
         );
       }}
     </ResponsiveContext.Consumer>
+  ) : (
+    <Heading margin="35px" justify="center">
+      Edit the page to add some memories!
+    </Heading>
   );
 }

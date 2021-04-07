@@ -1,12 +1,11 @@
-import React, { Component, useEffect, useState } from "react";
-import FlipPage from "react-flip-page";
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 
 import {
   Box,
   Button,
   ResponsiveContext,
-  Grid,
-  Card,
+  Heading,
   Spinner,
   Text,
   Carousel,
@@ -18,11 +17,8 @@ import { Toolbar } from "..";
 import { Modal } from "rsuite";
 
 import Default from "./layouts/Default";
+;
 
-import CaptionTop from "./layouts/CaptionTop";
-import CaptionBottom from "./layouts/CaptionBottom";
-import { Route, withRouter } from "react-router-dom";
-import { size } from "polished";
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -137,7 +133,7 @@ function ScrapbookView(props) {
     // setCards(pages[activeIdx].cards);
     setCurrentPageIdx(activeIdx + 1);
   };
-
+console.log('the props', props)
   return pages.length ? (
     <Box>
       <Box margin={{ bottom: "medium" }} direction="row" max="500px">
@@ -158,7 +154,11 @@ function ScrapbookView(props) {
           margin="small"
           style={{ height: "100%" }}
         />
+
       </Box>
+      <Heading margin="1px" textAlign="center">
+      {props.location.state.title}
+    </Heading>
       <Box
         justify="center"
         align="center"
@@ -169,6 +169,7 @@ function ScrapbookView(props) {
         round={true}
         border="7px solid black"
       >
+
         <ResponsiveContext.Consumer>
           {(size) => (
             <Carousel
@@ -179,9 +180,6 @@ function ScrapbookView(props) {
               fill
             >
               {pages.map((page, idx) => {
-                // if (page.pageTitle === 'firstPage') {
-                //   return <CaptionBottom key={idx} {...page} />;
-                // }
                 if (idx === pages.length - 1) {
                   setLastPage(page);
                 }

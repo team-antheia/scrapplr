@@ -7,14 +7,12 @@ import {
 import { Box, Button, Layer } from 'grommet';
 import MapContainer from '../map/markerMap/MapContainer';
 
-//Each component (or toolbar?) must make post request to db with new card info
-
 const Toolbar = (props) => {
   const [tool, setTool] = useState('');
   const [show, setShow] = React.useState();
   const { isEditing, setIsEditing, currentPage } = props;
 
-  const addPage = async (scrapbookId) => {
+  const addPage = async () => {
     await props.addPage(props.scrapbookId);
   };
   return (
@@ -34,7 +32,6 @@ const Toolbar = (props) => {
           onClick={() => addPage(props.scrapbookId)}
         />
       )}
-
       {isEditing ? (
         <Box direction="row">
           <Box direction="column">
@@ -51,7 +48,7 @@ const Toolbar = (props) => {
               }}
             >
               <PhotoUpload
-                scrapbookId={props.scrapbookId} /*layout={props.layout}*/
+                scrapbookId={props.scrapbookId} 
                 currentPage={currentPage}
                 setCards={props.setCards}
               />
@@ -61,7 +58,7 @@ const Toolbar = (props) => {
           <Box direction="column">
             <Button
               onClick={() => (tool !== 'map' ? setTool('map') : setTool(''))}
-              label="map"
+              label="panoramic"
             />
             <Box
               style={{
@@ -72,7 +69,7 @@ const Toolbar = (props) => {
               <LocationSearchInput
                 setCards={props.setCards}
                 currentPage={currentPage}
-                scrapbookId={props.scrapbookId} /*layout={props.layout}*/
+                scrapbookId={props.scrapbookId}
               />
             </Box>
           </Box>
@@ -92,7 +89,7 @@ const Toolbar = (props) => {
             >
               <DescriptionForm
                 setCards={props.setCards}
-                scrapbookId={props.scrapbookId} /*layout={props.layout}*/
+                scrapbookId={props.scrapbookId}
                 currentPage={props.currentPage}
               />
             </Box>
@@ -100,7 +97,7 @@ const Toolbar = (props) => {
         </Box>
       ) : (
         <Box>
-          <Button label="Map" onClick={() => setShow(true)} />
+          <Button label="map" onClick={() => setShow(true)} />
           {show && (
             <Layer
               onEsc={() => setShow(false)}
