@@ -159,8 +159,13 @@ function PhotoUpload(props) {
   return (
     <div className="photo-upload">
       <Heading level={4}>Upload a Photo</Heading>
-      <Button style={{ width: '30%' }} primary onClick={handleFirebaseUpload}>
-        {isClicked ? buttonMessage : isLoading ? 'one moment...' : 'upload'}
+      <Button
+        style={{ width: '100%' }}
+        primary
+        label="upload"
+        onClick={handleFirebaseUpload}
+      >
+        {/* {isClicked ? buttonMessage : isLoading ? 'one moment...' : ""} */}
       </Button>
       <form>
         <FileInput

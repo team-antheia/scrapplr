@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 
 import {
   Box,
   Button,
   ResponsiveContext,
+  Heading,
   Spinner,
   Text,
   Carousel,
@@ -14,9 +16,9 @@ import { firestore } from '../../../index';
 import { Toolbar } from '..';
 import { Modal } from 'rsuite';
 
-import Default from './layouts/Default';
+import Default from "./layouts/Default";
+;
 
-import { withRouter } from 'react-router-dom';
 
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
@@ -116,7 +118,7 @@ function ScrapbookView(props) {
 
     setCurrentPageIdx(activeIdx + 1);
   };
-
+console.log('the props', props)
   return pages.length ? (
     <Box>
       <Box margin={{ bottom: 'medium' }} direction="row" max="500px">
@@ -137,7 +139,11 @@ function ScrapbookView(props) {
           margin="small"
           style={{ height: '100%' }}
         />
+
       </Box>
+      <Heading margin="1px" textAlign="center">
+      {props.location.state.title}
+    </Heading>
       <Box
         justify="center"
         align="center"
@@ -148,6 +154,7 @@ function ScrapbookView(props) {
         round={true}
         border="7px solid black"
       >
+
         <ResponsiveContext.Consumer>
           {(size) => (
             <Carousel
