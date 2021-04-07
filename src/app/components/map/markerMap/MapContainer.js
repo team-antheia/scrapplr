@@ -1,4 +1,4 @@
-import { Box, Button } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import React, { Component } from 'react';
 import firebase,{ firestore } from '../../../../index';
 import PlacesAutocomplete, {
@@ -169,13 +169,16 @@ export class MapContainer extends Component {
             </PlacesAutocomplete>
         </div>
 
-          {allLocations.length && <Map
+          {allLocations.length ?  <Map
             allLocations={allLocations}
             onMarkerClick={this.onMarkerClick}
             visible={this.state.showingInfoWindow}
             onClose={this.onClose}
             selectedPlace={this.state.selectedPlace}
-          />}
+          />
+            : <>
+            <Text>No Locations Yet! </Text> <Text>Add a location or upload a photo.</Text> </>
+        }
 
       </Box>
     );

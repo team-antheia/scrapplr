@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Grid, Card, Text, Image, ResponsiveContext } from 'grommet';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Card,
+  Text,
+  Image,
+  ResponsiveContext,
+  Heading,
 
-import StreetView from '../../map/360/StreetView';
+} from "grommet";
+import StreetView from "../../map/360/StreetView";
 
 export default function Default(props) {
   const [cards, setCards] = useState(props.cards);
@@ -68,7 +76,7 @@ export default function Default(props) {
     });
   };
 
-  return (
+  return cards.length ? (
     <ResponsiveContext.Consumer>
       {(size) => {
         const rows =
@@ -88,7 +96,9 @@ export default function Default(props) {
                 cards.length ? (
                   makeCardElements(cards)
                 ) : (
-                  <Text>No cards yet!</Text>
+                  <Text textAlign="center" size="xlarge">
+                    No cards yet!
+                  </Text>
                 ) /*<Spinner />*/
               }
             </Grid>
@@ -96,5 +106,9 @@ export default function Default(props) {
         );
       }}
     </ResponsiveContext.Consumer>
+  ) : (
+    <Heading margin="35px" justify="center">
+      Edit the page to add some memories!
+    </Heading>
   );
 }

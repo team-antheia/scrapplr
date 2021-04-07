@@ -123,11 +123,11 @@ export default class UserHome extends Component {
       collaborators: [],
       coverImageUrl:
         'https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg',
-      mapLocations: [
-        {
-          coordinates: new firebase.firestore.GeoPoint(40.7812, -73.9665),
-          name: 'Central Park, NY',
-        },
+      mapLocations: [ 
+        // {
+        //   coordinates: new firebase.firestore.GeoPoint(40.7812, -73.9665),
+        //   name: 'Central Park, NY',
+        // },
       ],
       owner: user,
       scrapbookId: scrapbookRef.id,
