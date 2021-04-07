@@ -1,6 +1,6 @@
-import React from "react";
-import { Map, GoogleApiWrapper } from "google-maps-react";
-import { Box } from "grommet";
+import React from 'react';
+import { Map, GoogleApiWrapper } from 'google-maps-react';
+import { Box } from 'grommet';
 
 import LocationMarker from "./LocationMarker";
 

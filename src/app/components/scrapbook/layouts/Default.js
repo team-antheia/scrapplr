@@ -7,9 +7,8 @@ import {
   Image,
   ResponsiveContext,
   Heading,
-  Spinner,
+
 } from "grommet";
-import { Modal } from "rsuite";
 import StreetView from "../../map/360/StreetView";
 
 export default function Default(props) {
@@ -17,9 +16,7 @@ export default function Default(props) {
 
   useEffect(() => {
     setCards(props.cards);
-    return () => {
-      console.log("cleaned up in default");
-    };
+    return () => {};
   }, [props.cards]);
 
   const makeCardElements = (cards) => {
@@ -28,16 +25,16 @@ export default function Default(props) {
       let cardBody;
       // check card type
 
-      if (card.type === "text" || card.type === "description") {
+      if (card.type === 'text' || card.type === 'description') {
         // create grommet element based on type
         cardBody = <Text key={i}>{card.body}</Text>;
       }
 
-      if (card.type === "image") {
+      if (card.type === 'image') {
         cardBody = <Image fit="contain" key={i} src={card.body} />;
       }
 
-      if (card.type === "panoramic") {
+      if (card.type === 'panoramic') {
         cardBody = (
           <Box justify="end" align="center">
             <StreetView lat={card.body._lat} long={card.body._long} key={i} />
@@ -64,7 +61,7 @@ export default function Default(props) {
       if (i === 2) {
         return (
           <Card gridArea="midRight" background="light-2">
-            {cardBody}{" "}
+            {cardBody}{' '}
           </Card>
         );
       }
@@ -79,22 +76,21 @@ export default function Default(props) {
     });
   };
 
-  // console.log("the props", props);
   return cards.length ? (
     <ResponsiveContext.Consumer>
       {(size) => {
         const rows =
-          size === "large"
-            ? ["31%", "31%", "31%"]
-            : ["small", "small", "small"];
+          size === 'large'
+            ? ['31%', '31%', '31%']
+            : ['small', 'small', 'small'];
         return (
-          <Box fill pad={{ vertical: "xsmall", horizontal: "large" }}>
+          <Box fill pad={{ vertical: 'xsmall', horizontal: 'large' }}>
             <Grid
               rows={rows}
-              columns={["50%", "50%"]}
+              columns={['50%', '50%']}
               gap="small"
               areas={props.layout}
-              style={{ minHeight: "100%" }}
+              style={{ minHeight: '100%' }}
             >
               {
                 cards.length ? (
