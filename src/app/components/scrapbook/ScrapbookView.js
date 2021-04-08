@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import {
   Box,
@@ -15,11 +16,6 @@ import { Toolbar } from '..';
 import { Modal } from 'rsuite';
 
 import Default from './layouts/Default';
-
-import CaptionTop from './layouts/CaptionTop';
-import CaptionBottom from './layouts/CaptionBottom';
-import { Route, withRouter } from 'react-router-dom';
-// import { size } from 'polished';
 import { Link } from 'react-router-dom';
 
 function ScrapbookView(props) {
@@ -120,7 +116,7 @@ function ScrapbookView(props) {
 
     setCurrentPageIdx(activeIdx + 1);
   };
-
+  console.log('the props', props);
   return pages.length ? (
     <Box>
       <Box margin={{ bottom: 'medium' }} direction='row' max='500px'>
@@ -142,6 +138,9 @@ function ScrapbookView(props) {
           style={{ height: '100%' }}
         />
       </Box>
+      <Heading margin='1px' textAlign='center'>
+        {props.location.state.title}
+      </Heading>
       <Box
         justify='center'
         align='center'
@@ -191,6 +190,7 @@ function ScrapbookView(props) {
           <Link to='/form'>Share with friends</Link>
           <Text>Share this link:</Text>
 
+          <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
           <Button
             onClick={copyToClipboard}
             label={copyButtonClicked ? 'copied!' : 'copy'}
