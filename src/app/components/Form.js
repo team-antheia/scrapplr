@@ -125,7 +125,9 @@ class Form extends React.Component {
               className='email-text-area form-control'
               rows='15'
               cols='20'
-            ></textarea>
+            >
+              <a href='link'>{`scrapplr.web.app/scrapbooks/${scrapbookId}/share`}</a>
+            </textarea>
           </div>
         </div>
 

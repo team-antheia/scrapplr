@@ -87,7 +87,7 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path='/form' component={Form} />
+            <Route path='/form' component={() => <Form user={this.state} />} />
             <Route
               exact
               path='/scrapbooks/:scrapbookId'
@@ -100,9 +100,19 @@ export default class routes extends Component {
               )}
             />
             <Route path='/demo'>
-              <Text>Demo video here</Text>
+              <Box>
+                <iframe
+                  width='560'
+                  height='315'
+                  src='https://www.youtube.com/embed/yC6OwubFBbM'
+                  title='YouTube video player'
+                  frameborder='0'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                  allowfullscreen
+                ></iframe>
+              </Box>
               <> </>
-              <ScrapbookInstructions />
+              <ScrapbookInstructions user={'demo'} />
             </Route>
             {/* <Route component={() => <NotFound isLoggedIn={true} />} /> */}
           </Switch>
@@ -113,7 +123,19 @@ export default class routes extends Component {
         <Box justify='center' align='center' height='100vh'>
           <Switch>
             <Route path='/demo'>
-              <Text>Demo video here</Text>
+              <Box>
+                <iframe
+                  width='560'
+                  height='315'
+                  src='https://www.youtube.com/embed/yC6OwubFBbM'
+                  title='YouTube video player'
+                  frameborder='0'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                  allowfullscreen
+                ></iframe>
+              </Box>
+              <> </>
+              <ScrapbookInstructions user={'demo'} />
             </Route>
             <Route path='/instructions'>
               <ScrapbookInstructions user={'demo'} />
