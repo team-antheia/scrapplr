@@ -21,8 +21,8 @@
 //     to: recipientEmail,
 //     bcc: yourEmail,
 //     subject: `You've received an eCard from ${yourName}!`,
-//     html: `<h3>Dear ${recipient},</h3><h4>You have received an eCard from ${yourName}!</h4><p>See your card at http://egreetr.herokuapp.com/cards/${id} </p><p>Click <a href="http://egreetr.herokuapp.com">here</a> to create your own card!</p><h4>Yours,</h4><h4>The eGreetr Team</h4>`
-//   }
+//   html: `<h3>Dear ${recipient},</h3><h4>You have received an eCard from ${yourName}!</h4><p>See your card at http://egreetr.herokuapp.com/cards/${id} </p><p>Click <a href="http://egreetr.herokuapp.com">here</a> to create your own card!</p><h4>Yours,</h4><h4>The eGreetr Team</h4>`
+// }
 //   transporter.sendMail(mail, (err, data) => {
 //     if (err) {
 //       res.json({

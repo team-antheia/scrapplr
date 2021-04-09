@@ -87,7 +87,8 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path='/form' component={() => <Form user={this.state} />} />
+            {/* <Route path='/form' component={() => <Form user={this.state} />} /> */}
+            <Route path='/form' component={Form} />
             <Route
               exact
               path='/scrapbooks/:scrapbookId'

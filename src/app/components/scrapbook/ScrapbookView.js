@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   ResponsiveContext,
+  Heading,
   Spinner,
   Text,
   Carousel,
@@ -189,8 +190,9 @@ function ScrapbookView(props) {
         >
           <Link to='/form'>Share with friends</Link>
           <Text>Share this link:</Text>
-
-          <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
+          <Link>
+            <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
+          </Link>
           <Button
             onClick={copyToClipboard}
             label={copyButtonClicked ? 'copied!' : 'copy'}
