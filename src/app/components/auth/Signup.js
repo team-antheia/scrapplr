@@ -57,12 +57,13 @@ export function SignUp(props) {
 
     const firstPage = {
       cards: [
-        { type: 'static-map', body: 'mapContainer' },
-        { type: 'title', body: 'My First Scrapbook' },
+
       ],
       layout: [
-        { name: 'media', start: [0, 0], end: [1, 1] },
-        { name: 'caption', start: [0, 2], end: [1, 2] },
+        { name: 'top', start: [0, 0], end: [1, 0] },
+        { name: 'midLeft', start: [0, 1], end: [0, 1] },
+        { name: 'midRight', start: [1, 1], end: [1, 1] },
+        { name: 'bot', start: [0, 2], end: [1, 2] },
       ],
       pageNum: 1,
       pageTitle: `firstPage`,
@@ -83,8 +84,8 @@ export function SignUp(props) {
         { name: 'midRight', start: [1, 1], end: [1, 1] },
         { name: 'bot', start: [0, 2], end: [1, 2] },
       ],
-      pageNum: "",
-      pageTitle: "",
+      pageNum: 2,
+      pageTitle: "secondPage",
       scrapbookId: scrapbookRef.id,
     });
   };
