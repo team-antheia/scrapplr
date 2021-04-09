@@ -52,9 +52,7 @@ function ScrapbookView(props) {
     }
     fetchPages();
 
-    return () => {
-      console.log('cleaned up');
-    };
+    return () => {};
   }, [props.params.scrapbookId, currentPageIdx]);
 
   const addPage = async (scrapbookId) => {
@@ -115,7 +113,6 @@ function ScrapbookView(props) {
 
     setCurrentPageIdx(activeIdx + 1);
   };
-  console.log('the props', props);
   return pages.length ? (
     <Box>
       <Box margin={{ bottom: 'medium' }} direction='row' max='500px'>
