@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 //import FlipPage from 'react-flip-page';
+=======
+import { withRouter } from 'react-router-dom';
+>>>>>>> master
 
 import {
   Box,
   Button,
   ResponsiveContext,
-  Grid,
-  Card,
+  Heading,
   Spinner,
   Text,
+  Carousel,
 } from 'grommet';
+
 import 'rsuite/dist/styles/rsuite-default.css';
 import { firestore } from '../../../index';
+import { Toolbar } from '..';
+import { Modal } from 'rsuite';
 
 import Default from './layouts/Default';
-
-import CaptionTop from './layouts/CaptionTop';
-import CaptionBottom from './layouts/CaptionBottom';
-import { withRouter } from 'react-router-dom';
-
 function ScrapbookView(props) {
+  const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
-  const [cards, setCards] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [copyButtonClicked, setCopyButtonClicked] = useState(false);
+  const [currentPage, setCurrentPage] = useState({});
+  const [currentPageIdx, setCurrentPageIdx] = useState(0);
+  const [lastPage, setLastPage] = useState('');
 
   useEffect(() => {
     async function fetchPages() {
@@ -40,33 +47,48 @@ function ScrapbookView(props) {
 
         const pageData = [];
         await queryRef.forEach((doc) => {
-          pageData.push(doc.data());
+          const pageId = doc.id;
+          pageData.push({ ...doc.data(), pageId });
         });
         setPages(pageData);
-        if (pageData[pageNum - 1]) {
-          setCards(pageData[pageNum - 1].cards);
-        }
+        setPageNum(pageData.length);
       }
     }
     fetchPages();
-  }, [props.params.scrapbookId, pageNum]);
 
-  const backToSignUp = () => {
+    return () => {};
+  }, [props.params.scrapbookId, currentPageIdx]);
+
+  const backHome = () => {
     const { history } = props;
     if (history) history.push('/signup');
   };
 
-  const bookStyle = {
-    position: 'relative',
-    alignItems: 'flex-end',
-    display: 'flex',
-    height: '100%',
-    width: '100%',
+  const handleCurrentPage = (activeIdx) => {
+    setCurrentPage(pages[activeIdx].pageId);
+
+    setCurrentPageIdx(activeIdx + 1);
   };
 
   return pages.length ? (
     <Box>
+      <Box margin={{ bottom: 'medium' }} direction="row" max="500px">
+        <Button
+          type="button"
+          className="backHome"
+          label="sign up with scrapplr"
+          onClick={backHome}
+          primary
+          margin="small"
+          style={{ height: '100%' }}
+        />
+      </Box>
+
+      {/* <Heading margin="1px" textAlign="center">
+        {props.location.state.title}
+      </Heading> */}
       <Box
+<<<<<<< HEAD
         width={{ min: '85vw' }}
         height={{ min: '75vh' }}
         justify='center'
@@ -189,6 +211,36 @@ function ScrapbookView(props) {
         primary
         margin='small'
       />
+=======
+        justify="center"
+        align="center"
+        height="large"
+        width="90vw"
+        style={{ maxWidth: '864px' }}
+        background="glass2"
+        round={true}
+        border="7px solid black"
+      >
+        <ResponsiveContext.Consumer>
+          {(size) => (
+            <Carousel
+              onChild={handleCurrentPage}
+              controls={
+                size === 'small' && !isEditing ? 'selectors' : !isEditing
+              }
+              fill
+            >
+              {pages.map((page, idx) => {
+                if (idx === pages.length - 1) {
+                  setLastPage(page);
+                }
+                return <Default key={idx} {...page} />;
+              })}
+            </Carousel>
+          )}
+        </ResponsiveContext.Consumer>
+      </Box>
+>>>>>>> master
     </Box>
   ) : (
     <Spinner />
@@ -196,26 +248,3 @@ function ScrapbookView(props) {
 }
 
 export default withRouter(ScrapbookView);
-
-const styles = {
-  twoPage: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-around',
-    padding: 'auto',
-    background: 'rgba(255,255,255, 0.1)',
-  },
-  container: {
-    padding: 8,
-    background:
-      'linear-gradient(to top right, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '75vh',
-    minWidth: '95vw',
-    borderRadius: '11px',
-  },
-  singlePage: { width: 390, height: '100%', minHeight: 500 },
-};
