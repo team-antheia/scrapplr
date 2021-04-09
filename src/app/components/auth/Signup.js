@@ -47,10 +47,6 @@ export function SignUp(props) {
       coverImageUrl:
         'https://media.cntraveler.com/photos/53fc86a8a5a7650f3959d273/master/pass/travel-with-polaroid-camera.jpg',
       mapLocations: [
-        // {
-        //   coordinates: new firebase.firestore.GeoPoint(40.7128, 74.006),
-        //   name: 'New York, NY',
-        // },
       ],
       owner: userId,
       scrapbookId: scrapbookRef.id,
@@ -80,34 +76,16 @@ export function SignUp(props) {
       .set(firstPage);
 
     const pagesRef = firestore.collection('Pages').add({
-      // cards: [
-      //   {
-      //     body: 'Add descriptions to caption your pictures',
-      //     type: 'description',
-      //   },
-      //   {
-      //     body:
-      //       'https://specials-images.forbesimg.com/imageserve/930322352/960x0.jpg?fit=scale',
-      //     type: 'image',
-      //   },
-      //   {
-      //     body: 'Upload panoramics to make your experiences come to life',
-      //     type: 'description',
-      //   },
-      //   {
-      //     body: new firebase.firestore.GeoPoint(-16.5004, -151.7415),
-      //     type: 'panoramic',
-      //   },
-      // ],
-      // layout: [
-      //   { name: 'top', start: [0, 0], end: [1, 0] },
-      //   { name: 'midLeft', start: [0, 1], end: [0, 1] },
-      //   { name: 'midRight', start: [1, 1], end: [1, 1] },
-      //   { name: 'bot', start: [0, 2], end: [1, 2] },
-      // ],
-      // pageNum: 2,
-      // pageTitle: 'My Trip To Bora Bora',
-      // scrapbookId: scrapbookRef.id,
+      cards: [],
+      layout: [
+        { name: 'top', start: [0, 0], end: [1, 0] },
+        { name: 'midLeft', start: [0, 1], end: [0, 1] },
+        { name: 'midRight', start: [1, 1], end: [1, 1] },
+        { name: 'bot', start: [0, 2], end: [1, 2] },
+      ],
+      pageNum: "",
+      pageTitle: "",
+      scrapbookId: scrapbookRef.id,
     });
   };
 
