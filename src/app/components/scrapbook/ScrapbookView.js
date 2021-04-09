@@ -56,7 +56,6 @@ function ScrapbookView(props) {
     fetchPages();
 
     return () => {
-      console.log('cleaned up');
     };
   }, [props.params.scrapbookId, currentPageIdx]);
 
@@ -118,7 +117,7 @@ function ScrapbookView(props) {
 
     setCurrentPageIdx(activeIdx + 1);
   };
-console.log('the props', props)
+
   return pages.length ? (
     <Box>
       <Box margin={{ bottom: 'medium' }} direction="row" max="500px">

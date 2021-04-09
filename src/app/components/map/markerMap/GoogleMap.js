@@ -10,7 +10,6 @@ export const GoogleMap = (props) => {
     width: "95%",
     height: "70%",
   };
-  console.log("map props", props);
 
   return (
     <Box style={mapStyles}>
