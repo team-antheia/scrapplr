@@ -15,6 +15,8 @@ import {
 import { Box, Text } from 'grommet';
 import firebase, { auth, firestore } from '../index';
 
+import Form from './components/Form';
+
 export default class routes extends Component {
   constructor() {
     super();
@@ -61,11 +63,11 @@ export default class routes extends Component {
   render() {
     if (auth.currentUser) {
       return (
-        <Box justify="center" align="center" height="100vh">
+        <Box justify='center' align='center' height='100vh'>
           <Switch>
             <Route
               exact
-              path="/home"
+              path='/home'
               component={() => (
                 <UserHome
                   userId={auth.currentUser ? this.state.userId : false}
@@ -76,7 +78,7 @@ export default class routes extends Component {
             />
             <Route
               exact
-              path="/"
+              path='/'
               component={() => (
                 <UserHome
                   userId={auth.currentUser ? this.state.userId : false}
@@ -85,9 +87,11 @@ export default class routes extends Component {
                 />
               )}
             />
+            {/* <Route path='/form' component={() => <Form user={this.state} />} /> */}
+            <Route path='/form' component={Form} />
             <Route
               exact
-              path="/scrapbooks/:scrapbookId"
+              path='/scrapbooks/:scrapbookId'
               render={(props) => (
                 <ScrapbookView
                   userId={this.state.userId}
@@ -96,15 +100,15 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path="/demo">
+            <Route path='/demo'>
               <Box>
-              <iframe
-                  width="560"
-                  height="315"
-                  src="https://www.youtube.com/embed/yC6OwubFBbM"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                <iframe
+                  width='560'
+                  height='315'
+                  src='https://www.youtube.com/embed/yC6OwubFBbM'
+                  title='YouTube video player'
+                  frameborder='0'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   allowfullscreen
                 ></iframe>
               </Box>
@@ -117,30 +121,30 @@ export default class routes extends Component {
       );
     } else {
       return (
-        <Box justify="center" align="center" height="100vh">
+        <Box justify='center' align='center' height='100vh'>
           <Switch>
-            <Route path="/demo">
+            <Route path='/demo'>
               <Box>
                 <iframe
-                  width="560"
-                  height="315"
-                  src="https://www.youtube.com/embed/yC6OwubFBbM"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  width='560'
+                  height='315'
+                  src='https://www.youtube.com/embed/yC6OwubFBbM'
+                  title='YouTube video player'
+                  frameborder='0'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   allowfullscreen
                 ></iframe>
               </Box>
               <> </>
               <ScrapbookInstructions user={'demo'} />
             </Route>
-            <Route path="/instructions">
+            <Route path='/instructions'>
               <ScrapbookInstructions user={'demo'} />
             </Route>
-            <Route path="/signup" component={SignUp} />
-            <Route path="/login" component={Login} />
+            <Route path='/signup' component={SignUp} />
+            <Route path='/login' component={Login} />
             <Route
-              path="/scrapbooks/:scrapbookId/share"
+              path='/scrapbooks/:scrapbookId/share'
               render={(props) => (
                 <ViewOnlyScrapbook
                   params={props.match.params}
@@ -148,9 +152,9 @@ export default class routes extends Component {
                 />
               )}
             />
-            <Route path="/test" component={LocationSearchInput} />
-            <Route path="/streetview" component={StreetView} />
-            <Route exact path="/" component={LandingPage} />
+            <Route path='/test' component={LocationSearchInput} />
+            <Route path='/streetview' component={StreetView} />
+            <Route exact path='/' component={LandingPage} />
 
             {/* <Route component={() => <NotFound isLoggedIn={false} />} /> */}
           </Switch>

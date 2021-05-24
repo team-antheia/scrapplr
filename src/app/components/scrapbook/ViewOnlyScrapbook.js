@@ -68,14 +68,14 @@ function ScrapbookView(props) {
 
   return pages.length ? (
     <Box>
-      <Box margin={{ bottom: 'medium' }} direction="row" max="500px">
+      <Box margin={{ bottom: 'medium' }} direction='row' max='500px'>
         <Button
-          type="button"
-          className="backHome"
-          label="sign up with scrapplr"
+          type='button'
+          className='backHome'
+          label='sign up with scrapplr'
           onClick={backHome}
           primary
-          margin="small"
+          margin='small'
           style={{ height: '100%' }}
         />
       </Box>
@@ -84,14 +84,14 @@ function ScrapbookView(props) {
         {props.location.state.title}
       </Heading> */}
       <Box
-        justify="center"
-        align="center"
-        height="large"
-        width="90vw"
+        justify='center'
+        align='center'
+        height='large'
+        width='90vw'
         style={{ maxWidth: '864px' }}
-        background="glass2"
+        background='glass2'
         round={true}
-        border="7px solid black"
+        border='7px solid black'
       >
         <ResponsiveContext.Consumer>
           {(size) => (
