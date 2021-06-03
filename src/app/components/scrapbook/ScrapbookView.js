@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import {
   Box,
@@ -16,10 +16,7 @@ import { firestore } from '../../../index';
 import { Toolbar } from '..';
 import { Modal } from 'rsuite';
 
-import Default from "./layouts/Default";
-;
-
-
+import Default from './layouts/Default';
 function ScrapbookView(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState([]);
@@ -55,8 +52,7 @@ function ScrapbookView(props) {
     }
     fetchPages();
 
-    return () => {
-    };
+    return () => {};
   }, [props.params.scrapbookId, currentPageIdx]);
 
   const addPage = async (scrapbookId) => {
@@ -117,43 +113,40 @@ function ScrapbookView(props) {
 
     setCurrentPageIdx(activeIdx + 1);
   };
-
   return pages.length ? (
     <Box>
-      <Box margin={{ bottom: 'medium' }} direction="row" max="500px">
+      <Box margin={{ bottom: 'medium' }} direction='row' max='500px'>
         <Button
-          type="button"
-          className="backHome"
-          label="back to home"
+          type='button'
+          className='backHome'
+          label='back to home'
           onClick={backHome}
           primary
-          margin="small"
+          margin='small'
           style={{ height: '100%' }}
         />
         <Button
-          type="button"
-          label="share with friends"
+          type='button'
+          label='share with friends'
           onClick={toggleModal}
           primary
-          margin="small"
+          margin='small'
           style={{ height: '100%' }}
         />
-
       </Box>
-      <Heading margin="1px" textAlign="center">
-      {props.location.state.title}
-    </Heading>
+      <Heading margin='1px' textAlign='center'>
+        {props.location.state.title}
+      </Heading>
       <Box
-        justify="center"
-        align="center"
-        height="large"
-        width="90vw"
+        justify='center'
+        align='center'
+        height='large'
+        width='90vw'
         style={{ maxWidth: '864px' }}
-        background="glass2"
+        background='glass2'
         round={true}
-        border="7px solid black"
+        border='7px solid black'
       >
-
         <ResponsiveContext.Consumer>
           {(size) => (
             <Carousel
@@ -172,7 +165,7 @@ function ScrapbookView(props) {
             </Carousel>
           )}
         </ResponsiveContext.Consumer>
-        <Box direction="row">
+        <Box direction='row'>
           {pages.indexOf(currentPage) !== 0 && (
             <Toolbar
               setIsEditing={setIsEditing}
@@ -191,12 +184,12 @@ function ScrapbookView(props) {
           show={isModalShowing}
         >
           <Text>Share this link:</Text>
-          <p id="link">{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
+          <p id='link'>{`scrapplr.web.app/scrapbooks/${props.params.scrapbookId}/share`}</p>
           <Button
             onClick={copyToClipboard}
             label={copyButtonClicked ? 'copied!' : 'copy'}
           />
-          <Button onClick={toggleModal} label="close" />
+          <Button onClick={toggleModal} label='close' />
         </Modal>
       </Box>
     </Box>

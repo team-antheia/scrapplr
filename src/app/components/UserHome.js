@@ -180,17 +180,17 @@ export default class UserHome extends Component {
     return !this.state.scrapbooks.length ? (
       <Spinner />
     ) : (
-      <Box pad="small">
+      <Box pad='small'>
         <ResponsiveContext.Consumer>
           {(size) => (
             <Box
-              align="center"
-              height="85vh"
+              align='center'
+              height='85vh'
               width={size === 'small' ? '80vw' : '75vw'}
-              direction="column"
-              pad="small"
+              direction='column'
+              pad='small'
             >
-              <Button label="add a new book" onClick={this.toggleModal} />
+              <Button label='add a new book' onClick={this.toggleModal} />
 
               <Heading level={3}>welcome {this.props.name}</Heading>
               {this.state.scrapbooks.map((book, i) => {
@@ -218,9 +218,9 @@ export default class UserHome extends Component {
                       selectedScrapbook={this.state.selectedScrapbook}
                       onSelect={this.onSelect}
                     />
-                    <Box justify="center" align="center" direction="row">
+                    <Box justify='center' align='center' direction='row'>
                       <Button
-                        alignSelf="center"
+                        alignSelf='center'
                         style={{
                           visibility:
                             this.state.hoverTarget === book.scrapbookId
@@ -229,16 +229,16 @@ export default class UserHome extends Component {
                               ? 'visibile'
                               : 'hidden',
                         }}
-                        label="edit book"
+                        label='edit book'
                         onClick={() =>
                           this.editBook(book.title, book.scrapbookId)
                         }
                       />
                       <Button
-                        alignSelf="center"
-                        color="status-critical"
+                        alignSelf='center'
+                        color='status-critical'
                         primary
-                        margin="small"
+                        margin='small'
                         style={{
                           visibility:
                             this.state.hoverTarget === book.scrapbookId
@@ -247,7 +247,7 @@ export default class UserHome extends Component {
                               ? 'visibile'
                               : 'hidden',
                         }}
-                        label="DELETE book"
+                        label='DELETE book'
                         onClick={() => this.handleDelete(book.scrapbookId)}
                       />
                     </Box>
@@ -255,7 +255,7 @@ export default class UserHome extends Component {
                 );
               })}
 
-              <Button primary label="logout" onClick={this.handleLogout} />
+              <Button primary label='logout' onClick={this.handleLogout} />
             </Box>
           )}
         </ResponsiveContext.Consumer>
@@ -269,16 +269,16 @@ export default class UserHome extends Component {
             <Form>
               <FormField>
                 <TextInput
-                  placeholder="scrapbook title"
-                  name="title"
+                  placeholder='scrapbook title'
+                  name='title'
                   onChange={(evt) => this.handleChange(evt)}
                   value={this.state.title}
-                  type="text"
+                  type='text'
                 ></TextInput>
               </FormField>
-              <Button onClick={this.addNewScrapbook} label="add scrapbook" />
+              <Button onClick={this.addNewScrapbook} label='add scrapbook' />
             </Form>
-            <Button margin="small" onClick={this.toggleModal} label="close" />
+            <Button margin='small' onClick={this.toggleModal} label='close' />
           </Modal>
         </Box>
         <Box>
@@ -291,22 +291,22 @@ export default class UserHome extends Component {
             <Form>
               <FormField>
                 <TextInput
-                  placeholder="scrapbook title"
-                  name="title"
+                  placeholder='scrapbook title'
+                  name='title'
                   onChange={(evt) => this.handleEditChange(evt)}
                   value={this.state.currentScrapbookTitle}
-                  type="text"
+                  type='text'
                 ></TextInput>
               </FormField>
               <Button
                 onClick={() =>
                   this.updateScrapbook(this.state.selectedScrapbook)
                 }
-                label="update scrapbook"
+                label='update scrapbook'
               />
             </Form>
             <Button
-              margin="small"
+              margin='small'
               onClick={() => {
                 this.setState({
                   selectedScrapbook: '',
@@ -314,7 +314,7 @@ export default class UserHome extends Component {
                   showEdit: false,
                 });
               }}
-              label="close"
+              label='close'
             />
           </Modal>
         </Box>
